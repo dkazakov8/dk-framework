@@ -1,0 +1,14 @@
+{
+  "include": [
+    "src"
+  ],
+  "compilerOptions": {
+    "outDir": "dist",
+    "noEmit": true,
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+  }
+}

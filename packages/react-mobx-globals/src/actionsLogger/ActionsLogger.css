@@ -1,0 +1,103 @@
+.ActionsLogger_wrapper {
+  position: fixed;
+  width: 600px;
+  overflow-x: scroll;
+  overflow-y: visible;
+  background: #f8f9fa;
+  bottom: 10px;
+  right: 10px;
+  z-index: 999;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  padding: 32px 10px 10px 10px;
+  border-radius: 0 10px 10px 0;
+  border: 1px solid #ccc;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ActionsLogger_wrapper .ActionsLogger_item {
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  margin: 0 5px;
+  cursor: default;
+  user-select: none;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_item .ActionsLogger_child {
+  overflow: hidden;
+  padding: 15px;
+  max-width: 30px;
+  transition: max-width 0.3s;
+  white-space: nowrap;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_item .ActionsLogger_child span {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_item:hover {
+  opacity: 1;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_clear {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 10px;
+  color: #000;
+  user-select: none;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_bar {
+  position: fixed;
+  z-index: 999;
+  right: 609px;
+  bottom: 10px;
+  background: #f8f9fa;
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  align-items: stretch;
+  border-radius: 10px 0 0 10px;
+  border: 1px solid #ccc;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 10px 0 10px;
+  min-width: 400px;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_bar .ActionsLogger_child {
+  margin-bottom: 10px;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_group {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_group + .ActionsLogger_group {
+  border-left: 1px dashed #ccc;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_group .ActionsLogger_groupItems {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.ActionsLogger_wrapper .ActionsLogger_group .ActionsLogger_groupTitle {
+  padding-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 12px;
+  color: #555;
+  font-weight: bold;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "upd": "node pruneNodeModules.js&&pnpm i --prefer-offline",
+    "pub": "lerna version --exact --force-publish --yes&&lerna publish from-git --yes&&pnpm run upd&&git add .&&git commit --amend --no-edit&&git push -f",
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
+    "format:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" --fix",
+    "prepare": "husky install"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/node": "18.15.11",
+    "lerna": "6.6.1",
+    "@swc/core": "1.3.40",
+    "@swc-node/register": "1.5.4",
+    "dk-eslint-config": "latest",
+    "husky": "^8.0.0",
+    "lint-staged": "13.2.1",
+    "ts-node": "10.5.0",
+    "typescript": "4.9.5",
+    "@types/mocha": "9.1.0",
+    "chai": "4.3.6",
+    "mocha": "9.2.0",
+    "nyc": "15.1.0",
+    "@types/chai": "4.3.0"
+  },
+  "packageManager": "pnpm@8.2.0"
+}

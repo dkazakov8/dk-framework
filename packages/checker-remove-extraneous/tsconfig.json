@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src",
+    "test"
+  ],
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+  }
+}

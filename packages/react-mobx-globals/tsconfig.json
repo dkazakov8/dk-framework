@@ -1,0 +1,21 @@
+{
+  "include": [
+    "src",
+    "test"
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "strict": true,
+    "noEmit": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "keyofStringsOnly": true,
+    "experimentalDecorators": true
+  }
+}

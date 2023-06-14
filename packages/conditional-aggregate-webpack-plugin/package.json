@@ -2,7 +2,7 @@
   "name": "dk-conditional-aggregate-webpack-plugin",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Delays webpack aggregateTimeout triggered watch-build until some custom condition meets",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
@@ -15,5 +15,5 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "gitHead": "f431f3564e833816fcc5e0124c21b3948554747f"
+  "gitHead": "f64693c42f2bcf136e65896b7dd4a79d87f6c5fd"
 }

@@ -1,0 +1,14 @@
+{
+  "include": [
+    "packages"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "strict": true,
+    "noEmit": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+  }
+}

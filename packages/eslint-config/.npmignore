@@ -1,0 +1,13 @@
+*.log
+.idea
+node_modules
+.husky
+yarn.lock
+pnpm-lock.yaml
+.eslintrc.js
+.stylelintrc.js
+.formatignore
+.editorconfig
+.gitignore
+/lint-staged.config.js
+tsconfig.json
