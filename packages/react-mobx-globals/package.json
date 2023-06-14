@@ -2,7 +2,7 @@
   "name": "dk-react-mobx-globals",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Layered architecture for React+MobX",
   "repository": {
     "type": "git",
@@ -22,8 +22,8 @@
   "devDependencies": {
     "@types/express": "4.17.13",
     "@types/react": "17.0.39",
-    "dk-localize": "3.0.6",
-    "dk-request": "3.0.6",
+    "dk-localize": "3.0.7",
+    "dk-request": "3.0.7",
     "history": "5.0.1",
     "mobx": "6.6.1",
     "mobx-react": "7.5.2",
