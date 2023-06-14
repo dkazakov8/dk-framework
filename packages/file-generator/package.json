@@ -2,7 +2,7 @@
   "name": "dk-file-generator",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Creates helper files",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",

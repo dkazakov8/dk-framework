@@ -2,7 +2,7 @@
   "name": "dk-webpack-parallel-simple",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Simple tool to parallelize build",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",

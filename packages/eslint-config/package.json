@@ -2,7 +2,7 @@
   "name": "dk-eslint-config",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Enterprise-quality ESLint config with TypeScript support",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
