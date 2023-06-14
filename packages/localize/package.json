@@ -2,7 +2,7 @@
   "name": "dk-localize",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Library for including texts",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
