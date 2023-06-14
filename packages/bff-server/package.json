@@ -4,6 +4,10 @@
   "license": "MIT",
   "version": "3.0.6",
   "description": "Simple Backend-For-Frontend server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkazakov8/dk-framework.git"
+  },
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&cp -r ./src/utils/ssl-local ./dist/utils/ssl-local",
