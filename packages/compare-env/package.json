@@ -2,7 +2,7 @@
   "name": "dk-compare-env",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Compare .env files",
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
