@@ -3,13 +3,14 @@
   "private": true,
   "scripts": {
     "upd": "node pruneNodeModules.js&&pnpm i --prefer-offline",
-    "pub": "lerna version --exact --force-publish --yes&&lerna publish from-git --yes&&pnpm run upd&&git add .&&git commit --amend --no-edit&&git push -f",
+    "pub": "pnpm run test&&lerna version --exact --force-publish --yes&&lerna publish from-git --yes&&pnpm run upd&&git add .&&git commit --amend --no-edit&&git push -f",
     "build": "lerna run build",
     "test": "lerna run test",
     "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
     "format:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" --fix",
     "prepare": "husky install",
-    "check-types": "tsc --project tsconfig.json"
+    "check-types": "tsc --project tsconfig.json",
+    "update-deps": "npm-check-updates -ws -u -i"
   },
   "workspaces": [
     "packages/*"
@@ -27,6 +28,7 @@
     "lint-staged": "13.2.2",
     "mocha": "10.2.0",
     "nyc": "15.1.0",
+    "npm-check-updates": "16.10.12",
     "ts-node": "10.9.1",
     "typescript": "5.0.4"
   },

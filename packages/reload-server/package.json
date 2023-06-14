@@ -14,12 +14,12 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "chalk": "4.1.1",
+    "chalk": "5.2.0",
     "chokidar": "3.5.3",
-    "ws": "8.5.0"
+    "ws": "8.13.0"
   },
   "devDependencies": {
-    "@types/ws": "8.2.2"
+    "@types/ws": "8.5.5"
   },
   "engines": {
     "node": ">=16.0.0"

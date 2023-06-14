@@ -10,4 +10,4 @@ declare const config: {
     '(*.js|*.ts|*.tsx)': string[];
     '*.scss': string[];
 };
-//# sourceMappingURL=lint-staged.config.d.ts.map
+//# sourceMappingURL=lintStaged.d.ts.map

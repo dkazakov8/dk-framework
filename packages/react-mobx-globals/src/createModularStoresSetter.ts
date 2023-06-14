@@ -1,4 +1,4 @@
-import { Component, ComponentClass } from 'react';
+import { Component, ComponentClass, ReactNode } from 'react';
 
 import { TypeGlobalsAny } from './types/TypeGlobalsAny';
 import { TypeActionData } from './types/TypeActionData';
@@ -22,6 +22,7 @@ type PropsModularStoresSetter<TGlobals extends TypeGlobalsAny> = {
   actions?: Partial<TGlobals['actions']>;
   noActionsCancel?: boolean;
   logsCanceledActions?: boolean;
+  children: ReactNode;
 };
 
 // @ts-ignore
