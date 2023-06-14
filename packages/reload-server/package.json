@@ -1,0 +1,26 @@
+{
+  "name": "dk-reload-server",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "version": "3.0.0",
+  "description": "Reload browser on files change",
+  "scripts": {
+    "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&cp -r ./src/ssl-local ./dist/ssl-local",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "chalk": "4.1.1",
+    "chokidar": "3.5.3",
+    "ws": "8.5.0"
+  },
+  "devDependencies": {
+    "@types/ws": "8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "gitHead": "f431f3564e833816fcc5e0124c21b3948554747f"
+}

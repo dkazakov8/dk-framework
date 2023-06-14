@@ -1,0 +1,30 @@
+{
+  "name": "dk-checker-remove-extraneous",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "version": "3.0.0",
+  "description": "Utility for removing extraneous params via ts-interface-checker",
+  "scripts": {
+    "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "test": "nyc mocha",
+    "check-types": "tsc",
+    "prepublishOnly": "yarn build",
+    "posttest": "nyc report --reporter=json"
+  },
+  "nyc": {
+    "include": "src"
+  },
+  "dependencies": {
+    "lodash.get": "4.4.2",
+    "lodash.unset": "4.5.2"
+  },
+  "devDependencies": {
+    "@types/lodash.get": "4.4.7",
+    "@types/lodash.unset": "4.5.7",
+    "ts-interface-checker": "1.0.2"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "gitHead": "f431f3564e833816fcc5e0124c21b3948554747f"
+}
