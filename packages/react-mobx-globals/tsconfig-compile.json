@@ -6,6 +6,7 @@
     "jsx": "react-jsx",
     "outDir": "dist",
     "module": "commonjs",
+    "ignoreDeprecations": "5.0",
     "target": "ES2015",
     "strict": true,
     "declaration": true,

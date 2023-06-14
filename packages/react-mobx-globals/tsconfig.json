@@ -8,6 +8,7 @@
     "outDir": "dist",
     "target": "ES2015",
     "moduleResolution": "node",
+    "ignoreDeprecations": "5.0",
     "module": "commonjs",
     "strict": true,
     "noEmit": true,
