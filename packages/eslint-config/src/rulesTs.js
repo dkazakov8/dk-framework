@@ -30,6 +30,7 @@ const rulesConfig = {
   '@typescript-eslint/no-magic-numbers': [
     'error',
     {
+      ignoreTypeIndexes: true,
       ignoreArrayIndexes: true,
       ignoreDefaultValues: true,
       ignoreNumericLiteralTypes: true,

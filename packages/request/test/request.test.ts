@@ -198,14 +198,14 @@ describe('Test request', () => {
     const data = JSON.parse(JSON.stringify(responseExpected));
 
     nock('https://google.com')
-      .matchHeader('some-header', 'value')
+      .matchHeader('someHeader', 'value')
       .post('/api/get-items')
       .reply(SUCCESS_HTTP_CODE, data);
 
     return request({
       url: 'https://google.com/api/get-items',
       apiName: 'getItems',
-      headers: { 'some-header': 'value' },
+      headers: { someHeader: 'value' },
       requestParams: { id: 'id' },
     }).then((response) => {
       expect(response).to.deep.eq(responseExpected);

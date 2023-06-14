@@ -7,8 +7,8 @@
  */
 
 const config = {
-  '(*.js|*.ts|*.tsx)': ['yarn format:js'],
-  '*.scss': ['yarn format:style'],
+  '(*.js|*.ts|*.tsx)': ['pnpm run format:js'],
+  '*.scss': ['pnpm run format:style'],
 };
 
 module.exports = config;

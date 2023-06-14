@@ -7,7 +7,7 @@ import { TypeMiddleware } from '../../types';
 import { errorCodes, compressions, getAcceptedCompression } from '../../utils';
 
 function setContentTypeAndEncoding(params: {
-  encoding: typeof compressions[number]['encoding'];
+  encoding: (typeof compressions)[number]['encoding'];
   contentType: 'application/javascript' | 'text/css';
 }): express.Handler {
   const { encoding, contentType } = params;
