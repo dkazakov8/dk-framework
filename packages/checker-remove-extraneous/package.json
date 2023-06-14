@@ -12,7 +12,6 @@
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
     "test": "nyc mocha",
-    "check-types": "tsc",
     "prepublishOnly": "yarn build",
     "posttest": "nyc report --reporter=json"
   },

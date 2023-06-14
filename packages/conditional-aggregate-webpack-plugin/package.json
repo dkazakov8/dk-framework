@@ -11,7 +11,6 @@
   "scripts": {
     "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
-    "check-types": "tsc",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {

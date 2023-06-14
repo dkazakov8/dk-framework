@@ -1573,7 +1573,7 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
       '@tufjs/canonical-json': registry.npmjs.org/@tufjs/canonical-json@1.0.0
-      minimatch: registry.npmjs.org/minimatch@9.0.0
+      minimatch: registry.npmjs.org/minimatch@9.0.1
     dev: true
 
   registry.npmjs.org/@types/body-parser@1.19.2:
@@ -7654,7 +7654,7 @@ packages:
       tsconfig-paths: registry.npmjs.org/tsconfig-paths@4.1.2
       tslib: registry.npmjs.org/tslib@2.5.0
       v8-compile-cache: registry.npmjs.org/v8-compile-cache@2.3.0
-      yargs: registry.npmjs.org/yargs@17.7.1
+      yargs: registry.npmjs.org/yargs@17.7.2
       yargs-parser: registry.npmjs.org/yargs-parser@21.1.1
     optionalDependencies:
       '@nx/nx-darwin-arm64': registry.npmjs.org/@nx/nx-darwin-arm64@16.3.2
@@ -10801,10 +10801,10 @@ packages:
       yargs-parser: registry.npmjs.org/yargs-parser@20.2.9
     dev: true
 
-  registry.npmjs.org/yargs@17.7.1:
-    resolution: {integrity: sha512-cwiTb08Xuv5fqF4AovYacTFNxk62th7LKJ6BL9IGUpTJrWoU7/7WdQGTP2SjKf1dUNBGzDd28p/Yfs/GI6JrLw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/yargs/-/yargs-17.7.1.tgz}
+  registry.npmjs.org/yargs@17.7.2:
+    resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz}
     name: yargs
-    version: 17.7.1
+    version: 17.7.2
     engines: {node: '>=12'}
     dependencies:
       cliui: registry.npmjs.org/cliui@8.0.1

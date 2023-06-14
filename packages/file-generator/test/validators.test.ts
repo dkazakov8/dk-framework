@@ -2,7 +2,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import '@swc-node/register';
 
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
@@ -107,6 +106,17 @@ export const TypeTaskStow = t.intersection("TypeTask", t.iface([], {
 };
 
 describe('generate validators', () => {
+  beforeEach(() => {
+    fsExtra.copySync(
+      path.resolve(__dirname, 'source/validators'),
+      path.resolve(__dirname, 'tmp/validators')
+    );
+  });
+
+  afterEach(() => {
+    fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
+  });
+
   const folder = path.resolve(__dirname, 'tmp/validators/api');
   const triggerFolder = path.resolve(__dirname, 'tmp/validators/models');
 
@@ -179,17 +189,6 @@ describe('generate validators', () => {
       expect(content).to.equal(`${headerTemplate}${resultContent[fileName]}`);
     });
   }
-
-  beforeEach(() => {
-    fsExtra.copySync(
-      path.resolve(__dirname, 'source/validators'),
-      path.resolve(__dirname, 'tmp/validators')
-    );
-  });
-
-  afterEach(() => {
-    fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
-  });
 
   it('creates validators', () => {
     const headerTemplate = '// some-comment\n\nimport "@swc-node/register"\n\n';
