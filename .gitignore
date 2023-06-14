@@ -7,20 +7,13 @@
 node_modules/
 dist/
 
-# Compiled Java class files
-*.class
-
-# Compiled Python bytecode
-*.py[cod]
+# Coverage directory used by tools like istanbul
+.nyc_output
+coverage.*
+dist
 
 # Log files
 *.log
-
-# Package files
-*.jar
-
-# Maven
-target/
 
 # JetBrains IDE
 .idea/
