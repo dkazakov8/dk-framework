@@ -2,7 +2,7 @@
   "name": "dk-file-generator",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "Creates helper files",
   "repository": {
     "type": "git",

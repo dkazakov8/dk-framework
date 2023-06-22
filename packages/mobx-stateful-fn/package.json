@@ -2,7 +2,7 @@
   "name": "dk-mobx-stateful-fn",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "Adds mobx state to functions",
   "repository": {
     "type": "git",
