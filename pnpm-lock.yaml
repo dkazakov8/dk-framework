@@ -227,8 +227,8 @@ importers:
   packages/reload-server:
     dependencies:
       chalk:
-        specifier: 5.2.0
-        version: registry.npmjs.org/chalk@5.2.0
+        specifier: 4.1.2
+        version: registry.npmjs.org/chalk@4.1.2
       chokidar:
         specifier: 3.5.3
         version: registry.npmjs.org/chokidar@3.5.3
@@ -2955,6 +2955,7 @@ packages:
     name: chalk
     version: 5.2.0
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+    dev: true
 
   registry.npmjs.org/chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz}
