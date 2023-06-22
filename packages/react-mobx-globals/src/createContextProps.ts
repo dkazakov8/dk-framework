@@ -1,10 +1,12 @@
+import { TypeRequestParams } from 'dk-request';
+import { addState } from 'dk-mobx-stateful-fn';
+
 import { TypeGlobalsAny } from './types/TypeGlobalsAny';
-import { getCreateWrappedAction } from './actions/getCreateWrappedAction';
 import { TypeCreateContextParams } from './types/TypeCreateContextParams';
 import { setGlobalApi } from './globals/setGlobalApi';
 import { setGlobalStores } from './globals/setGlobalStores';
 import { setGlobalActions } from './globals/setGlobalActions';
-import { getCreateWrappedApi } from './actions/getCreateWrappedApi';
+import { TypeActionAny } from './types/TypeActionAny';
 
 export function createContextProps<TGlobals extends TypeGlobalsAny>({
   req,
@@ -27,12 +29,27 @@ export function createContextProps<TGlobals extends TypeGlobalsAny>({
     createWrappedAction: () => false,
   } as any;
 
-  globals.createWrappedApi = getCreateWrappedApi.bind(null, globals, transformers);
-  globals.createWrappedAction = getCreateWrappedAction.bind(null, globals, transformers);
+  globals.createWrappedApi = ({ ...configParams }: Omit<TypeRequestParams, 'requestParams'>) => {
+    const action: any = addState({
+      fn: (requestParams: TypeRequestParams['requestParams'] = {}) =>
+        request({ ...configParams, mock: action.state.mock, requestParams }, globals),
+      name: configParams.apiName,
+      transformers,
+    });
+
+    return action;
+  };
+  globals.createWrappedAction = (fn: TypeActionAny) => {
+    return addState({
+      fn: fn.bind(null, globals),
+      name: fn.name,
+      transformers,
+    });
+  };
 
   setGlobalStores(globals, staticStores);
   setGlobalActions(globals, globalActions);
-  setGlobalApi(globals, { api, request, apiValidators });
+  setGlobalApi(globals, { api, apiValidators });
 
   return globals;
 }

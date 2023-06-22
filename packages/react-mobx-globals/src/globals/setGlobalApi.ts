@@ -5,11 +5,9 @@ export function setGlobalApi(
   globals: TypeGlobalsAny,
   {
     api,
-    request,
     apiValidators,
   }: {
     api: TypeCreateContextParams['api'];
-    request: TypeCreateContextParams['request'];
     apiValidators: TypeCreateContextParams['apiValidators'];
   }
 ) {
@@ -21,7 +19,6 @@ export function setGlobalApi(
       url,
       method,
       apiName,
-      request,
       headers,
       validatorRequest: apiValidators[apiName]?.TypeRequest,
       validatorResponse: apiValidators[apiName]?.TypeResponse,
