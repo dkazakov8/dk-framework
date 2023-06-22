@@ -1,6 +1,5 @@
 export { mockActions } from './mockActions';
 export { createRouter } from './createRouter';
-export { getActionsLogs } from './getActionsLogs';
 export { getPlainActions } from './getPlainActions';
 export { escapeAllStrings } from './utils/escapeAllStrings';
 export { createRouterStore } from './createRouterStore';

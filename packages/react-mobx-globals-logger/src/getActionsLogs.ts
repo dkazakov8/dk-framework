@@ -1,7 +1,4 @@
-import { TypeActionLog } from './types/TypeActionLog';
-import { TypeGlobalsAny } from './types/TypeGlobalsAny';
-import { getPlainActions } from './getPlainActions';
-import { TypeCreateContextParams } from './types/TypeCreateContextParams';
+import { getPlainActions, TypeCreateContextParams, TypeActionLog } from 'dk-react-mobx-globals';
 
 function getLoggedActions({
   type,
@@ -61,7 +58,7 @@ export function getActionsLogs({
   routerStore,
   transformers,
 }: {
-  globals: TypeGlobalsAny;
+  globals: any;
   isClient: boolean;
   actionsLogs: Array<Array<TypeActionLog>>;
   routerStore: any;
@@ -76,7 +73,7 @@ export function getActionsLogs({
     const plainApi = Object.values(globals.api);
     const plainActions = getPlainActions(globals.actions);
 
-    const currentRouteName = !isClient ? 'server' : routerStore.currentRoute?.name || 'INITIAL';
+    const currentRouteName = !isClient ? 'server' : 'client';
 
     const lastItem: Array<TypeActionLog> | undefined = routerStore.lastActionsLog;
 

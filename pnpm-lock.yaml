@@ -216,13 +216,34 @@ importers:
         version: registry.npmjs.org/mobx@6.9.0
       mobx-react:
         specifier: 7.6.0
-        version: registry.npmjs.org/mobx-react@7.6.0(mobx@6.9.0)(react@18.2.0)
+        version: registry.npmjs.org/mobx-react@7.6.0(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: registry.npmjs.org/react@18.2.0
       ts-interface-checker:
         specifier: 1.0.2
         version: registry.npmjs.org/ts-interface-checker@1.0.2
+
+  packages/react-mobx-globals-logger:
+    devDependencies:
+      '@types/react':
+        specifier: 18.2.12
+        version: registry.npmjs.org/@types/react@18.2.12
+      dk-react-mobx-globals:
+        specifier: 3.0.15
+        version: link:../react-mobx-globals
+      mobx:
+        specifier: 6.9.0
+        version: registry.npmjs.org/mobx@6.9.0
+      mobx-react:
+        specifier: 7.6.0
+        version: registry.npmjs.org/mobx-react@7.6.0(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: 18.2.0
+        version: registry.npmjs.org/react@18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
 
   packages/reload-server:
     dependencies:
@@ -7045,7 +7066,7 @@ packages:
     hasBin: true
     dev: true
 
-  registry.npmjs.org/mobx-react-lite@3.4.0(mobx@6.9.0)(react@18.2.0):
+  registry.npmjs.org/mobx-react-lite@3.4.0(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.4.0.tgz}
     id: registry.npmjs.org/mobx-react-lite/3.4.0
     name: mobx-react-lite
@@ -7063,9 +7084,10 @@ packages:
     dependencies:
       mobx: registry.npmjs.org/mobx@6.9.0
       react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: true
 
-  registry.npmjs.org/mobx-react@7.6.0(mobx@6.9.0)(react@18.2.0):
+  registry.npmjs.org/mobx-react@7.6.0(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+HQUNuh7AoQ9ZnU6c4rvbiVVl+wEkb9WqYsVDzGLng+Dqj1XntHu79PvEWKtSMoMj67vFp/ZPXcElosuJO8ckA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/mobx-react/-/mobx-react-7.6.0.tgz}
     id: registry.npmjs.org/mobx-react/7.6.0
     name: mobx-react
@@ -7082,8 +7104,9 @@ packages:
         optional: true
     dependencies:
       mobx: registry.npmjs.org/mobx@6.9.0
-      mobx-react-lite: registry.npmjs.org/mobx-react-lite@3.4.0(mobx@6.9.0)(react@18.2.0)
+      mobx-react-lite: registry.npmjs.org/mobx-react-lite@3.4.0(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0)
       react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: true
 
   registry.npmjs.org/mobx@6.9.0:
@@ -8580,6 +8603,19 @@ packages:
       strip-json-comments: registry.npmjs.org/strip-json-comments@2.0.1
     dev: true
 
+  registry.npmjs.org/react-dom@18.2.0(react@18.2.0):
+    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz}
+    id: registry.npmjs.org/react-dom/18.2.0
+    name: react-dom
+    version: 18.2.0
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      loose-envify: registry.npmjs.org/loose-envify@1.4.0
+      react: registry.npmjs.org/react@18.2.0
+      scheduler: registry.npmjs.org/scheduler@0.23.0
+    dev: true
+
   registry.npmjs.org/react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz}
     name: react-is
@@ -8959,6 +8995,14 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz}
     name: safer-buffer
     version: 2.1.2
+
+  registry.npmjs.org/scheduler@0.23.0:
+    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/scheduler/-/scheduler-0.23.0.tgz}
+    name: scheduler
+    version: 0.23.0
+    dependencies:
+      loose-envify: registry.npmjs.org/loose-envify@1.4.0
+    dev: true
 
   registry.npmjs.org/schema-utils@3.2.0:
     resolution: {integrity: sha512-0zTyLGyDJYd/MBxG1AhJkKa6fpEBds4OQO2ut0w7OYG+ZGhGea09lijvzsqegYSik88zc7cUtIlnnO+/BvD6gQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/schema-utils/-/schema-utils-3.2.0.tgz}

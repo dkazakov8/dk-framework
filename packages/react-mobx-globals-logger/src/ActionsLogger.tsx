@@ -1,9 +1,7 @@
 /* eslint-disable react/jsx-no-literals */
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-
-import { TypeActionLog } from '../types/TypeActionLog';
-import { TypeCreateContextParams } from '../types/TypeCreateContextParams';
+import { TypeActionLog, TypeCreateContextParams } from 'dk-react-mobx-globals';
 
 const STYLE_PREFIX = 'ActionsLogger_';
 

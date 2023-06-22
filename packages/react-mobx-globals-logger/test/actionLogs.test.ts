@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
+import { createRouterStore, createContextProps, TypeRoutesGenerator } from 'dk-react-mobx-globals';
 
-import { createRouterStore } from '../src/createRouterStore';
-import { createContextProps } from '../src/createContextProps';
-import { TypeRoutesGenerator } from '../src/types/TypeRoutesGenerator';
+import { getActionsLogs } from '../src/getActionsLogs';
 
 const ACTION_TIMEOUT = 10;
 const ACTION_MODULAR_TIMEOUT = 5;
@@ -92,61 +91,69 @@ function extendActionsWithModular(globals: any) {
   return globals;
 }
 
-describe('createContextProps & createRouterStore', function test() {
-  it('creates store and extends actions', () => {
+describe('getActionsLogs', function test() {
+  it('logs correctly', () => {
     const globals = extendActionsWithModular(createStore());
-
-    expect(globals.store).to.deep.eq({
-      router: {
-        actionsLogs: [],
-        currentRoute: {},
-        routesHistory: [],
-      },
-    });
+    const routerStore = globals.store.router;
+    const actionsLogs = routerStore.actionsLogs;
 
     const globalAction = globals.actions.globalGroup.someAction;
     const modularAction = globals.actions.modularGroup.somePage.someModularAction;
 
-    expect(globalAction.state).to.deep.eq({
-      timeStart: 0,
-      isExecuting: false,
-      executionTime: 0,
+    getActionsLogs({
+      globals,
+      isClient: true,
+      actionsLogs,
+      routerStore,
+      transformers: { action, batch: runInAction, autorun, observable },
     });
 
-    expect(modularAction.state).to.deep.eq({
-      timeStart: 0,
-      isExecuting: false,
-      executionTime: 0,
-    });
-  });
-
-  it('sets actions state', () => {
-    const globals = extendActionsWithModular(createStore());
-
-    const globalAction = globals.actions.globalGroup.someAction;
-    const modularAction = globals.actions.modularGroup.somePage.someModularAction;
+    expect(actionsLogs).to.deep.eq([]);
 
     globalAction();
 
-    expect(globalAction.state.isExecuting).to.eq(true);
-    expect(globalAction.state.timeStart).to.be.greaterThan(0);
-
-    modularAction();
-
-    expect(modularAction.state.isExecuting).to.eq(true);
-    expect(modularAction.state.timeStart).to.be.greaterThan(0);
+    expect(actionsLogs).to.deep.eq([[{ name: 'someAction', routeName: 'client', type: 'ACTION' }]]);
 
     return new Promise((resolve) => {
-      setTimeout(() => {
-        expect(globalAction.state.isExecuting).to.eq(false);
-        expect(Math.ceil(Number(globalAction.state.executionTime))).to.be.greaterThanOrEqual(
-          ACTION_TIMEOUT - 1
-        );
+      runInAction(() => {
+        globals.store.router.currentRoute = {
+          name: 'onboarding',
+          path: '/',
+          params: {},
+        };
+      });
 
-        expect(modularAction.state.isExecuting).to.eq(false);
-        expect(Math.ceil(Number(modularAction.state.executionTime))).to.be.greaterThanOrEqual(
+      modularAction();
+
+      expect(actionsLogs).to.deep.eq([
+        [{ name: 'someAction', routeName: 'client', type: 'ACTION' }],
+        [
+          { name: 'someAction', routeName: 'client', type: 'ACTION' },
+          { name: 'someModularAction', routeName: 'client', type: 'ACTION' },
+        ],
+      ]);
+
+      setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        expect(actionsLogs.length).to.eq(3);
+
+        expect(actionsLogs[0]).to.deep.eq([
+          { name: 'someAction', routeName: 'client', type: 'ACTION' },
+        ]);
+
+        expect(actionsLogs[1].length).to.eq(2);
+        expect(actionsLogs[1][0]).to.deep.eq({
+          name: 'someAction',
+          routeName: 'client',
+          type: 'ACTION',
+        });
+        expect(actionsLogs[1][1].name).to.eq('someModularAction');
+        expect(actionsLogs[1][1].routeName).to.eq('client');
+        expect(actionsLogs[1][1].type).to.eq('ACTION');
+        expect(Math.ceil(Number(actionsLogs[1][1].executionTime))).to.be.greaterThanOrEqual(
           ACTION_MODULAR_TIMEOUT - 1
         );
+        expect(Number(actionsLogs[1][1].executionTime)).to.be.lessThan(ACTION_TIMEOUT);
 
         resolve(undefined);
       }, ACTION_TIMEOUT);
