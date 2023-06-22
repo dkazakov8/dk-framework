@@ -1,0 +1,30 @@
+{
+  "name": "dk-mobx-stateful-fn",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "version": "3.0.9",
+  "description": "Adds mobx state to functions",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkazakov8/dk-framework.git"
+  },
+  "scripts": {
+    "upd": "rm -rf ./node_modules&&pnpm i --prefer-offline",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "test": "nyc mocha",
+    "prepublishOnly": "yarn build",
+    "posttest": "nyc report --reporter=json"
+  },
+  "nyc": {
+    "include": "src"
+  },
+  "devDependencies": {
+    "mobx": "6.9.0"
+  },
+  "peerDependencies": {
+    "mobx": "*"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "gitHead": "be06fb1dc46a1dceb1e54e8998ab3c826b5f6b74"
+}

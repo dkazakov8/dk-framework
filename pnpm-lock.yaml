@@ -187,6 +187,12 @@ importers:
 
   packages/localize: {}
 
+  packages/mobx-stateful-fn:
+    devDependencies:
+      mobx:
+        specifier: 6.9.0
+        version: registry.npmjs.org/mobx@6.9.0
+
   packages/react-mobx-globals:
     devDependencies:
       '@types/express':
