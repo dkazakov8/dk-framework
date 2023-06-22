@@ -204,6 +204,9 @@ importers:
       dk-localize:
         specifier: 3.0.10
         version: link:../localize
+      dk-mobx-stateful-fn:
+        specifier: 3.0.10
+        version: link:../mobx-stateful-fn
       dk-request:
         specifier: 3.0.10
         version: link:../request

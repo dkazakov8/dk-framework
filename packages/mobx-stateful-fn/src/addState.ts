@@ -3,7 +3,7 @@ import { runInAction, action, observable } from 'mobx';
 import { getCurrentTime } from './utils/getCurrentTime';
 import { TypeFnState } from './types/TypeFnState';
 
-export function addState<TApiFn extends (params?: any) => Promise<any>>({
+export function addState<TApiFn extends (...args: Array<any>) => Promise<any>>({
   fn,
   name,
   transformers,
@@ -31,7 +31,7 @@ export function addState<TApiFn extends (params?: any) => Promise<any>>({
   }
 
   const wrappedAction = Object.defineProperties(
-    function wrappedActionDecorator(params?: any) {
+    function wrappedActionDecorator(...args: Parameters<TApiFn>) {
       try {
         transformers.batch(() => {
           wrappedAction.state.executionTime = 0;
@@ -42,7 +42,7 @@ export function addState<TApiFn extends (params?: any) => Promise<any>>({
         });
 
         return transformers
-          .action(fn)(params)
+          .action(fn)(...args)
           .then((response: any) => {
             transformers.batch(() => {
               wrappedAction.state.isExecuting = false;
@@ -50,6 +50,15 @@ export function addState<TApiFn extends (params?: any) => Promise<any>>({
                 (getCurrentTime() - wrappedAction.state.timeStart).toFixed(1)
               );
               wrappedAction.state.timeStart = 0;
+
+              if (wrappedAction.state.isCancelled) {
+                wrappedAction.state.isCancelled = false;
+
+                const error = new Error(fn.name);
+                error.name = 'ACTION_CANCELED';
+
+                throw error;
+              }
             });
 
             return response;
@@ -58,7 +67,7 @@ export function addState<TApiFn extends (params?: any) => Promise<any>>({
       } catch (error: any) {
         return afterExecutionError(error);
       }
-    } as (() => any) & TypeFnState,
+    } as ((...args: Parameters<TApiFn>) => ReturnType<TApiFn>) & TypeFnState,
     {
       state: {
         value: transformers.observable({

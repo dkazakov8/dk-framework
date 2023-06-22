@@ -13,6 +13,7 @@ describe('addState', function test() {
   };
 
   const fn = () => new Promise<void>((resolve) => setTimeout(resolve, ACTION_TIMEOUT));
+  const fnWithParams = (param1: string, param2: string) => Promise.resolve([param1, param2]);
   const fnError = () =>
     Promise.resolve().then(() => {
       const err = new Error('error text');
@@ -41,11 +42,19 @@ describe('addState', function test() {
     });
   });
 
+  it('params are typed', () => {
+    const fnStateful = addState({ fn: fnWithParams, name: 'fn', transformers });
+
+    return fnStateful('test', 'data').then((data) => {
+      expect(data).to.deep.eq(['test', 'data']);
+    });
+  });
+
   it('changes state accordingly', () => {
     const fnStateful = addState({ fn, name: 'fn', transformers });
     const fnStateful2 = addState({ fn, name: 'fn', transformers });
 
-    fnStateful();
+    void fnStateful();
 
     expect(fnStateful.state.isExecuting).to.eq(true);
     expect(fnStateful.state.timeStart).to.be.greaterThan(0);
@@ -56,7 +65,7 @@ describe('addState', function test() {
       executionTime: 0,
     });
 
-    fnStateful2();
+    void fnStateful2();
 
     expect(fnStateful2.state.isExecuting).to.eq(true);
     expect(fnStateful2.state.timeStart).to.be.greaterThan(0);
@@ -73,7 +82,7 @@ describe('addState', function test() {
         });
 
         [fnStateful, fnStateful2].forEach((statefulFn) => {
-          statefulFn();
+          void statefulFn();
 
           expect(statefulFn.state.executionTime).to.be.eq(0);
           expect(statefulFn.state.isExecuting).to.eq(true);
@@ -101,7 +110,7 @@ describe('addState', function test() {
     const fnStateful2 = addState({ fn: fnError, name: 'fn', transformers });
 
     [fnStateful, fnStateful2].forEach((statefulFn) => {
-      statefulFn();
+      void statefulFn();
 
       expect(statefulFn.state.isExecuting).to.eq(true);
       expect(statefulFn.state.timeStart).to.be.greaterThan(0);
@@ -117,7 +126,7 @@ describe('addState', function test() {
         });
 
         [fnStateful, fnStateful2].forEach((statefulFn) => {
-          statefulFn();
+          void statefulFn();
 
           expect(statefulFn.state.executionTime).to.be.eq(0);
           expect(statefulFn.state.isExecuting).to.eq(true);
@@ -176,7 +185,7 @@ describe('addState', function test() {
     const fnStateful2 = addState({ fn, name: 'fn', transformers });
 
     [fnStateful, fnStateful2].forEach((statefulFn) => {
-      statefulFn();
+      void statefulFn();
 
       expect(statefulFn.state.isExecuting).to.eq(true);
     });

@@ -23,6 +23,7 @@
     "@types/react": "18.2.12",
     "dk-localize": "3.0.10",
     "dk-request": "3.0.10",
+    "dk-mobx-stateful-fn": "3.0.10",
     "history": "5.3.0",
     "mobx": "6.9.0",
     "mobx-react": "7.6.0",

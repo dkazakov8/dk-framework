@@ -1,10 +1,8 @@
 import { TypeRequestParams } from 'dk-request';
+import { addState } from 'dk-mobx-stateful-fn';
 
 import { TypeCreateContextParams } from '../types/TypeCreateContextParams';
 import { TypeGlobalsAny } from '../types/TypeGlobalsAny';
-
-import { wrapAction } from './wrapAction';
-import { errorActionCanceledName } from './errorActionCanceledName';
 
 export function getCreateWrappedApi(
   globals: TypeGlobalsAny,
@@ -14,19 +12,10 @@ export function getCreateWrappedApi(
     ...configParams
   }: Omit<TypeRequestParams, 'requestParams'> & Pick<TypeCreateContextParams, 'request'>
 ) {
-  const action = wrapAction({
+  const action: any = addState({
     fn: (requestParams: TypeRequestParams['requestParams'] = {}) =>
       request({ ...configParams, mock: action.state.mock, requestParams }, globals),
     name: configParams.apiName,
-    onError: (error) => {
-      if (error.name !== errorActionCanceledName) {
-        console.error(
-          `Error happened in API action ${configParams.apiName}`,
-          error,
-          JSON.stringify(error.response?.data || {})
-        );
-      }
-    },
     transformers,
   });
 
