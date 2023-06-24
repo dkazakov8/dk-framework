@@ -2,7 +2,7 @@
   "name": "dk-eslint-config",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "Enterprise-quality ESLint config with TypeScript support",
   "repository": {
     "type": "git",
@@ -26,8 +26,7 @@
     "postcss-scss": "4.0.6",
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
-    "stylelint": "14.16.1",
-    "stylelint-config-prettier": "9.0.5",
+    "stylelint": "15.9.0",
     "stylelint-prettier": "3.0.0"
   },
   "main": "src/index.js",
