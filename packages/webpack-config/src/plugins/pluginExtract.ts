@@ -10,7 +10,7 @@ import { TypePlugin } from '../types';
 export const pluginExtract: TypePlugin = new MiniCssExtractPlugin({
   // Do not include folder path here! Styleguide has a bug with it trying to load fonts from
   // that folder
-  filename: global.filenameHash ? '[name].[contenthash].css' : '[name].css',
+  filename: filenameHash ? '[name].[contenthash].css' : '[name].css',
   ignoreOrder: false,
   experimentalUseImportModule: true,
 });

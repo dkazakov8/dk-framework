@@ -14,5 +14,5 @@ export const configPluginsServer: TypeConfig<any> = [
   pluginLimitChunks,
   pluginDefineServer,
   pluginConditionalAggregate,
-  global.bundleAnalyzer.enabled && pluginAnalyzer,
+  bundleAnalyzer.enabled && pluginAnalyzer,
 ].filter(excludeFalsy);

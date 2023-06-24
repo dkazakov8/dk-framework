@@ -24,7 +24,7 @@ export function createClientConfig(params: TypeGlobal): webpack.Configuration {
     watchOptions: require('./configs/configWatchOptions').configWatchOptions,
   };
 
-  const configWithMeasure = global.speedMeasure
+  const configWithMeasure = speedMeasure
     ? (new SpeedMeasurePlugin().wrap(config as any) as webpack.Configuration)
     : config;
 

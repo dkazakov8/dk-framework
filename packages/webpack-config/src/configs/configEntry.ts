@@ -7,4 +7,4 @@ import webpack from 'webpack';
 
 import { TypeConfig } from '../types';
 
-export const configEntry: TypeConfig<webpack.Configuration['entry']> = global.entry;
+export const configEntry: TypeConfig<webpack.Configuration['entry']> = entry;

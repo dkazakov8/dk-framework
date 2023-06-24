@@ -1,4 +1,4 @@
-/* eslint-disable no-var,vars-on-top */
+/* eslint-disable no-var,vars-on-top,@typescript-eslint/prefer-namespace-keyword,@typescript-eslint/consistent-type-definitions */
 
 import webpack from 'webpack';
 
@@ -94,12 +94,4 @@ declare global {
   var defineParams: Record<string, Record<string, any>> | undefined;
   var serviceWorker: { entry: string; output: string } | undefined;
   var nodeExternalsParams: any | undefined;
-
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  // namespace NodeJS {
-  //   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions,@typescript-eslint/naming-convention
-  //   interface Global extends TypeGlobal {
-  //     ssr: boolean;
-  //   }
-  // }
 }

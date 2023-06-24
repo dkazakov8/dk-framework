@@ -9,7 +9,7 @@ import { TypePlugin } from '../types';
 
 export const pluginAnalyzer: TypePlugin = new BundleAnalyzerPlugin({
   logLevel: 'silent',
-  analyzerPort: global.bundleAnalyzer.port,
+  analyzerPort: bundleAnalyzer.port,
   statsOptions: null,
   openAnalyzer: false,
   analyzerMode: 'server',

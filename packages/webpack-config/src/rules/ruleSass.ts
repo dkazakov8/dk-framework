@@ -19,7 +19,7 @@ const loaderCss: TypeLoader = {
 const loaderSass: TypeLoader = {
   loader: 'sass-loader',
   options: {
-    sassOptions: { includePaths: global.sassImportPaths },
+    sassOptions: { includePaths: sassImportPaths },
   },
 };
 
@@ -34,6 +34,6 @@ const loaderExtractCss: TypeLoader = {
 
 export const ruleSass: TypeRule = {
   test: /\.s?css$/,
-  exclude: global.sassExclude,
+  exclude: sassExclude,
   use: [loaderExtractCss, loaderCss, loaderSass],
 };

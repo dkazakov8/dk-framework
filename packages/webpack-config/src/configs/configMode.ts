@@ -7,4 +7,4 @@ import webpack from 'webpack';
 
 import { TypeConfig } from '../types';
 
-export const configMode: TypeConfig<webpack.Configuration['mode']> = global.nodeEnv;
+export const configMode: TypeConfig<webpack.Configuration['mode']> = nodeEnv;

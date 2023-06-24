@@ -15,7 +15,7 @@ export const pluginImageMinimize: TypePlugin = new ImageMinimizerPlugin({
     implementation: ImageMinimizerPlugin.imageminMinify,
     filename: 'images/[name].webp',
     options: {
-      plugins: [['imagemin-webp', { quality: 100, method: global.webpCompression }]],
+      plugins: [['imagemin-webp', { quality: 100, method: webpCompression }]],
     },
   },
   test: /\.(webp)$/,

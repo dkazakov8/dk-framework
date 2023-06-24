@@ -10,7 +10,7 @@ import { TypeConfig } from '../types';
 import { getTerserConfig } from '../utils/getTerserConfig';
 
 export const configOptimization: TypeConfig<any> = {
-  minimize: global.minify,
+  minimize: minify,
   splitChunks: {
     cacheGroups: {
       polyfills: {

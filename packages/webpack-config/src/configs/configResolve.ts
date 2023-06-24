@@ -8,11 +8,11 @@ import webpack from 'webpack';
 import { TypeConfig } from '../types';
 
 export const configResolve: TypeConfig<webpack.Configuration['resolve']> = {
-  modules: global.modules,
+  modules,
   symlinks: false,
   extensions: ['.js', '.ts', '.tsx'],
   cacheWithContext: false,
-  alias: global.alias,
+  alias,
   fallback: {
     fs: false,
     path: require.resolve('path-browserify'),

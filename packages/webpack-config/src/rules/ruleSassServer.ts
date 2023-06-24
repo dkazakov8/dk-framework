@@ -16,6 +16,6 @@ const loaderCssServer: TypeLoader = {
 
 export const ruleSassServer: TypeRule = {
   test: /\.s?css$/,
-  exclude: global.sassExclude,
+  exclude: sassExclude,
   use: [loaderCssServer],
 };

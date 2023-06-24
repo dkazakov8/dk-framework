@@ -8,6 +8,6 @@ import webpack from 'webpack';
 import { TypePlugin } from '../types';
 
 export const pluginBanner: TypePlugin = new webpack.BannerPlugin({
-  banner: `@env ${global.nodeEnv} @commit ${global.gitCommit}`,
+  banner: `@env ${nodeEnv} @commit ${gitCommit}`,
   entryOnly: false,
 });

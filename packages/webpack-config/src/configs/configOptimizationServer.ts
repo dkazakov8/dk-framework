@@ -7,6 +7,6 @@ import { TypeConfig } from '../types';
 import { getTerserConfig } from '../utils/getTerserConfig';
 
 export const configOptimizationServer: TypeConfig<any> = {
-  minimize: global.minify,
+  minimize: minify,
   minimizer: [getTerserConfig()],
 };

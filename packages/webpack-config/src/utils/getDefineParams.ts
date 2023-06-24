@@ -7,8 +7,8 @@ export function getDefineParams({ isClient }: { isClient: boolean }) {
     IS_TEST: 'false',
   };
 
-  if (global.defineParams) {
-    Object.entries(global.defineParams).forEach(([key, value]) => {
+  if (defineParams) {
+    Object.entries(defineParams).forEach(([key, value]) => {
       Object.assign(globals, { [key]: JSON.stringify(value) });
     });
   }

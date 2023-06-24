@@ -5,4 +5,4 @@
 
 import { TypeConfig } from '../types';
 
-export const configWatch: TypeConfig<boolean> = global.hotReload.enabled;
+export const configWatch: TypeConfig<boolean> = hotReload.enabled;

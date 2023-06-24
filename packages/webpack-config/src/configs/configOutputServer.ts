@@ -8,7 +8,7 @@ import webpack from 'webpack';
 import { TypeConfig } from '../types';
 
 export const configOutputServer: TypeConfig<webpack.Configuration['output']> = {
-  path: global.buildFolder,
+  path: buildFolder,
   filename: '[name].js', // static name for server build
   publicPath: '/',
 };

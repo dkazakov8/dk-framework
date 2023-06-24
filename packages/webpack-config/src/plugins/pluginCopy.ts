@@ -7,4 +7,4 @@ import CopyPlugin from 'copy-webpack-plugin';
 
 import { TypePlugin } from '../types';
 
-export const pluginCopy: TypePlugin = new CopyPlugin({ patterns: global.copyFilesConfig });
+export const pluginCopy: TypePlugin = new CopyPlugin({ patterns: copyFilesConfig });

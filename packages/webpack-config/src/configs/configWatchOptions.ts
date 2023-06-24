@@ -8,6 +8,6 @@ import webpack from 'webpack';
 import { TypeConfig } from '../types';
 
 export const configWatchOptions: TypeConfig<webpack.Configuration['watchOptions']> = {
-  aggregateTimeout: global.hotReload.aggregationTimeout,
+  aggregateTimeout: hotReload.aggregationTimeout,
   ignored: /node_modules/,
 };

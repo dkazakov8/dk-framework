@@ -9,5 +9,5 @@ import nodeExternals from 'webpack-node-externals';
 import { TypeConfig } from '../types';
 
 export const configExternalsServer: TypeConfig<webpack.Configuration['externals']> = [
-  nodeExternals(global.nodeExternalsParams) as any,
+  nodeExternals(nodeExternalsParams) as any,
 ];

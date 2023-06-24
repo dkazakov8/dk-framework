@@ -20,9 +20,9 @@ const loaderSwc: TypeLoader = {
   },
 };
 
-if (global.includePolyfills) {
+if (includePolyfills) {
   // @ts-ignore
-  loaderSwc.options.env = { mode: 'usage', coreJs: 3, targets: global.browserslist };
+  loaderSwc.options.env = { mode: 'usage', coreJs: 3, targets: browserslist };
 }
 
 /**
