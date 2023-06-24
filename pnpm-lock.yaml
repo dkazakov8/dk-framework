@@ -136,7 +136,7 @@ importers:
         specifier: 4.2.2
         version: registry.npmjs.org/css-minimizer-webpack-plugin@4.2.2(webpack@5.76.1)
       dk-conditional-aggregate-webpack-plugin:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../conditional-aggregate-webpack-plugin
       file-loader:
         specifier: 6.2.0
@@ -332,7 +332,7 @@ importers:
   packages/react-mobx-globals:
     dependencies:
       dk-mobx-stateful-fn:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../mobx-stateful-fn
     devDependencies:
       '@types/express':
@@ -342,10 +342,10 @@ importers:
         specifier: 18.2.12
         version: registry.npmjs.org/@types/react@18.2.12
       dk-localize:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../localize
       dk-request:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../request
       history:
         specifier: 5.3.0
@@ -369,7 +369,7 @@ importers:
         specifier: 18.2.12
         version: registry.npmjs.org/@types/react@18.2.12
       dk-react-mobx-globals:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../react-mobx-globals
       mobx:
         specifier: 6.9.0
@@ -406,7 +406,7 @@ importers:
         specifier: 1.4.0
         version: registry.npmjs.org/axios@1.4.0
       dk-checker-remove-extraneous:
-        specifier: 3.0.16
+        specifier: 3.0.17
         version: link:../checker-remove-extraneous
     devDependencies:
       nock:
