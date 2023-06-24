@@ -19,7 +19,7 @@
     "eslint": "8.43.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "3.5.5",
-    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "postcss": "8.4.24",
@@ -27,7 +27,6 @@
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
     "stylelint": "15.9.0",
-    "stylelint-config-prettier": "9.0.5",
     "stylelint-prettier": "3.0.0"
   },
   "main": "src/index.js",
