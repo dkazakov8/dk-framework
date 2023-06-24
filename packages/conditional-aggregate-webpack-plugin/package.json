@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
     "webpack": "5.88.0"

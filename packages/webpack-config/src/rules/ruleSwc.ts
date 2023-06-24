@@ -49,12 +49,10 @@ const loaderConnectedReplace: TypeLoader = {
 
       if (exportStatement) str += exportStatement;
 
-      if (!exportStatement) {
+      if (!exportStatement || !exportStatement.includes('default')) {
         str += `const ${className} = ${wrappedComponent}`;
-      } else if (exportStatement.includes('default')) {
-        str += wrappedComponent;
       } else {
-        str += `const ${className} = ${wrappedComponent}`;
+        str += wrappedComponent;
       }
 
       return str;

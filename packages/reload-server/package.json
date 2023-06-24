@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&cp -r ./src/ssl-local ./dist/ssl-local",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "chalk": "4.1.2",
