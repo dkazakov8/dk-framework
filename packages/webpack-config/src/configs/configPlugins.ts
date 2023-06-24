@@ -29,7 +29,7 @@ export const configPlugins: TypeConfig<any> = [
   pluginDefine,
   pluginIgnore,
   pluginPreload,
-  global.minify && pluginLodashModule,
+  pluginLodashModule,
   pluginImageMinimize,
   pluginRetryChunkLoad,
   pluginConditionalAggregate,
