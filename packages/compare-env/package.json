@@ -14,7 +14,7 @@
     "posttest": "nyc report --reporter=json"
   },
   "dependencies": {
-    "dotenv": "16.1.4"
+    "dotenv": "16.3.1"
   },
   "engines": {
     "node": ">=16.0.0"
