@@ -6,7 +6,7 @@
  *
  */
 
-const { lintStagedConfig } = require('dk-eslint-config');
+const { lintStagedConfig } = require('./packages/eslint-config');
 
 delete lintStagedConfig['*.scss'];
 

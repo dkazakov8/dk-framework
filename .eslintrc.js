@@ -5,7 +5,7 @@
 
 const path = require('path');
 
-const { getEslintConfig } = require('dk-eslint-config');
+const { getEslintConfig } = require('./packages/eslint-config');
 
 const eslintConfig = getEslintConfig({
   tsConfigPath: path.resolve(__dirname, './tsconfig.json'),
