@@ -150,6 +150,9 @@ importers:
       stylelint:
         specifier: 15.9.0
         version: registry.npmjs.org/stylelint@15.9.0
+      stylelint-config-prettier:
+        specifier: 9.0.5
+        version: registry.npmjs.org/stylelint-config-prettier@9.0.5(stylelint@15.9.0)
       stylelint-prettier:
         specifier: 3.0.0
         version: registry.npmjs.org/stylelint-prettier@3.0.0(prettier@2.8.8)(stylelint@15.9.0)
@@ -14004,6 +14007,19 @@ packages:
       browserslist: registry.npmjs.org/browserslist@4.21.5
       postcss: registry.npmjs.org/postcss@8.4.24
       postcss-selector-parser: registry.npmjs.org/postcss-selector-parser@6.0.13
+    dev: false
+
+  registry.npmjs.org/stylelint-config-prettier@9.0.5(stylelint@15.9.0):
+    resolution: {integrity: sha512-U44lELgLZhbAD/xy/vncZ2Pq8sh2TnpiPvo38Ifg9+zeioR+LAkHu0i6YORIOxFafZoVg0xqQwex6e6F25S5XA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/stylelint-config-prettier/-/stylelint-config-prettier-9.0.5.tgz}
+    id: registry.npmjs.org/stylelint-config-prettier/9.0.5
+    name: stylelint-config-prettier
+    version: 9.0.5
+    engines: {node: '>= 12'}
+    hasBin: true
+    peerDependencies:
+      stylelint: '>= 11.x < 15'
+    dependencies:
+      stylelint: registry.npmjs.org/stylelint@15.9.0
     dev: false
 
   registry.npmjs.org/stylelint-prettier@3.0.0(prettier@2.8.8)(stylelint@15.9.0):
