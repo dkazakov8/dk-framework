@@ -2,7 +2,7 @@
   "name": "dk-webpack-parallel-simple",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.0.18",
+  "version": "3.1.0",
   "description": "Simple tool to parallelize build",
   "repository": {
     "type": "git",
