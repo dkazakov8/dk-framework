@@ -22,5 +22,5 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "gitHead": "be06fb1dc46a1dceb1e54e8998ab3c826b5f6b74"
+  "gitHead": "13a06537ff328c33a5fe1997a437e6e48adcdadf"
 }

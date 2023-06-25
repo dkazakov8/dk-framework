@@ -146,11 +146,11 @@ export function createModularStoresSetter<TGlobals extends TypeGlobalsAny>(): Co
             const storeInitialData = initialData[modularStorePath]?.[storeName];
 
             if (storeInitialData) {
-              restoreState(
-                globalContext.store[modularStorePath][storeName],
-                unescapeAllStrings(storeInitialData),
-                transformers
-              );
+              restoreState({
+                target: globalContext.store[modularStorePath][storeName],
+                source: unescapeAllStrings(storeInitialData),
+                transformers,
+              });
 
               /**
                * Delete from variable for clear SPA experience on navigation (back/forward)
