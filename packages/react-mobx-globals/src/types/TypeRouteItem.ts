@@ -3,6 +3,7 @@ export type TypeRouteItem = {
   path: string;
   loader: any;
   params: Record<string, string>;
+  pageName: string;
 
   props?: Record<string, any>;
   store?: any;

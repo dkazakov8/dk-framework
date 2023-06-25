@@ -8,6 +8,7 @@ import { TypeRoutesGenerator } from '../src/types/TypeRoutesGenerator';
 const routesObject = {
   dynamicRoute: {
     name: 'dynamicRoute',
+    pageName: 'dynamicRoute',
     path: '/test/:static',
     validators: {
       static: (value: string) => value.length > 2,
@@ -17,12 +18,14 @@ const routesObject = {
   },
   staticRoute: {
     name: 'staticRoute',
+    pageName: 'staticRoute',
     path: '/test/static',
     params: {},
     loader: undefined,
   },
   dynamicRoute2: {
     name: 'dynamicRoute2',
+    pageName: 'dynamicRoute',
     path: '/test3/:static',
     validators: {
       static: (value: string) => value.length > 2,
@@ -32,12 +35,14 @@ const routesObject = {
   },
   dynamicRouteNoValidators: {
     name: 'dynamicRouteNoValidators',
+    pageName: 'dynamicRoute',
     path: '/test2/:param',
     params: { param: '1' } as { param: string },
     loader: undefined,
   },
   dynamicRouteMultiple: {
     name: 'dynamicRouteMultiple',
+    pageName: 'dynamicRoute',
     path: '/test/:param/:param2',
     validators: {
       param: (value: string) => value.length > 2,

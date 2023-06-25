@@ -8,6 +8,7 @@ export type TypeRoutesGenerator<T extends Record<string, TypeRouteItem>> = {
     path: T[Key]['path'];
     loader: T[Key]['loader'];
     params: T[Key]['params'];
+    pageName: TypeRouteItem['pageName'];
 
     props?: TypeRouteItem['props'];
     store?: TypeRouteItem['store'];
