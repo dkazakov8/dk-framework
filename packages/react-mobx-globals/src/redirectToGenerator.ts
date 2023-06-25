@@ -58,7 +58,7 @@ export function redirectToGenerator<TRoutes extends TypeRoutesGenerator<any>>({
     const nextParams = getDynamicValues({ routesObject: route, pathname: nextPathname });
 
     // Prevent redirect to the same route
-    if (isClient && prevPathname === nextPathname) {
+    if (prevPathname === nextPathname) {
       return loadComponentToConfig({ componentConfig: routes[routerStore.currentRoute.name] });
     }
 
@@ -109,11 +109,7 @@ export function redirectToGenerator<TRoutes extends TypeRoutesGenerator<any>>({
 
         return Promise.resolve();
       })
-      .then(() =>
-        isClient
-          ? loadComponentToConfig({ componentConfig: routes[routerStore.currentRoute.name] })
-          : undefined
-      )
+      .then(() => loadComponentToConfig({ componentConfig: routes[routerStore.currentRoute.name] }))
       .catch((error) => {
         // For preventing redirects in beforeLeave
         if (error?.name === 'SILENT') return Promise.resolve();
