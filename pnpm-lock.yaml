@@ -182,6 +182,12 @@ importers:
 
   packages/localize: {}
 
+  packages/mobx-restore-state:
+    devDependencies:
+      mobx:
+        specifier: 6.9.0
+        version: registry.npmjs.org/mobx@6.9.0
+
   packages/mobx-stateful-fn:
     devDependencies:
       mobx:

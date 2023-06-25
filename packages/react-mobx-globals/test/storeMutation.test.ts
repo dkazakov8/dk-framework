@@ -1,40 +1,7 @@
 import { expect } from 'chai';
-import { action, autorun, observable, runInAction } from 'mobx';
 
-import { mergeObservableDeep } from '../src/utils/mergeObservableDeep';
 import { escapeAllStrings } from '../src/utils/escapeAllStrings';
 import { unescapeAllStrings } from '../src/utils/unescapeAllStrings';
-
-describe('mergeObservableDeep', function test() {
-  it('merges correctly', () => {
-    const store = observable({
-      arr: [],
-      obj: {},
-      str: '123',
-      num: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-    });
-
-    const initialData = {
-      arr: [{ obj3: { param: '123' } }],
-      obj: {
-        obj2: {
-          obj3: { param: '123' },
-        },
-        str: '123',
-      },
-      str: '123',
-      num: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-    };
-
-    expect(
-      mergeObservableDeep(store, initialData, { action, batch: runInAction, autorun, observable })
-    ).to.deep.eq(initialData);
-  });
-});
 
 describe('escape and unescape', function test() {
   it('escape correctly', () => {

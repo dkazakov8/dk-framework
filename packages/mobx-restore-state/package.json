@@ -1,0 +1,26 @@
+{
+  "name": "dk-mobx-restore-state",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "version": "3.1.7",
+  "description": "Restores state from initial data object",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkazakov8/dk-framework.git"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "test": "nyc mocha",
+    "prepublishOnly": "pnpm run build",
+    "posttest": "nyc report --reporter=json"
+  },
+  "nyc": {
+    "include": "src"
+  },
+  "devDependencies": {
+    "mobx": "6.9.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "gitHead": "be06fb1dc46a1dceb1e54e8998ab3c826b5f6b74"
+}

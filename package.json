@@ -7,7 +7,9 @@
     "build": "lerna run build",
     "test": "lerna run test",
     "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
+    "analyze:style": "stylelint --ignore-path .formatignore \"**/*.scss\"",
     "format:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" --fix",
+    "format:style": "stylelint --ignore-path .formatignore --fix",
     "prepare": "husky install",
     "check-types": "tsc --project tsconfig.json",
     "update-deps": "npm-check-updates -ws -u -i"
