@@ -1,9 +1,9 @@
 import { Component, ComponentClass, ReactNode } from 'react';
+import { restoreState } from 'dk-mobx-restore-state';
 
 import { TypeGlobalsAny } from './types/TypeGlobalsAny';
 import { TypeActionData } from './types/TypeActionData';
 import { unescapeAllStrings } from './utils/unescapeAllStrings';
-import { mergeObservableDeep } from './utils/mergeObservableDeep';
 import { TypeCreateContextParams } from './types/TypeCreateContextParams';
 
 /**
@@ -146,7 +146,7 @@ export function createModularStoresSetter<TGlobals extends TypeGlobalsAny>(): Co
             const storeInitialData = initialData[modularStorePath]?.[storeName];
 
             if (storeInitialData) {
-              mergeObservableDeep(
+              restoreState(
                 globalContext.store[modularStorePath][storeName],
                 unescapeAllStrings(storeInitialData),
                 transformers

@@ -6,7 +6,6 @@ export { createRouterStore } from './createRouterStore';
 export { createContextProps } from './createContextProps';
 export { unescapeAllStrings } from './utils/unescapeAllStrings';
 export { redirectToGenerator } from './redirectToGenerator';
-export { mergeObservableDeep } from './utils/mergeObservableDeep';
 export { loadComponentToConfig } from './utils/loadComponentToConfig';
 export { errorActionCanceledName } from './actions/errorActionCanceledName';
 export { createModularStoresSetter } from './createModularStoresSetter';

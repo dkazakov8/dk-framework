@@ -209,6 +209,9 @@ importers:
       dk-localize:
         specifier: 3.1.8
         version: link:../localize
+      dk-mobx-restore-state:
+        specifier: 3.1.8
+        version: link:../mobx-restore-state
       dk-request:
         specifier: 3.1.8
         version: link:../request
