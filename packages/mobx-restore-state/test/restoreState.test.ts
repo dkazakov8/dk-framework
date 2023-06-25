@@ -3,9 +3,9 @@ import { observable, runInAction } from 'mobx';
 
 import { restoreState } from '../src/restoreState';
 
-describe('mergeObservableDeep', function test() {
+describe('restoreState', function test() {
   it('merges correctly', () => {
-    const store = observable({
+    const target = observable({
       arr: [],
       obj: {},
       str: '123',
@@ -14,7 +14,7 @@ describe('mergeObservableDeep', function test() {
       nonExistent2: undefined,
     });
 
-    const initialData = {
+    const source = {
       arr: [{ obj3: { param: '123' } }],
       obj: {
         obj2: {
@@ -22,14 +22,20 @@ describe('mergeObservableDeep', function test() {
         },
         str: '123',
       },
+      obj4: {},
       str: '123',
       num: 123,
       nonExistent1: null,
       nonExistent2: undefined,
     };
 
-    expect(restoreState(store, initialData, { batch: runInAction, observable })).to.deep.eq(
-      initialData
-    );
+    expect(
+      restoreState({
+        logs: true,
+        target,
+        source,
+        transformers: { batch: runInAction, observable },
+      })
+    ).to.deep.eq(source);
   });
 });
