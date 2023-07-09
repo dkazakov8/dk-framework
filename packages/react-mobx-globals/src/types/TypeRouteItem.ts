@@ -8,8 +8,6 @@ export type TypeRouteItem = {
   props?: Record<string, any>;
   store?: any;
   actions?: any;
-  storeLoader?: any;
-  actionsLoader?: any;
   validators?: Record<string, (value: string) => boolean>;
   beforeEnter?: (globals: any) => Promise<any>;
   beforeLeave?: (globals: any, nextRoute: any, event?: BeforeUnloadEvent) => Promise<any> | null;

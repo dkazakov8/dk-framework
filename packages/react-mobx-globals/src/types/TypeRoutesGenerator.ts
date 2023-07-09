@@ -12,9 +12,7 @@ export type TypeRoutesGenerator<T extends Record<string, TypeRouteItem>> = {
 
     props?: TypeRouteItem['props'];
     store?: TypeRouteItem['store'];
-    storeLoader?: T[Key]['storeLoader'];
     actions?: TypeRouteItem['actions'];
-    actionsLoader?: T[Key]['actionsLoader'];
     component?: ComponentClass;
     validators?: TypeRouteItem['validators'];
     beforeEnter?: TypeRouteItem['beforeEnter'];
