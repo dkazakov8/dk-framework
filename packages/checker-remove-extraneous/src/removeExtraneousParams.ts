@@ -1,4 +1,5 @@
-import unset from 'lodash.unset';
+// eslint-disable-next-line no-restricted-imports
+import unset from 'lodash/unset';
 import { Checker, IErrorDetail } from 'ts-interface-checker';
 
 import { getRemovablePaths } from './getRemovablePaths';

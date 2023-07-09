@@ -77,20 +77,13 @@ importers:
         version: registry.npmjs.org/@types/express@4.17.17
 
   packages/checker-remove-extraneous:
-    dependencies:
-      lodash.get:
-        specifier: 4.4.2
-        version: registry.npmjs.org/lodash.get@4.4.2
-      lodash.unset:
-        specifier: 4.5.2
-        version: registry.npmjs.org/lodash.unset@4.5.2
     devDependencies:
-      '@types/lodash.get':
-        specifier: 4.4.7
-        version: registry.npmjs.org/@types/lodash.get@4.4.7
-      '@types/lodash.unset':
-        specifier: 4.5.7
-        version: registry.npmjs.org/@types/lodash.unset@4.5.7
+      '@types/lodash':
+        specifier: 4.14.195
+        version: registry.npmjs.org/@types/lodash@4.14.195
+      lodash:
+        specifier: 4.17.21
+        version: registry.npmjs.org/lodash@4.17.21
       ts-interface-checker:
         specifier: 1.0.2
         version: registry.npmjs.org/ts-interface-checker@1.0.2
@@ -277,6 +270,9 @@ importers:
         specifier: 3.1.14
         version: link:../checker-remove-extraneous
     devDependencies:
+      lodash:
+        specifier: 4.17.21
+        version: registry.npmjs.org/lodash@4.17.21
       nock:
         specifier: 13.3.1
         version: registry.npmjs.org/nock@13.3.1
@@ -3229,26 +3225,10 @@ packages:
       '@types/webpack': registry.npmjs.org/@types/webpack@4.41.33
     dev: true
 
-  registry.npmjs.org/@types/lodash.get@4.4.7:
-    resolution: {integrity: sha512-af34Mj+KdDeuzsJBxc/XeTtOx0SZHZNLd+hdrn+PcKGQs0EG2TJTzQAOTCZTgDJCArahlCzLWSy8c2w59JRz7Q==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@types/lodash.get/-/lodash.get-4.4.7.tgz}
-    name: '@types/lodash.get'
-    version: 4.4.7
-    dependencies:
-      '@types/lodash': registry.npmjs.org/@types/lodash@4.14.192
-    dev: true
-
-  registry.npmjs.org/@types/lodash.unset@4.5.7:
-    resolution: {integrity: sha512-/i371dATnLQ4tazwcX/n+rGk3M6RnMbA3lJKrKFjELicPExmZ1LcKtGfHBECuPS2TTl3yDuaFmWtmfACVuBBAQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@types/lodash.unset/-/lodash.unset-4.5.7.tgz}
-    name: '@types/lodash.unset'
-    version: 4.5.7
-    dependencies:
-      '@types/lodash': registry.npmjs.org/@types/lodash@4.14.192
-    dev: true
-
-  registry.npmjs.org/@types/lodash@4.14.192:
-    resolution: {integrity: sha512-km+Vyn3BYm5ytMO13k9KTp27O75rbQ0NFw+U//g+PX7VZyjCioXaRFisqSIJRECljcTv73G3i6BpglNGHgUQ5A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@types/lodash/-/lodash-4.14.192.tgz}
+  registry.npmjs.org/@types/lodash@4.14.195:
+    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@types/lodash/-/lodash-4.14.195.tgz}
     name: '@types/lodash'
-    version: 4.14.192
+    version: 4.14.195
     dev: true
 
   registry.npmjs.org/@types/mime@3.0.1:
@@ -9747,12 +9727,6 @@ packages:
     version: 4.4.0
     dev: true
 
-  registry.npmjs.org/lodash.get@4.4.2:
-    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/lodash.get/-/lodash.get-4.4.2.tgz}
-    name: lodash.get
-    version: 4.4.2
-    dev: false
-
   registry.npmjs.org/lodash.ismatch@4.4.0:
     resolution: {integrity: sha512-fPMfXjGQEV9Xsq/8MTSgUf255gawYRbjwMyDbcvDhXgV7enSZA0hynz6vMPnpAb5iONEzBHBPsT+0zes5Z301g==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz}
     name: lodash.ismatch
@@ -9787,12 +9761,6 @@ packages:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz}
     name: lodash.uniq
     version: 4.5.0
-    dev: false
-
-  registry.npmjs.org/lodash.unset@4.5.2:
-    resolution: {integrity: sha512-bwKX88k2JhCV9D1vtE8+naDKlLiGrSmf8zi/Y9ivFHwbmRfA8RxS/aVJ+sIht2XOwqoNr4xUPUkGZpc1sHFEKg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/lodash.unset/-/lodash.unset-4.5.2.tgz}
-    name: lodash.unset
-    version: 4.5.2
     dev: false
 
   registry.npmjs.org/lodash@4.17.21:

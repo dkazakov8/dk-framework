@@ -1,4 +1,5 @@
-import get from 'lodash.get';
+// eslint-disable-next-line no-restricted-imports
+import get from 'lodash/get';
 
 export function getRemovablePaths(params: {
   data: any;
