@@ -1,4 +1,6 @@
-import { getPlainActions, TypeCreateContextParams, TypeActionLog } from 'dk-react-mobx-globals';
+import { getPlainActions, TypeCreateContextParams } from 'dk-react-mobx-globals';
+
+import { TypeActionLog } from './TypeActionLog';
 
 function getLoggedActions({
   type,

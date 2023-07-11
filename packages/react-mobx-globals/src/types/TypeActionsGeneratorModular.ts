@@ -1,5 +1,6 @@
+import { TypeFnState } from 'dk-mobx-stateful-fn';
+
 import { TypeActionAny } from './TypeActionAny';
-import { TypeActionData } from './TypeActionData';
 import { TypeSkipFirstArg } from './TypeSkipFirstArg';
 
 export type TypeActionsGeneratorModular<
@@ -10,7 +11,7 @@ export type TypeActionsGeneratorModular<
       [FnName in keyof TModularActions[ModularGroup][Group]]: TypeSkipFirstArg<
         TModularActions[ModularGroup][Group][FnName]
       > &
-        TypeActionData;
+        TypeFnState;
     };
   };
 };

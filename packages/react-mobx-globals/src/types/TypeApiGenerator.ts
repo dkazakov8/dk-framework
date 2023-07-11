@@ -1,7 +1,8 @@
+import { TypeFnState } from 'dk-mobx-stateful-fn';
+
 import { TypeApiItem } from './TypeApiItem';
-import { TypeActionData } from './TypeActionData';
 
 export type TypeApiGenerator<TApi extends TypeApiItem> = {
-  [TApiName in keyof TApi]: TypeActionData &
+  [TApiName in keyof TApi]: TypeFnState &
     ((requestParams: TApi[TApiName]['request']) => Promise<TApi[TApiName]['response']>);
 };

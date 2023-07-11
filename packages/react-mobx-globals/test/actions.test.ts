@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, autorun, makeAutoObservable, observable, runInAction } from 'mobx';
 
-import { createRouterStore } from '../src/createRouterStore';
 import { createContextProps } from '../src/createContextProps';
 import { TypeRoutesGenerator } from '../src/types/TypeRoutesGenerator';
+import { findRouteByPathname } from '../src/utils/findRouteByPathname';
 
 const ACTION_TIMEOUT = 10;
 const ACTION_MODULAR_TIMEOUT = 5;
@@ -47,19 +47,23 @@ function createStore() {
       modularGroup: {},
     },
     staticStores: {
-      router: class RouterStore extends createRouterStore({ routes, isClient: true }) {
+      router: class RouterStore {
         constructor() {
-          super();
+          makeAutoObservable(this);
+        }
 
-          makeObservable(this, {
-            actionsLogs: observable,
-            currentRoute: observable,
-            routesHistory: observable,
+        routesHistory: Array<string> = [];
+        currentRoute: Omit<(typeof routes)[keyof typeof routes], 'loader' | 'component'> =
+          {} as any;
 
-            previousRoute: computed,
-            lastActionsLog: computed,
-            previousRoutePathname: computed,
-          });
+        get previousRoutePathname() {
+          return this.routesHistory[this.routesHistory.length - 2];
+        }
+
+        get previousRoute() {
+          if (!this.previousRoutePathname) return null;
+
+          return findRouteByPathname({ pathname: this.previousRoutePathname, routes });
         }
       },
     },
@@ -98,7 +102,6 @@ describe('createContextProps & createRouterStore', function test() {
 
     expect(globals.store).to.deep.eq({
       router: {
-        actionsLogs: [],
         currentRoute: {},
         routesHistory: [],
       },

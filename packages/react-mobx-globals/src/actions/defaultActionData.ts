@@ -1,6 +1,6 @@
-import { TypeActionData } from '../types/TypeActionData';
+import { TypeFnState } from 'dk-mobx-stateful-fn';
 
-export const defaultActionData: TypeActionData = {
+export const defaultActionData: TypeFnState = {
   state: {
     timeStart: 0,
     isExecuting: false,

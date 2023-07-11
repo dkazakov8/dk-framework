@@ -2,10 +2,10 @@ export type TypeFnState = {
   state: {
     mock?: any;
     error?: string;
-    errorName?: string;
-    isCancelled?: boolean;
     timeStart: number;
+    errorName?: string;
     isExecuting: boolean;
+    isCancelled?: boolean;
     executionTime: number;
   };
 };
