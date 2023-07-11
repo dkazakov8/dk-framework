@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import { getFilteredChildren } from '../src/utils/getFilteredChildren';
 import { getSubFoldersOrFiles } from '../src/plugins/reexport-modular/getSubFoldersOrFiles';
 import { generateReexportModular } from '../src/plugins/reexport-modular';
-import { fileEncoding } from '../src/const';
+import { defaultHeaderTemplate, fileEncoding } from '../src/const';
 
 describe('get sub folders or files', () => {
   const folder = path.resolve(__dirname, 'source/reexportModularFolder');
@@ -145,7 +145,7 @@ export default { pages: { pageTwo } };
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportExists).to.equal(true);
-    expect(reexportContent).to.equal('');
+    expect(reexportContent).to.equal(defaultHeaderTemplate);
   });
 
   it('reexport when not included in changedFiles', () => {
@@ -216,7 +216,7 @@ export default { pages: { pageOne } };
 
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
-    expect(reexportContent).to.equal(`
+    expect(reexportContent).to.equal(`${defaultHeaderTemplate}
 export default { pages: {  } };
 `);
   });

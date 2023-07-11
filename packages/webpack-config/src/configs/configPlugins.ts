@@ -6,7 +6,6 @@
 import { TypeConfig } from '../types';
 import { excludeFalsy } from '../utils/excludeFalsy';
 import { pluginHtml } from '../plugins/pluginHtml';
-import { pluginCopy } from '../plugins/pluginCopy';
 import { pluginBanner } from '../plugins/pluginBanner';
 import { pluginIgnore } from '../plugins/pluginIgnore';
 import { pluginDefine } from '../plugins/pluginDefine';
@@ -23,7 +22,6 @@ import { pluginCircularDependency } from '../plugins/pluginCircularDependency';
 import { pluginConditionalAggregate } from '../plugins/pluginConditionalAggregate';
 
 export const configPlugins: TypeConfig<any> = [
-  pluginCopy,
   pluginHtml,
   pluginBanner,
   pluginDefine,

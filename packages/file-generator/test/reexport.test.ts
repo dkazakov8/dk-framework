@@ -4,7 +4,7 @@ import fs from 'fs';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { fileEncoding } from '../src/const';
+import { defaultHeaderTemplate, fileEncoding } from '../src/const';
 import { generateReexport } from '../src/plugins/reexport';
 import { createPackageFile } from '../src/plugins/reexport/createPackageFile';
 
@@ -94,7 +94,7 @@ describe('generate reexpoort', () => {
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`import * from './a';
+    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
 import * from './b';
 import * from './someFile';
 import * from './theme';
@@ -119,7 +119,7 @@ import * from './theme';
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`import * as a from './a';
+    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * as a from './a';
 import * as b from './b';
 import * as someFile from './someFile';
 import * as theme from './theme';
@@ -144,7 +144,7 @@ export default { a, b, someFile, theme }
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`import * from './a';
+    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
 import * from './b';
 `);
   });
@@ -166,7 +166,7 @@ import * from './b';
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`import * from './a';
+    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
 import * from './b';
 `);
   });

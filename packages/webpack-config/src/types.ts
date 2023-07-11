@@ -53,7 +53,6 @@ export type TypeGlobal = {
   circularCheck: boolean;
   compressFiles: boolean;
   bundleAnalyzer: { enabled: boolean; port: number };
-  copyFilesConfig: Array<{ from: string; to: string }>;
   webpCompression: number;
   sassImportPaths: Array<string>;
   includePolyfills: boolean;
@@ -84,7 +83,6 @@ declare global {
   var circularCheck: boolean;
   var compressFiles: boolean;
   var bundleAnalyzer: { enabled: boolean; port: number };
-  var copyFilesConfig: Array<{ from: string; to: string }>;
   var webpCompression: number;
   var sassImportPaths: Array<string>;
   var includePolyfills: boolean;

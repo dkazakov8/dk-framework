@@ -4,7 +4,7 @@ import path from 'path';
 import chalk from 'chalk';
 
 import { saveFile } from '../../utils/saveFile';
-import { logsPrefix } from '../../const';
+import { defaultHeaderTemplate, logsPrefix } from '../../const';
 import { getFilteredChildren } from '../../utils/getFilteredChildren';
 import { checkFilesExistence } from '../../utils/checkFilesExistence';
 import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
@@ -55,7 +55,13 @@ export const generateValidators: TypeGeneratorPlugin<TypeProcessParamsValidators
   const modifiedFiles: TypeModifiedFiles = [];
 
   config.forEach(
-    ({ folder, targetFolder, compilerOptions, includeChildrenMask, headerTemplate }) => {
+    ({
+      folder,
+      targetFolder,
+      compilerOptions,
+      includeChildrenMask,
+      headerTemplate = defaultHeaderTemplate,
+    }) => {
       const { paths: childrenPaths, names: childrenNames } = getFilteredChildren({
         folder,
         include: includeChildrenMask,
@@ -65,7 +71,7 @@ export const generateValidators: TypeGeneratorPlugin<TypeProcessParamsValidators
       const sideGeneratedFilePaths: Array<string> = [];
 
       compilerResults.result.forEach((result) => {
-        let content = headerTemplate || '';
+        let content = headerTemplate;
         content += result.content;
 
         const filePath = path.resolve(targetFolder, path.parse(result.filePath).base);

@@ -7,7 +7,7 @@ import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 import { createCheckers } from 'ts-interface-checker';
 
-import { fileEncoding } from '../src/const';
+import { defaultHeaderTemplate, fileEncoding } from '../src/const';
 import { generateValidators } from '../src/plugins/validators';
 import { getFilteredChildren } from '../src/utils/getFilteredChildren';
 
@@ -125,7 +125,7 @@ describe('generate validators', () => {
   const targetFolderModelsTasks = path.resolve(__dirname, 'tmp/models/tasks');
 
   function checkResultFiles({
-    headerTemplate = '',
+    headerTemplate = defaultHeaderTemplate,
     files = {
       root: ['getUser.ts', 'getUserExtended.ts'],
       models: ['tasks', 'TypeRole.ts', 'TypeTaskStatus.ts', 'TypeUser.ts', 'TypeUserExtended.ts'],
@@ -245,7 +245,8 @@ describe('generate validators', () => {
     );
 
     expect(userContent).to.equal(
-      resultContent['TypeUser.ts'].replace(`"email": "string",`, `"email": "number",`)
+      defaultHeaderTemplate +
+        resultContent['TypeUser.ts'].replace(`"email": "string",`, `"email": "number",`)
     );
   });
 

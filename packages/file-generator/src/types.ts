@@ -51,3 +51,5 @@ export type TypeGenerateFilesParams = {
     aggregationTimeout?: number;
   };
 };
+
+export type TypePluginName = TypeGenerateFilesParams['configs'][number]['plugin'];

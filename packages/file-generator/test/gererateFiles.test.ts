@@ -4,7 +4,7 @@ import fs from 'fs';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { fileEncoding } from '../src/const';
+import { defaultHeaderTemplate, fileEncoding } from '../src/const';
 import { generateFiles } from '../src/generateFiles';
 
 describe('generate files', () => {
@@ -46,6 +46,6 @@ describe('generate files', () => {
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal('');
+    expect(reexportContent).to.equal(defaultHeaderTemplate);
   });
 });

@@ -3,7 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 
 import { saveFile } from '../../utils/saveFile';
-import { logsPrefix } from '../../const';
+import { defaultHeaderTemplate, logsPrefix } from '../../const';
 import { getFilteredChildren } from '../../utils/getFilteredChildren';
 import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
 import { checkFilesExistence } from '../../utils/checkFilesExistence';
@@ -44,7 +44,7 @@ export const generateReexportModular: TypeGeneratorPlugin<TypeProcessParamsReexp
       targetFile,
       exportTemplate,
       importTemplate,
-      headerTemplate,
+      headerTemplate = defaultHeaderTemplate,
       includeChildrenMask,
       childFileOrFolderName,
     }) => {
@@ -52,7 +52,7 @@ export const generateReexportModular: TypeGeneratorPlugin<TypeProcessParamsReexp
 
       const subFoldersOfFiles = getSubFoldersOrFiles({ childrenPaths, childFileOrFolderName });
 
-      let content = headerTemplate || '';
+      let content = headerTemplate;
 
       subFoldersOfFiles.forEach(({ subFolderOrFilePath, moduleName }) => {
         const targetFileFolder = path.parse(targetFile).dir;

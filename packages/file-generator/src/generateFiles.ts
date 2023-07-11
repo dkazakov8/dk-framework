@@ -3,77 +3,10 @@ import fs from 'fs';
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 
-import { TypeModifiedFiles, TypeGeneratorPlugin, TypeGenerateFilesParams } from './types';
+import { TypeGenerateFilesParams } from './types';
 import { logsPrefix } from './const';
+import { applyModifications } from './applyModifications';
 import { getTimeDelta } from './utils/getTimeDelta';
-import * as pluginTheme from './plugins/theme';
-import * as pluginReexport from './plugins/reexport';
-import * as pluginValidators from './plugins/validators';
-import * as pluginReexportModular from './plugins/reexport-modular';
-
-type TypePluginName = TypeGenerateFilesParams['configs'][number]['plugin'];
-
-const pluginMapper: Record<TypePluginName, TypeGeneratorPlugin<any>> = {
-  [pluginTheme.pluginName]: pluginTheme.generateTheme,
-  [pluginReexport.pluginName]: pluginReexport.generateReexport,
-  [pluginValidators.pluginName]: pluginValidators.generateValidators,
-  [pluginReexportModular.pluginName]: pluginReexportModular.generateReexportModular,
-};
-
-function withMeasure({
-  logs,
-  plugin,
-  callback,
-}: {
-  logs?: boolean;
-  plugin: TypePluginName;
-  callback: () => void;
-}) {
-  if (!logs) {
-    callback();
-
-    return;
-  }
-
-  const startTime = Date.now();
-
-  callback();
-
-  const endTime = getTimeDelta(startTime, Date.now());
-
-  // eslint-disable-next-line no-console
-  console.log(`${logsPrefix} ${chalk.yellow(`[${plugin}]`)} took ${chalk.yellow(endTime)} seconds`);
-}
-
-function applyModifications(params: TypeGenerateFilesParams) {
-  const { configs, timeLogs, changedFiles, fileModificationLogs } = params;
-
-  let modifiedFiles: TypeModifiedFiles = [];
-
-  configs.forEach(({ plugin, config }) => {
-    withMeasure({
-      logs: timeLogs,
-      plugin,
-      callback: () => {
-        modifiedFiles = modifiedFiles.concat(
-          pluginMapper[plugin]({ config, changedFiles, logs: fileModificationLogs })
-        );
-      },
-    });
-  });
-
-  // uniq
-  modifiedFiles = modifiedFiles.filter((value, index) => modifiedFiles.indexOf(value) === index);
-
-  if (modifiedFiles.length) {
-    applyModifications({
-      configs,
-      timeLogs,
-      changedFiles: modifiedFiles,
-      fileModificationLogs,
-    });
-  }
-}
 
 export function generateFiles(params: TypeGenerateFilesParams) {
   const startTime = Date.now();
