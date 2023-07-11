@@ -1,8 +1,10 @@
 import { expect } from 'chai';
-import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
-import { createRouterStore, createContextProps, TypeRoutesGenerator } from 'dk-react-mobx-globals';
+import { action, autorun, makeAutoObservable, observable, runInAction } from 'mobx';
+import { createContextProps, TypeRoutesGenerator } from 'dk-react-mobx-globals';
+import { findRouteByPathname } from 'dk-react-mobx-globals/src/utils/findRouteByPathname';
 
 import { getActionsLogs } from '../src/getActionsLogs';
+import { TypeActionLog } from '../src/TypeActionLog';
 
 const ACTION_TIMEOUT = 10;
 const ACTION_MODULAR_TIMEOUT = 5;
@@ -46,19 +48,33 @@ function createStore() {
       modularGroup: {},
     },
     staticStores: {
-      router: class RouterStore extends createRouterStore({ routes, isClient: true }) {
+      router: class RouterStore {
         constructor() {
-          super();
+          makeAutoObservable(this);
+        }
 
-          makeObservable(this, {
-            actionsLogs: observable,
-            currentRoute: observable,
-            routesHistory: observable,
+        actionsLogs: Array<Array<TypeActionLog>> = [];
 
-            previousRoute: computed,
-            lastActionsLog: computed,
-            previousRoutePathname: computed,
-          });
+        get actionsLogsClear() {
+          return this.actionsLogs.filter((log) => log[0].routeName !== 'server');
+        }
+
+        get lastActionsLog() {
+          return this.actionsLogsClear[this.actionsLogsClear.length - 1];
+        }
+
+        routesHistory: Array<string> = [];
+        currentRoute: Omit<(typeof routes)[keyof typeof routes], 'loader' | 'component'> =
+          {} as any;
+
+        get previousRoutePathname() {
+          return this.routesHistory[this.routesHistory.length - 2];
+        }
+
+        get previousRoute() {
+          if (!this.previousRoutePathname) return null;
+
+          return findRouteByPathname({ pathname: this.previousRoutePathname, routes });
         }
       },
     },
