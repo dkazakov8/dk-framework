@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history';
+import { Response } from 'express';
+import { runInAction } from 'mobx';
 
-import { TypeGlobalsAny } from './types/TypeGlobalsAny';
-import { TypeActionWrapped } from './types/TypeActionWrapped';
 import { TypeRoutesGenerator } from './types/TypeRoutesGenerator';
 import { TypeRedirectToParams } from './types/TypeRedirectToParams';
 import { getDynamicValues } from './utils/getDynamicValues';
@@ -9,16 +9,15 @@ import { setResponseStatus } from './utils/setResponseStatus';
 import { findRouteByPathname } from './utils/findRouteByPathname';
 import { replaceDynamicValues } from './utils/replaceDynamicValues';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
-import { TypeCreateContextParams } from './types/TypeCreateContextParams';
 
 type TypeParamsGenerator<TRoutes extends TypeRoutesGenerator<any>> = {
   routes: TRoutes;
   history: ReturnType<typeof createBrowserHistory>;
-  globals: TypeGlobalsAny;
+  globals: { res?: Response };
   isClient: boolean;
-  redirectTo: TypeActionWrapped;
+  redirectTo: any;
   routerStore: any;
-  transformers: TypeCreateContextParams['transformers'];
+  transformers: { batch: typeof runInAction };
   routeError404: TRoutes[keyof TRoutes];
   routeError500: TRoutes[keyof TRoutes];
 };

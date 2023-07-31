@@ -1,15 +1,15 @@
 {
-  "name": "dk-react-mobx-globals-logger",
+  "name": "dk-react-mobx-router",
   "author": "Dmitry Kazakov",
   "license": "MIT",
   "version": "3.1.24",
-  "description": "Layered architecture for React+MobX",
+  "description": "Router for React+MobX",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dkazakov8/dk-framework.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&cp ./src/ActionsLogger.css ./dist/ActionsLogger.css",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
     "test": "nyc mocha",
     "prepublishOnly": "pnpm run build",
     "posttest": "nyc report --reporter=json"
@@ -18,18 +18,14 @@
     "include": "src"
   },
   "devDependencies": {
-    "@types/react": "18.2.14",
-    "dk-react-mobx-globals": "3.1.24",
-    "dk-react-mobx-router": "3.1.24",
+    "@types/express": "4.17.17",
+    "history": "5.3.0",
     "mobx": "6.9.0",
-    "mobx-react": "7.6.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "18.2.0"
   },
   "peerDependencies": {
-    "dk-react-mobx-globals": "*",
+    "history": "*",
     "mobx": "*",
-    "mobx-react": "*",
     "react": "*"
   },
   "main": "dist/index.js",

@@ -1,38 +1,12 @@
 import { expect } from 'chai';
-import { action, autorun, makeAutoObservable, observable, runInAction } from 'mobx';
+import { action, autorun, observable, runInAction } from 'mobx';
 
 import { createContextProps } from '../src/createContextProps';
-import { TypeRoutesGenerator } from '../src/types/TypeRoutesGenerator';
-import { findRouteByPathname } from '../src/utils/findRouteByPathname';
 
 const ACTION_TIMEOUT = 10;
 const ACTION_MODULAR_TIMEOUT = 5;
 
 function createStore() {
-  const routesObject = {
-    onboarding: {
-      name: 'onboarding',
-      path: '/',
-      component: () => '123',
-      params: {},
-    },
-    error404: {
-      name: 'error404',
-      path: '/error404',
-      component: () => '123',
-      params: {},
-    },
-    error500: {
-      name: 'error500',
-      path: '/error500',
-      component: () => '123',
-      params: {},
-    },
-  };
-
-  // @ts-ignore
-  const routes = routesObject as unknown as TypeRoutesGenerator<typeof routesObject>;
-
   return createContextProps<any>({
     api: {},
     request: () => Promise.resolve(),
@@ -46,27 +20,7 @@ function createStore() {
       },
       modularGroup: {},
     },
-    staticStores: {
-      router: class RouterStore {
-        constructor() {
-          makeAutoObservable(this);
-        }
-
-        routesHistory: Array<string> = [];
-        currentRoute: Omit<(typeof routes)[keyof typeof routes], 'loader' | 'component'> =
-          {} as any;
-
-        get previousRoutePathname() {
-          return this.routesHistory[this.routesHistory.length - 2];
-        }
-
-        get previousRoute() {
-          if (!this.previousRoutePathname) return null;
-
-          return findRouteByPathname({ pathname: this.previousRoutePathname, routes });
-        }
-      },
-    },
+    staticStores: {},
     apiValidators: {},
     transformers: { action, batch: runInAction, autorun, observable },
   });
@@ -96,16 +50,11 @@ function extendActionsWithModular(globals: any) {
   return globals;
 }
 
-describe('createContextProps & createRouterStore', function test() {
+describe('createContextProps', function test() {
   it('creates store and extends actions', () => {
     const globals = extendActionsWithModular(createStore());
 
-    expect(globals.store).to.deep.eq({
-      router: {
-        currentRoute: {},
-        routesHistory: [],
-      },
-    });
+    expect(globals.store).to.deep.eq({});
 
     const globalAction = globals.actions.globalGroup.someAction;
     const modularAction = globals.actions.modularGroup.somePage.someModularAction;
