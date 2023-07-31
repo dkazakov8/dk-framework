@@ -3,11 +3,11 @@ export type TypeRouteItem = {
   path: string;
   loader: any;
   params: Record<string, string>;
-  pageName: string;
 
   props?: Record<string, any>;
   store?: any;
   actions?: any;
+  pageName?: string;
   validators?: Record<string, (value: string) => boolean>;
   beforeEnter?: (globals: any) => Promise<any>;
   beforeLeave?: (globals: any, nextRoute: any, event?: BeforeUnloadEvent) => Promise<any> | null;
