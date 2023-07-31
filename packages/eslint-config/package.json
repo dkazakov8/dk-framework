@@ -2,7 +2,7 @@
   "name": "dk-eslint-config",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.1.24",
+  "version": "3.1.25",
   "description": "Enterprise-quality ESLint config with TypeScript support",
   "repository": {
     "type": "git",
