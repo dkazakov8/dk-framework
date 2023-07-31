@@ -1,12 +1,19 @@
+import { TypeFnState } from 'dk-mobx-stateful-fn';
+
 import { TypeGlobalsAny } from './types/TypeGlobalsAny';
 import { isModularGroup } from './actions/isModularGroup';
-import { defaultActionData } from './actions/defaultActionData';
 
 function wrappedAction() {
   return Promise.resolve();
 }
 
-Object.assign(wrappedAction, defaultActionData);
+Object.assign(wrappedAction, {
+  state: {
+    timeStart: 0,
+    isExecuting: false,
+    executionTime: 0,
+  },
+} as TypeFnState);
 
 export function mockActions(actions: TypeGlobalsAny['actions']): TypeGlobalsAny['actions'] {
   for (const groupName in actions) {

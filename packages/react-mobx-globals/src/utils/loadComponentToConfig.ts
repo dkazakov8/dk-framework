@@ -13,11 +13,14 @@ export function loadComponentToConfig(params: {
         ? componentConfig.loader
         : componentConfig.loader.load;
 
-    return loadingFn().then((module: { default: ComponentClass; store?: any; actions?: any }) => {
-      componentConfig.component = module.default;
-      componentConfig.store = module.store;
-      componentConfig.actions = module.actions;
-    });
+    return loadingFn().then(
+      (module: { default: ComponentClass; store?: any; actions?: any; pageName: string }) => {
+        componentConfig.component = module.default;
+        componentConfig.store = module.store;
+        componentConfig.actions = module.actions;
+        componentConfig.pageName = module.pageName;
+      }
+    );
   }
 
   return Promise.resolve();
