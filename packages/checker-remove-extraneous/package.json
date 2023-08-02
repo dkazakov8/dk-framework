@@ -2,7 +2,7 @@
   "name": "dk-checker-remove-extraneous",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.1.25",
+  "version": "3.1.26",
   "description": "Utility for removing extraneous params via ts-interface-checker",
   "repository": {
     "type": "git",
