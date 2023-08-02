@@ -1,4 +1,4 @@
-import { TypeRouteItem } from '../types/TypeRouteItem';
+import { TypeRouteItemFinal } from '../types/TypeRouteItemFinal';
 
 import { constants } from './constants';
 import { isDynamic } from './isDynamic';
@@ -6,7 +6,7 @@ import { clearDynamic } from './clearDynamic';
 
 const re = new RegExp(`[^${constants.pathPartSeparator}]+`, 'g');
 
-export function replaceDynamicValues<TRouteItem extends TypeRouteItem>({
+export function replaceDynamicValues<TRouteItem extends TypeRouteItemFinal>({
   routesObject,
   params,
 }: {

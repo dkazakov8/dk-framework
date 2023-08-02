@@ -1,9 +1,9 @@
 import { ComponentClass } from 'react';
 
-import { TypeRoutesGenerator } from '../types/TypeRoutesGenerator';
+import { TypeRouteItemFinal } from '../types/TypeRouteItemFinal';
 
 export function loadComponentToConfig(params: {
-  componentConfig: TypeRoutesGenerator<any>[string];
+  componentConfig: TypeRouteItemFinal;
 }): Promise<void> {
   const { componentConfig } = params;
 
@@ -11,7 +11,8 @@ export function loadComponentToConfig(params: {
     const loadingFn =
       typeof componentConfig.loader === 'function'
         ? componentConfig.loader
-        : componentConfig.loader.load;
+        : // @ts-ignore
+          componentConfig.loader.load;
 
     return loadingFn().then(
       (module: { default: ComponentClass; store?: any; actions?: any; pageName: string }) => {

@@ -1,59 +1,49 @@
 import { expect } from 'chai';
 
+import { createRouterConfig } from '../src/createRouterConfig';
 import { getDynamicValues } from '../src/utils/getDynamicValues';
 import { findRouteByPathname } from '../src/utils/findRouteByPathname';
 import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
-import { TypeRoutesGenerator } from '../src/types/TypeRoutesGenerator';
 
-const routesObject = {
+// @ts-ignore
+const routes = createRouterConfig({
   dynamicRoute: {
-    name: 'dynamicRoute',
-    pageName: 'dynamicRoute',
     path: '/test/:static',
     validators: {
       static: (value: string) => value.length > 2,
     },
-    params: { static: '1' } as { static: string },
-    loader: undefined,
+    params: { static: '1' as string },
+    loader: undefined as any,
   },
   staticRoute: {
-    name: 'staticRoute',
-    pageName: 'staticRoute',
     path: '/test/static',
     params: {},
-    loader: undefined,
+    loader: undefined as any,
   },
   dynamicRoute2: {
-    name: 'dynamicRoute2',
-    pageName: 'dynamicRoute',
     path: '/test3/:static',
     validators: {
       static: (value: string) => value.length > 2,
     },
-    params: { static: '1' } as { static: string },
-    loader: undefined,
+    params: { static: '1' as string },
+    loader: undefined as any,
   },
+  // @ts-ignore
   dynamicRouteNoValidators: {
-    name: 'dynamicRouteNoValidators',
-    pageName: 'dynamicRoute',
     path: '/test2/:param',
-    params: { param: '1' } as { param: string },
-    loader: undefined,
+    params: { param: '1' as string },
+    loader: undefined as any,
   },
   dynamicRouteMultiple: {
-    name: 'dynamicRouteMultiple',
-    pageName: 'dynamicRoute',
     path: '/test/:param/:param2',
     validators: {
       param: (value: string) => value.length > 2,
       param2: (value: string) => value.length > 2,
     },
-    params: { param: '1', param2: '1' } as { param: string; param2: string },
-    loader: undefined,
+    params: { param: '1' as string, param2: '1' as string },
+    loader: undefined as any,
   },
-};
-
-export const routes = routesObject as TypeRoutesGenerator<typeof routesObject>;
+});
 
 describe('findRouteByPathname', function test() {
   it('Get correct static route by path', () => {

@@ -2,15 +2,15 @@ import { createBrowserHistory } from 'history';
 import { Response } from 'express';
 import { runInAction } from 'mobx';
 
-import { TypeRoutesGenerator } from './types/TypeRoutesGenerator';
 import { TypeRedirectToParams } from './types/TypeRedirectToParams';
 import { getDynamicValues } from './utils/getDynamicValues';
 import { setResponseStatus } from './utils/setResponseStatus';
 import { findRouteByPathname } from './utils/findRouteByPathname';
 import { replaceDynamicValues } from './utils/replaceDynamicValues';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
+import { TypeRouteItemFinal } from './types/TypeRouteItemFinal';
 
-type TypeParamsGenerator<TRoutes extends TypeRoutesGenerator<any>> = {
+type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   routes: TRoutes;
   history: ReturnType<typeof createBrowserHistory>;
   globals: { res?: Response };
@@ -22,7 +22,7 @@ type TypeParamsGenerator<TRoutes extends TypeRoutesGenerator<any>> = {
   routeError500: TRoutes[keyof TRoutes];
 };
 
-export function redirectToGenerator<TRoutes extends TypeRoutesGenerator<any>>({
+export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItemFinal>>({
   routes,
   globals,
   history,

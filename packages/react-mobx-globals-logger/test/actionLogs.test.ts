@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { action, autorun, makeAutoObservable, observable, runInAction } from 'mobx';
 import { createContextProps } from 'dk-react-mobx-globals';
-import { findRouteByPathname, TypeRoutesGenerator } from 'dk-react-mobx-router';
+import { findRouteByPathname, createRouterConfig } from 'dk-react-mobx-router';
 
 import { getActionsLogs } from '../src/getActionsLogs';
 import { TypeActionLog } from '../src/TypeActionLog';
@@ -10,29 +10,26 @@ const ACTION_TIMEOUT = 10;
 const ACTION_MODULAR_TIMEOUT = 5;
 
 function createStore() {
-  const routesObject = {
+  const routes = createRouterConfig({
     onboarding: {
-      name: 'onboarding',
       path: '/',
+      // @ts-ignore
       component: () => '123',
       params: {},
     },
     error404: {
-      name: 'error404',
       path: '/error404',
+      // @ts-ignore
       component: () => '123',
       params: {},
     },
     error500: {
-      name: 'error500',
       path: '/error500',
+      // @ts-ignore
       component: () => '123',
       params: {},
     },
-  };
-
-  // @ts-ignore
-  const routes = routesObject as unknown as TypeRoutesGenerator<typeof routesObject>;
+  });
 
   return createContextProps<any>({
     api: {},
