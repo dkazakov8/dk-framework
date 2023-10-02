@@ -2,7 +2,7 @@
   "name": "dk-react-mobx-router",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.1.26",
+  "version": "3.1.27",
   "description": "Router for React+MobX",
   "repository": {
     "type": "git",
