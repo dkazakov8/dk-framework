@@ -50,7 +50,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
     const prevPathname = currentRouteConfig
       ? replaceDynamicValues({
           routesObject: currentRouteConfig,
-          params: currentRouteConfig.params,
+          params: routerStore.currentRoute.params,
         })
       : null;
     const nextPathname = replaceDynamicValues({ routesObject: route, params });
