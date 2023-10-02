@@ -82,6 +82,10 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
           return Promise.reject(err);
         }
 
+        return Promise.resolve();
+      })
+      .then(() => loadComponentToConfig({ componentConfig: routes[route.name] }))
+      .then(() => {
         transformers.batch(() => {
           /**
            * Optimistically update currentRoute and synchronize it with browser's URL field
@@ -95,6 +99,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
             name: route.name,
             path: route.path,
             params: nextParams,
+            pageName: routes[route.name].pageName,
             beforeLeave: route.beforeLeave,
             beforeEnter: route.beforeEnter,
           };
@@ -105,10 +110,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
 
           if (history && !noHistoryPush) history.push(nextPathname);
         });
-
-        return Promise.resolve();
       })
-      .then(() => loadComponentToConfig({ componentConfig: routes[routerStore.currentRoute.name] }))
       .catch((error) => {
         // For preventing redirects in beforeLeave
         if (error?.name === 'SILENT') return Promise.resolve();
