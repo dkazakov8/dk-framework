@@ -54,6 +54,7 @@ export type TypeGlobal = {
   compressFiles: boolean;
   bundleAnalyzer: { enabled: boolean; port: number };
   webpCompression: number;
+  disableWebp?: boolean;
   sassImportPaths: Array<string>;
   includePolyfills: boolean;
   rebuildCondition: (changes?: Set<string>, removals?: Set<string>) => boolean;
@@ -82,6 +83,7 @@ declare global {
   var speedMeasure: boolean;
   var circularCheck: boolean;
   var compressFiles: boolean;
+  var disableWebp: boolean;
   var bundleAnalyzer: { enabled: boolean; port: number };
   var webpCompression: number;
   var sassImportPaths: Array<string>;

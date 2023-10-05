@@ -28,7 +28,7 @@ export const configPlugins: TypeConfig<any> = [
   pluginIgnore,
   pluginPreload,
   pluginLodashModule,
-  pluginImageMinimize,
+  !global.disableWebp && pluginImageMinimize,
   pluginRetryChunkLoad,
   pluginConditionalAggregate,
   global.ssr && pluginLoadable,
