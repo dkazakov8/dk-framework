@@ -23,6 +23,16 @@ const loaderSass: TypeLoader = {
   },
 };
 
+const loaderAutoprefix: TypeLoader = {
+  loader: 'postcss-loader',
+  options: {
+    sourceMap: false,
+    postcssOptions: {
+      plugins: [['autoprefixer']],
+    },
+  },
+};
+
 /**
  * @docs: https://github.com/webpack-contrib/mini-css-extract-plugin
  *
@@ -35,5 +45,10 @@ const loaderExtractCss: TypeLoader = {
 export const ruleSass: TypeRule = {
   test: /\.s?css$/,
   exclude: global.sassExclude,
-  use: [loaderExtractCss, loaderCss, loaderSass],
+  use: [
+    loaderExtractCss,
+    loaderCss,
+    global.includePolyfills && loaderAutoprefix,
+    loaderSass,
+  ].filter(Boolean),
 };
