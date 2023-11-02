@@ -10,7 +10,7 @@ import { pluginBanner } from '../plugins/pluginBanner';
 import { pluginIgnore } from '../plugins/pluginIgnore';
 import { pluginDefine } from '../plugins/pluginDefine';
 import { pluginPreload } from '../plugins/pluginPreload';
-import { pluginWorkbox } from '../plugins/pluginWorkbox';
+// import { pluginWorkbox } from '../plugins/pluginWorkbox';
 import { pluginAnalyzer } from '../plugins/pluginAnalyzer';
 import { pluginLoadable } from '../plugins/pluginLoadable';
 import { pluginLodashModule } from '../plugins/pluginLodashModule';
@@ -32,7 +32,7 @@ export const configPlugins: TypeConfig<any> = [
   pluginRetryChunkLoad,
   pluginConditionalAggregate,
   global.ssr && pluginLoadable,
-  Boolean(global.serviceWorker) && pluginWorkbox,
+  // Boolean(global.serviceWorker) && pluginWorkbox,
   global.circularCheck && pluginCircularDependency,
   global.bundleAnalyzer.enabled && pluginAnalyzer,
   global.compressFiles && pluginCompressionGzip,
