@@ -1,11 +1,15 @@
 import { WatchOptions } from 'chokidar';
 
-export type TypeServerParams = {
+export type TypeServerParamsManual = {
   port: number;
   watchPaths: Array<string>;
-  aggregationTimeout: number;
 
   https?: boolean;
+};
+
+export type TypeServerParams = TypeServerParamsManual & {
+  aggregationTimeout: number;
+
   ignored?: WatchOptions['ignored'];
   changedFilesLogs?: boolean;
 };

@@ -9,9 +9,9 @@ import https from 'https';
 import ws from 'ws';
 
 import { sslOptions } from './sslOptions';
-import { TypeServerParams } from './types';
+import { TypeServerParamsManual } from './types';
 
-export function startReloadServer(params: TypeServerParams) {
+export function startReloadServer(params: TypeServerParamsManual) {
   const requestListener: http.RequestListener = (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers,@typescript-eslint/naming-convention
     res.writeHead(200, { 'Content-Type': 'text/javascript' });
