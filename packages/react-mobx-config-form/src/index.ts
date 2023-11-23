@@ -1,3 +1,3 @@
 export { FormConfig } from './FormConfig';
-export { ReactMobxForm } from './ReactMobxForm';
+export { ReactMobxForm, PropsReactMobxForm } from './ReactMobxForm';
 export * from './types';

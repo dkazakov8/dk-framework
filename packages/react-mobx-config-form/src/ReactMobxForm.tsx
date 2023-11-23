@@ -11,16 +11,22 @@ type TypeChildrenProps<TFormConfig extends TypeGenerateFormTypes<any, any>['Type
   submit?: ReactNode;
 };
 
-export type PropsForm<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> = {
+export type PropsReactMobxForm<
+  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']
+> = {
   formConfig: TFormConfig;
   children: (childrenProps: TypeChildrenProps<TFormConfig>) => ReactNode;
-  componentsMapper: Record<string, any>;
 
   onError?: () => void;
   onSubmit?: TypeFormSubmit<TFormConfig>;
   className?: string;
   initialData?: TypeInitialData<TFormConfig>;
 };
+
+type PropsForm<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> =
+  PropsReactMobxForm<TFormConfig> & {
+    componentsMapper: Record<string, any>;
+  };
 
 export class ReactMobxForm<
   TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']
