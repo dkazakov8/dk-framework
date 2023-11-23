@@ -1,0 +1,28 @@
+{
+  "name": "dk-react-mobx-config-form",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "version": "3.1.33",
+  "description": "Library for forms",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkazakov8/dk-framework.git"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "lodash": "4.17.21",
+    "react": "18.2.0",
+    "mobx": "6.9.0",
+    "@types/react": "18.2.14"
+  },
+  "peerDependencies": {
+    "lodash": "*",
+    "mobx": "*",
+    "react": "*"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
+}

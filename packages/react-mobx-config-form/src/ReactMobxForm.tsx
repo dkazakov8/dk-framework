@@ -1,0 +1,97 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
+import { FormEvent, ReactNode, Component } from 'react';
+import { runInAction } from 'mobx';
+
+import { getTypedKeys } from './utils/getTypedKeys';
+import { TypeGenerateFormTypes, TypeFormSubmit, TypeInitialData } from './types';
+
+type TypeChildrenProps<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> = {
+  inputs: Record<keyof TFormConfig['inputs'], ReactNode>;
+  submit?: ReactNode;
+};
+
+export type PropsForm<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> = {
+  formConfig: TFormConfig;
+  children: (childrenProps: TypeChildrenProps<TFormConfig>) => ReactNode;
+  componentsMapper: Record<string, any>;
+
+  onError?: () => void;
+  onSubmit?: TypeFormSubmit<TFormConfig>;
+  className?: string;
+  initialData?: TypeInitialData<TFormConfig>;
+};
+
+export class ReactMobxForm<
+  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']
+> extends Component<PropsForm<TFormConfig>> {
+  handlePreventSubmit = (event: FormEvent) => {
+    event.preventDefault();
+  };
+
+  handleFormSubmit = () => {
+    const { formConfig, onSubmit, onError } = this.props;
+
+    if (formConfig.isSubmitting || !onSubmit) return Promise.resolve();
+
+    runInAction(() => (formConfig.isSubmitting = true));
+
+    if (formConfig.notValidFieldsIds.length) {
+      runInAction(() => (formConfig.isSubmitting = false));
+
+      onError?.();
+
+      return Promise.resolve();
+    }
+
+    return onSubmit(formConfig.values)
+      .then(() => {
+        runInAction(() => (formConfig.isSubmitting = false));
+      })
+      .catch(() => {
+        runInAction(() => (formConfig.isSubmitting = false));
+      });
+  };
+
+  render() {
+    const { children, className, formConfig, initialData, componentsMapper } = this.props;
+
+    const childrenProps: TypeChildrenProps<TFormConfig> = {
+      inputs: getTypedKeys(formConfig.inputs).reduce((acc, name: keyof TFormConfig['inputs']) => {
+        const inputConfig = formConfig.inputs[name];
+        const Comp = componentsMapper[inputConfig.type];
+
+        acc[name] = (
+          <Comp
+            key={name}
+            name={name}
+            formConfig={formConfig}
+            inputConfig={inputConfig!}
+            initialData={initialData?.[name]}
+          />
+        );
+
+        return acc;
+      }, {} as Record<keyof TFormConfig['inputs'], ReactNode>),
+    };
+
+    if (formConfig.submit) {
+      const Comp = componentsMapper[formConfig.submit.type];
+
+      childrenProps.submit = (
+        <Comp
+          formConfig={formConfig}
+          inputConfig={formConfig.submit}
+          initialData={initialData?.submit}
+          onClick={this.handleFormSubmit}
+        />
+      );
+    }
+
+    return (
+      <form onSubmit={this.handlePreventSubmit} className={className}>
+        {children(childrenProps)}
+      </form>
+    );
+  }
+}
