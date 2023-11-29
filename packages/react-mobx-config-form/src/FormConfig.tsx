@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { action, makeObservable, observable } from 'mobx';
-import { mapValues, values } from 'lodash';
+import { makeAutoObservable } from 'mobx';
+import { cloneDeep, mapValues, values } from 'lodash';
 
 import { getTypedKeys } from './utils/getTypedKeys';
 import { TypeGenerateFormTypes } from './types';
@@ -11,21 +11,29 @@ export class FormConfig<
 > {
   inputs: TConfigObject['inputs'];
   submit: TConfigObject['submit'] | any;
+  methods?: (instance: FormConfig<TConfigObject>) => Record<string, any>;
   original: TConfigObject;
   isSubmitting = false;
 
-  constructor(config: TConfigObject) {
-    this.inputs = config.inputs;
-    this.submit = config.submit;
-    this.original = config;
+  constructor(
+    config: TConfigObject,
+    methods?: (instance: FormConfig<TConfigObject>) => Record<string, any>
+  ) {
+    const copy = cloneDeep(config);
 
-    makeObservable(this, {
-      inputs: observable,
-      isSubmitting: observable,
-      submit: observable,
-      clear: action,
-    });
+    this.original = config;
+    this.methods = methods;
+    this.inputs = copy.inputs;
+    this.submit = copy.submit;
+
+    if (this.methods) Object.assign(this, this.methods(this));
+
+    makeAutoObservable(this);
   }
+
+  copy = () => {
+    return new FormConfig(this.original, this.methods);
+  };
 
   clear = () => {
     getTypedKeys(this.inputs).forEach((name) => {
