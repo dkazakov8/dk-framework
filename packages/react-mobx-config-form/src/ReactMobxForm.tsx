@@ -17,7 +17,6 @@ export type PropsReactMobxForm<
   formConfig: TFormConfig;
   children: (childrenProps: TypeChildrenProps<TFormConfig>) => ReactNode;
 
-  onError?: () => void;
   onSubmit?: TypeFormSubmit<TFormConfig>;
   className?: string;
   initialData?: TypeInitialData<TFormConfig>;
@@ -36,21 +35,13 @@ export class ReactMobxForm<
   };
 
   handleFormSubmit = () => {
-    const { formConfig, onSubmit, onError } = this.props;
+    const { formConfig, onSubmit } = this.props;
 
     if (formConfig.isSubmitting || !onSubmit) return Promise.resolve();
 
     runInAction(() => (formConfig.isSubmitting = true));
 
-    if (formConfig.notValidFieldsIds.length) {
-      runInAction(() => (formConfig.isSubmitting = false));
-
-      onError?.();
-
-      return Promise.resolve();
-    }
-
-    return onSubmit(formConfig.values)
+    return onSubmit(formConfig)
       .then(() => {
         runInAction(() => (formConfig.isSubmitting = false));
       })

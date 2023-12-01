@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { makeAutoObservable } from 'mobx';
-import { cloneDeep, mapValues, values } from 'lodash';
+import { cloneDeep } from 'lodash';
 
-import { getTypedKeys } from './utils/getTypedKeys';
 import { TypeGenerateFormTypes } from './types';
 
 export class FormConfig<
@@ -11,52 +10,32 @@ export class FormConfig<
 > {
   inputs: TConfigObject['inputs'];
   submit: TConfigObject['submit'] | any;
-  methods?: (instance: FormConfig<TConfigObject>) => Record<string, any>;
+  methods?: (instance: FormConfig<TConfigObject>) => any;
   original: TConfigObject;
   isSubmitting = false;
 
-  constructor(
-    config: TConfigObject,
-    methods?: (instance: FormConfig<TConfigObject>) => Record<string, any>
-  ) {
+  constructor(config: TConfigObject) {
     const copy = cloneDeep(config);
 
     this.original = config;
-    this.methods = methods;
     this.inputs = copy.inputs;
     this.submit = copy.submit;
-
-    if (this.methods) Object.assign(this, this.methods(this));
 
     makeAutoObservable(this);
   }
 
+  configure = <TMethods,>(
+    callback?: (instance: FormConfig<TConfigObject>) => TMethods
+  ): FormConfig<TConfigObject> & TMethods => {
+    if (!callback) return this as any;
+
+    this.methods = callback;
+    Object.assign(this, this.methods(this));
+
+    return this as any;
+  };
+
   copy = () => {
-    return new FormConfig(this.original, this.methods);
+    return new FormConfig(this.original).configure(this.methods);
   };
-
-  clear = () => {
-    getTypedKeys(this.inputs).forEach((name) => {
-      this.inputs[name].value = this.original.inputs[name].value;
-      this.inputs[name].validators = this.original.inputs[name].validators;
-    });
-  };
-
-  get values(): {
-    [Key in keyof TConfigObject['inputs']]: TConfigObject['inputs'][Key]['value'];
-  } {
-    return mapValues(this.inputs, ({ value }) => value);
-  }
-
-  get notValidFieldsIds() {
-    return values(this.inputs)
-      .filter((fieldData) => {
-        if (fieldData?.validators.emptyString || fieldData?.errors.length) {
-          return !fieldData?.isValidFn?.();
-        }
-
-        return false;
-      })
-      .map((fieldData) => fieldData?.id as string);
-  }
 }

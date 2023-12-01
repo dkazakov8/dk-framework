@@ -9,9 +9,6 @@ export type TypeGenerateFormTypes<TInputConfigs, TSubmitConfig> = {
     inputs: Record<string, TInputConfigs>;
     submit?: TSubmitConfig;
     isSubmitting: boolean;
-    clear: () => void;
-    values: any;
-    notValidFieldsIds: Array<string>;
   };
 };
 
@@ -21,9 +18,7 @@ export type TypeInitialData<TFormConfig extends TypeGenerateFormTypes<any, any>[
   };
 
 export type TypeFormSubmit<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> =
-  (formData: {
-    [Key in keyof TFormConfig['inputs']]: TFormConfig['inputs'][Key]['value'];
-  }) => Promise<any>;
+  (formConfig: TFormConfig) => Promise<any>;
 
 export type TypeInputProps<
   TConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
