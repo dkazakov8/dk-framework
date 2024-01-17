@@ -27,15 +27,15 @@ export class FormConfig<
   configure = <TMethods,>(
     callback?: (instance: FormConfig<TConfigObject>) => TMethods
   ): FormConfig<TConfigObject> & TMethods => {
-    if (!callback) return this as any;
+    if (!callback) return this as unknown as FormConfig<TConfigObject> & TMethods;
 
     this.methods = callback;
     Object.assign(this, this.methods(this));
 
-    return this as any;
+    return this as unknown as FormConfig<TConfigObject> & TMethods;
   };
 
-  copy = () => {
+  copy = (): FormConfig<TConfigObject> => {
     return new FormConfig(this.original).configure(this.methods);
   };
 }

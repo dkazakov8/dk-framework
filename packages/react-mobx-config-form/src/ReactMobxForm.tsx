@@ -4,7 +4,7 @@ import { FormEvent, ReactNode, Component } from 'react';
 import { runInAction } from 'mobx';
 
 import { getTypedKeys } from './utils/getTypedKeys';
-import { TypeGenerateFormTypes, TypeFormSubmit, TypeInitialData } from './types';
+import { TypeGenerateFormTypes, TypeInitialData } from './types';
 
 type TypeChildrenProps<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> = {
   inputs: Record<keyof TFormConfig['inputs'], ReactNode>;
@@ -17,7 +17,7 @@ export type PropsReactMobxForm<
   formConfig: TFormConfig;
   children: (childrenProps: TypeChildrenProps<TFormConfig>) => ReactNode;
 
-  onSubmit?: TypeFormSubmit<TFormConfig>;
+  onSubmit?: () => Promise<any>;
   className?: string;
   initialData?: TypeInitialData<TFormConfig>;
 };
@@ -41,7 +41,7 @@ export class ReactMobxForm<
 
     runInAction(() => (formConfig.isSubmitting = true));
 
-    return onSubmit(formConfig)
+    return onSubmit()
       .then(() => {
         runInAction(() => (formConfig.isSubmitting = false));
       })
