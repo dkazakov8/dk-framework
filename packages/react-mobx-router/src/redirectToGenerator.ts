@@ -108,7 +108,9 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
 
           if (lastPathname !== nextPathname) routerStore.routesHistory.push(nextPathname);
 
-          if (history && !noHistoryPush) history.push(nextPathname);
+          if (history && !noHistoryPush) {
+            history.push({ pathname: nextPathname, hash: history.location.hash });
+          }
         });
       })
       .catch((error) => {
