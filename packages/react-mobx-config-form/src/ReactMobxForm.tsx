@@ -32,6 +32,8 @@ export class ReactMobxForm<
 > extends Component<PropsForm<TFormConfig>> {
   handlePreventSubmit = (event: FormEvent) => {
     event.preventDefault();
+
+    void this.handleFormSubmit();
   };
 
   handleFormSubmit = () => {
