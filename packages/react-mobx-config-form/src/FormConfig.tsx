@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { makeAutoObservable } from 'mobx';
-import { cloneDeep } from 'lodash';
+// eslint-disable-next-line no-restricted-imports
+import cloneDeep from 'lodash/cloneDeep';
 
 import { TypeGenerateFormTypes } from './types';
 
