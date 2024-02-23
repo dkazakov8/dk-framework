@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, extendObservable } from 'mobx';
 // eslint-disable-next-line no-restricted-imports
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -31,7 +31,8 @@ export class FormConfig<
     if (!callback) return this as unknown as FormConfig<TConfigObject> & TMethods;
 
     this.methods = callback;
-    Object.assign(this, this.methods(this));
+
+    extendObservable(this, this.methods(this));
 
     return this as unknown as FormConfig<TConfigObject> & TMethods;
   };
