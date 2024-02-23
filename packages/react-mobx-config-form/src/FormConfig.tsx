@@ -36,7 +36,7 @@ export class FormConfig<
     return this as unknown as FormConfig<TConfigObject> & TMethods;
   };
 
-  copy = (): FormConfig<TConfigObject> => {
-    return new FormConfig(this.original).configure(this.methods);
+  copy = () => {
+    return new FormConfig(this.original).configure(this.methods) as typeof this;
   };
 }

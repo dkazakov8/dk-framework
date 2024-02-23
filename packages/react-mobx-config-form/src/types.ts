@@ -15,7 +15,7 @@ export type TypeGenerateFormTypes<TInputConfigs, TSubmitConfig> = {
 export type TypeInitialData<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> =
   {
     [Key in keyof TFormConfig['inputs']]?: Partial<TFormConfig['inputs'][Key]>;
-  };
+  } & { submit?: Partial<TFormConfig['submit']> };
 
 export type TypeInputProps<
   TConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
