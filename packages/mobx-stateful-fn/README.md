@@ -23,10 +23,11 @@ a Promise, but the approach here is enough for 99% apps)
   - [Named methods (from prototype)](#named-methods-from-prototype)
   - [Anonymous methods](#anonymous-methods)
 - [Use cases](#use-cases)
-  - [Track execution / show loaders](#named-methods-from-prototype)
+  - [Track execution / show loaders](#track-execution--show-loaders)
   - [Track execution time](#track-execution-time)
   - [Show errors](#show-errors)
   - [Cancel execution](#cancel-execution)
+  - [SSR](#ssr)
 
 ### Installation
 
@@ -296,3 +297,32 @@ autorun(() => {
 
 asyncFunctionStateful();
 ```
+
+#### SSR
+
+For SSR you may have an architecture where the Actions layer is separate. And this actions are
+executed inside React components like in examples above (but not in `useEffect` of course, because
+it's not triggered during `renderToString`. Maybe you use `useState` or ssr libs). 
+If that's the case, SSR is as easy as that:
+
+```typescript
+app.get('*', (req, res) => {
+  Promise.resolve()
+    .then(() => renderToString(<App />))
+    
+    // smth. like !actionsLayer.some(fnStateful => fnStateful.state.isExecuting)
+    .then(() => waitActionsSettled())
+    
+    // smth. like actionsLayerNames.every(fnName => { actionsLayer[fnName] = () => Promise.resolve() })
+    .then(() => mockActions())
+    
+    .then(() => renderToString(<App />))
+    .then((html) => res.send(html))
+})
+```
+
+If the Actions layer is not separate, but is a part of the Stores layer, you still can gather this functions
+in `actionsLayer` and use the recipe above.
+
+This way you are not limited by implementation and can easily add SSR to your app.
+
