@@ -3,7 +3,7 @@
   "author": "Dmitry Kazakov",
   "license": "MIT",
   "version": "3.2.0",
-  "description": "Adds mobx state to functions",
+  "description": "Library for adding MobX observable state to async functions",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dkazakov8/dk-framework.git"

@@ -2,11 +2,9 @@ import { runInAction, action, observable } from 'mobx';
 
 import { getCurrentTime } from './utils/getCurrentTime';
 import { TypeFnState } from './types/TypeFnState';
+import { TypeFnAsync } from './types/TypeFnAsync';
 
-export function addState<
-  TApiFn extends (...args: Array<any>) => Promise<any>,
-  TName extends string
->({
+export function addState<TApiFn extends TypeFnAsync, TName extends string>({
   fn,
   name,
   transformers,
@@ -29,7 +27,7 @@ export function addState<
 
   function afterExecution() {
     if (wrappedAction.state.isCancelled) {
-      const error = new Error(fn.name);
+      const error = new Error(name);
       error.name = 'ACTION_CANCELED';
 
       throw error;
@@ -55,7 +53,7 @@ export function addState<
       if (wrappedAction.state.isCancelled) {
         wrappedAction.state.isCancelled = false;
 
-        const e = new Error(fn.name);
+        const e = new Error(name);
         e.name = 'ACTION_CANCELED';
 
         wrappedAction.state.error = e.message;

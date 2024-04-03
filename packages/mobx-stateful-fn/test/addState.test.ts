@@ -1,60 +1,33 @@
 import { expect } from 'chai';
-import { action, autorun, observable, runInAction } from 'mobx';
+import { autorun, observable } from 'mobx';
 
 import { addState } from '../src/addState';
 import { TypeFnState } from '../src/types/TypeFnState';
 
-const ACTION_TIMEOUT = 2;
-const TIMEOUT_SYNC = 0.001;
-
-const transformers = {
-  action,
-  batch: runInAction,
-  observable,
-};
-
-const functions = {
-  asyncNoParams() {
-    return new Promise<void>((resolve) => {
-      setTimeout(resolve, ACTION_TIMEOUT);
-    });
-  },
-  asyncParams(param1: string, param2: string) {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        // @ts-ignore
-        resolve([param1, param2]);
-      }, ACTION_TIMEOUT);
-    });
-  },
-  asyncError() {
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        const err = new Error('error text');
-        err.name = 'CUSTOM_ERROR';
-
-        reject(err);
-      }, ACTION_TIMEOUT);
-    });
-  },
-  syncNoParams() {
-    return Promise.resolve(null);
-  },
-  syncParams(param1: string, param2: string) {
-    return Promise.resolve([param1, param2]);
-  },
-  syncError() {
-    const err = new Error('error text');
-    err.name = 'CUSTOM_ERROR';
-
-    throw err;
-  },
-};
+import { ACTION_TIMEOUT, TIMEOUT_SYNC, transformers } from './constants';
+import { functions } from './functions';
+import { functionsAnonymous } from './functionsAnonymous';
+import { ClassFunctions } from './classFunctions';
 
 function createStatefulFunctions(names: Array<keyof typeof functions>) {
-  return names.map((name) => {
-    return { name, fn: addState({ fn: functions[name], name, transformers }) };
-  });
+  return [
+    ...names.map((name) => {
+      return {
+        name,
+        fn: addState({ fn: functions[name], name: functions[name].name, transformers }),
+      };
+    }),
+    ...names.map((name) => {
+      const targetFn = functionsAnonymous.find(([n]) => n === name)![1];
+
+      return { name, fn: addState({ fn: targetFn as any, name, transformers }) };
+    }),
+    ...names.map((name) => {
+      const classFunctions = new ClassFunctions();
+
+      return { name, fn: classFunctions[name] as ReturnType<typeof addState> };
+    }),
+  ];
 }
 
 function startNoError(fn: ((...args: any) => Promise<any>) & TypeFnState) {
@@ -144,10 +117,7 @@ describe('addState', () => {
     const statefulFunctions = createStatefulFunctions(['asyncParams', 'syncParams']);
 
     return Promise.all(statefulFunctions.map(({ fn }) => fn('foo', 'bar'))).then((data) => {
-      expect(data).to.deep.eq([
-        ['foo', 'bar'],
-        ['foo', 'bar'],
-      ]);
+      expect(data).to.deep.eq([...new Array(statefulFunctions.length)].map(() => ['foo', 'bar']));
     });
   });
 
