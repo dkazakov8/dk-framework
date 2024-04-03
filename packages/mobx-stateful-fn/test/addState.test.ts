@@ -2,102 +2,191 @@ import { expect } from 'chai';
 import { action, autorun, observable, runInAction } from 'mobx';
 
 import { addState } from '../src/addState';
+import { TypeFnState } from '../src/types/TypeFnState';
 
 const ACTION_TIMEOUT = 2;
+const TIMEOUT_SYNC = 0.001;
 
-describe('addState', function test() {
-  const transformers = {
-    action,
-    batch: runInAction,
-    observable,
-  };
+const transformers = {
+  action,
+  batch: runInAction,
+  observable,
+};
 
-  const fn = () => new Promise<void>((resolve) => setTimeout(resolve, ACTION_TIMEOUT));
-  const fnWithParams = (param1: string, param2: string) => Promise.resolve([param1, param2]);
-  const fnError = () =>
-    Promise.resolve().then(() => {
-      const err = new Error('error text');
-      err.name = 'CUSTOM_ERROR';
-
-      throw err;
+const functions = {
+  asyncNoParams() {
+    return new Promise<void>((resolve) => {
+      setTimeout(resolve, ACTION_TIMEOUT);
     });
-  const fnErrorSync = () => {
+  },
+  asyncParams(param1: string, param2: string) {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        // @ts-ignore
+        resolve([param1, param2]);
+      }, ACTION_TIMEOUT);
+    });
+  },
+  asyncError() {
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        const err = new Error('error text');
+        err.name = 'CUSTOM_ERROR';
+
+        reject(err);
+      }, ACTION_TIMEOUT);
+    });
+  },
+  syncNoParams() {
+    return Promise.resolve(null);
+  },
+  syncParams(param1: string, param2: string) {
+    return Promise.resolve([param1, param2]);
+  },
+  syncError() {
     const err = new Error('error text');
     err.name = 'CUSTOM_ERROR';
 
     throw err;
-  };
+  },
+};
 
-  it('adds default state to functions', () => {
-    const fnStateful = addState({ fn, name: 'fn', transformers });
-    const fnStateful2 = addState({ fn, name: 'fn', transformers });
+function createStatefulFunctions(names: Array<keyof typeof functions>) {
+  return names.map((name) => {
+    return { name, fn: addState({ fn: functions[name], name, transformers }) };
+  });
+}
 
-    [fnStateful, fnStateful2].forEach((statefulFn) => {
-      expect(statefulFn.state).to.deep.eq({
+function startNoError(fn: ((...args: any) => Promise<any>) & TypeFnState) {
+  expect(fn.state.timeStart).to.eq(0);
+  expect(fn.state.isExecuting).to.eq(false);
+  expect(fn.state.error).to.eq(undefined);
+  expect(fn.state.errorName).to.eq(undefined);
+
+  void fn();
+
+  expect(fn.state.executionTime).to.be.eq(0);
+  expect(fn.state.isExecuting).to.eq(true);
+  expect(fn.state.timeStart).to.be.greaterThan(0);
+}
+
+function endNoError(
+  fn: ((...args: any) => Promise<any>) & TypeFnState,
+  timeout: number = ACTION_TIMEOUT
+) {
+  expect(fn.state.isExecuting).to.eq(false);
+  expect(fn.state.error).to.eq(undefined);
+  expect(fn.state.errorName).to.eq(undefined);
+  expect(Math.ceil(Number(fn.state.executionTime))).to.be.greaterThanOrEqual(timeout);
+}
+
+function startError(fn: ((...args: any) => Promise<any>) & TypeFnState, sync?: boolean) {
+  expect(fn.state.timeStart).to.eq(0);
+  expect(fn.state.isExecuting).to.eq(false);
+
+  void fn();
+
+  if (sync) {
+    expect(fn.state.isExecuting).to.eq(false);
+    expect(fn.state.error).to.eq('error text');
+    expect(fn.state.errorName).to.eq('CUSTOM_ERROR');
+  } else {
+    expect(fn.state.executionTime).to.be.eq(0);
+    expect(fn.state.isExecuting).to.eq(true);
+    expect(fn.state.timeStart).to.be.greaterThan(0);
+    expect(fn.state.error).to.eq(undefined);
+    expect(fn.state.errorName).to.eq(undefined);
+  }
+}
+
+function endError(
+  fn: ((...args: any) => Promise<any>) & TypeFnState,
+  timeout: number = ACTION_TIMEOUT
+) {
+  expect(fn.state.isExecuting).to.eq(false);
+  expect(fn.state.error).to.eq('error text');
+  expect(fn.state.errorName).to.eq('CUSTOM_ERROR');
+  expect(Math.ceil(Number(fn.state.executionTime))).to.be.greaterThanOrEqual(timeout);
+}
+
+describe('addState', () => {
+  it('adds default state & name', () => {
+    const statefulFunctions = createStatefulFunctions(['asyncNoParams', 'syncNoParams']);
+
+    statefulFunctions.forEach(({ name, fn }) => {
+      expect(fn.state).to.deep.eq({
         timeStart: 0,
         isExecuting: false,
         executionTime: 0,
       });
-      expect(statefulFn.name).to.eq('fn');
+      expect(fn.name).to.eq(name);
     });
   });
 
-  it('params are typed', () => {
-    const fnStateful = addState({ fn: fnWithParams, name: 'fn', transformers });
+  it('works with wrapping in autoAction', () => {
+    const statefulFunctions = createStatefulFunctions(['asyncNoParams', 'syncNoParams']).map(
+      (item) => {
+        return observable(item);
+      }
+    );
 
-    return fnStateful('test', 'data').then((data) => {
-      expect(data).to.deep.eq(['test', 'data']);
+    statefulFunctions.forEach(({ name, fn }) => {
+      expect(fn.state).to.deep.eq({
+        timeStart: 0,
+        isExecuting: false,
+        executionTime: 0,
+      });
+      expect(fn.name).to.eq(name);
     });
   });
 
-  it('changes state accordingly', () => {
-    const fnStateful = addState({ fn, name: 'fn', transformers });
-    const fnStateful2 = addState({ fn, name: 'fn', transformers });
+  it('params are typed & result is passed', () => {
+    const statefulFunctions = createStatefulFunctions(['asyncParams', 'syncParams']);
 
-    void fnStateful();
-
-    expect(fnStateful.state.isExecuting).to.eq(true);
-    expect(fnStateful.state.timeStart).to.be.greaterThan(0);
-
-    expect(fnStateful2.state).to.deep.eq({
-      timeStart: 0,
-      isExecuting: false,
-      executionTime: 0,
+    return Promise.all(statefulFunctions.map(({ fn }) => fn('foo', 'bar'))).then((data) => {
+      expect(data).to.deep.eq([
+        ['foo', 'bar'],
+        ['foo', 'bar'],
+      ]);
     });
+  });
 
-    void fnStateful2();
+  it('(sync) successful case', () => {
+    const statefulFunctions = createStatefulFunctions(['syncNoParams', 'syncNoParams']).map(
+      ({ fn }) => fn
+    );
 
-    expect(fnStateful2.state.isExecuting).to.eq(true);
-    expect(fnStateful2.state.timeStart).to.be.greaterThan(0);
+    statefulFunctions.forEach((fn) => startNoError(fn));
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        [fnStateful, fnStateful2].forEach((statefulFn) => {
-          expect(statefulFn.state.isExecuting).to.eq(false);
-          expect(statefulFn.state.error).to.eq(undefined);
-          expect(statefulFn.state.errorName).to.eq(undefined);
-          expect(Math.ceil(Number(statefulFn.state.executionTime))).to.be.greaterThanOrEqual(
-            ACTION_TIMEOUT
-          );
-        });
-
-        [fnStateful, fnStateful2].forEach((statefulFn) => {
-          void statefulFn();
-
-          expect(statefulFn.state.executionTime).to.be.eq(0);
-          expect(statefulFn.state.isExecuting).to.eq(true);
-          expect(statefulFn.state.timeStart).to.be.greaterThan(0);
-        });
+        statefulFunctions.forEach((fn) => endNoError(fn, TIMEOUT_SYNC));
+        statefulFunctions.forEach((fn) => startNoError(fn));
 
         setTimeout(() => {
-          [fnStateful, fnStateful2].forEach((statefulFn) => {
-            expect(statefulFn.state.isExecuting).to.eq(false);
-            expect(statefulFn.state.error).to.eq(undefined);
-            expect(statefulFn.state.errorName).to.eq(undefined);
-            expect(Math.ceil(Number(statefulFn.state.executionTime))).to.be.greaterThanOrEqual(
-              ACTION_TIMEOUT
-            );
-          });
+          // eslint-disable-next-line max-nested-callbacks
+          statefulFunctions.forEach((fn) => endNoError(fn, TIMEOUT_SYNC));
+
+          resolve(undefined);
+        }, ACTION_TIMEOUT);
+      }, ACTION_TIMEOUT);
+    });
+  });
+
+  it('(async) successful case', () => {
+    const statefulFunctions = createStatefulFunctions(['asyncNoParams', 'asyncNoParams']).map(
+      ({ fn }) => fn
+    );
+
+    statefulFunctions.forEach((fn) => startNoError(fn));
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        statefulFunctions.forEach((fn) => endNoError(fn));
+        statefulFunctions.forEach((fn) => startNoError(fn));
+
+        setTimeout(() => {
+          statefulFunctions.forEach((fn) => endNoError(fn));
 
           resolve(undefined);
         }, ACTION_TIMEOUT + 1);
@@ -105,45 +194,43 @@ describe('addState', function test() {
     });
   });
 
-  it('changes errors accordingly (async)', () => {
-    const fnStateful = addState({ fn: fnError, name: 'fn', transformers });
-    const fnStateful2 = addState({ fn: fnError, name: 'fn', transformers });
+  it('(sync) errors case', () => {
+    const statefulFunctions = createStatefulFunctions(['syncError', 'syncError']).map(
+      ({ fn }) => fn
+    );
 
-    [fnStateful, fnStateful2].forEach((statefulFn) => {
-      void statefulFn();
-
-      expect(statefulFn.state.isExecuting).to.eq(true);
-      expect(statefulFn.state.timeStart).to.be.greaterThan(0);
-    });
+    statefulFunctions.forEach((fn) => startError(fn, true));
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        [fnStateful, fnStateful2].forEach((statefulFn) => {
-          expect(statefulFn.state.isExecuting).to.eq(false);
-          expect(statefulFn.state.error).to.eq('error text');
-          expect(statefulFn.state.errorName).to.eq('CUSTOM_ERROR');
-          expect(statefulFn.state.executionTime).to.be.greaterThan(0);
-        });
+        statefulFunctions.forEach((fn) => startError(fn, true));
 
-        [fnStateful, fnStateful2].forEach((statefulFn) => {
-          void statefulFn();
+        Promise.all(statefulFunctions.map((fn) => fn())).catch((error) => {
+          expect(error.message).to.eq('error text');
+          expect(error.name).to.eq('CUSTOM_ERROR');
 
-          expect(statefulFn.state.executionTime).to.be.eq(0);
-          expect(statefulFn.state.isExecuting).to.eq(true);
-          expect(statefulFn.state.timeStart).to.be.greaterThan(0);
-          expect(statefulFn.state.error).to.eq(undefined);
-          expect(statefulFn.state.errorName).to.eq(undefined);
+          resolve(undefined);
         });
+      }, ACTION_TIMEOUT + 1);
+    });
+  });
+
+  it('(async) errors case', () => {
+    const statefulFunctions = createStatefulFunctions(['asyncError', 'asyncError']).map(
+      ({ fn }) => fn
+    );
+
+    statefulFunctions.forEach((fn) => startError(fn));
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        statefulFunctions.forEach((fn) => endError(fn));
+        statefulFunctions.forEach((fn) => startError(fn));
 
         setTimeout(() => {
-          [fnStateful, fnStateful2].forEach((statefulFn) => {
-            expect(statefulFn.state.isExecuting).to.eq(false);
-            expect(statefulFn.state.error).to.eq('error text');
-            expect(statefulFn.state.errorName).to.eq('CUSTOM_ERROR');
-            expect(statefulFn.state.executionTime).to.be.greaterThan(0);
-          });
+          statefulFunctions.forEach((fn) => endError(fn));
 
-          Promise.all([fnStateful(), fnStateful2()]).catch((error) => {
+          Promise.all(statefulFunctions.map((fn) => fn())).catch((error) => {
             expect(error.message).to.eq('error text');
             expect(error.name).to.eq('CUSTOM_ERROR');
 
@@ -154,50 +241,68 @@ describe('addState', function test() {
     });
   });
 
-  it('changes errors accordingly (sync)', () => {
-    const fnStateful = addState({ fn: fnErrorSync, name: 'fn', transformers });
-    const fnStateful2 = addState({ fn: fnErrorSync, name: 'fn', transformers });
-
-    [fnStateful, fnStateful2].forEach((statefulFn) => {
-      statefulFn();
-
-      expect(statefulFn.state.timeStart).to.be.eq(0);
-      expect(statefulFn.state.isExecuting).to.eq(false);
-      expect(statefulFn.state.error).to.eq('error text');
-      expect(statefulFn.state.errorName).to.eq('CUSTOM_ERROR');
-      expect(statefulFn.state.executionTime).to.be.greaterThanOrEqual(0);
-    });
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        Promise.all([fnStateful(), fnStateful2()]).catch((error) => {
-          expect(error.message).to.eq('error text');
-          expect(error.name).to.eq('CUSTOM_ERROR');
-
-          resolve(undefined);
-        });
-      }, ACTION_TIMEOUT + 1);
-    });
-  });
-
   it('autorun works', () => {
-    const fnStateful = addState({ fn, name: 'fn', transformers });
-    const fnStateful2 = addState({ fn, name: 'fn', transformers });
+    const statefulFunctions = createStatefulFunctions(['asyncNoParams', 'syncNoParams']).map(
+      ({ fn }) => fn
+    );
 
-    [fnStateful, fnStateful2].forEach((statefulFn) => {
-      void statefulFn();
+    statefulFunctions.forEach((fn) => {
+      void fn();
 
-      expect(statefulFn.state.isExecuting).to.eq(true);
+      expect(fn.state.isExecuting).to.eq(true);
     });
 
     return new Promise((resolve) => {
       autorun(() => {
-        const allFinished = ![fnStateful, fnStateful2].some(
-          (statefulFn) => statefulFn.state.isExecuting
-        );
+        const allFinished = !statefulFunctions.some((statefulFn) => statefulFn.state.isExecuting);
 
         if (allFinished) resolve(undefined);
       });
+    });
+  });
+
+  it('(async) cancelling', () => {
+    const statefulFunctions = createStatefulFunctions([
+      'asyncError',
+      'asyncNoParams',
+      'asyncParams',
+    ]).map(({ fn }) => fn);
+
+    statefulFunctions.forEach((fn) => {
+      startNoError(fn);
+
+      fn.state.isCancelled = true;
+
+      expect(fn.state.isCancelled).to.eq(true);
+    });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        statefulFunctions.forEach((fn) => {
+          expect(fn.state.isExecuting).to.eq(false);
+          expect(fn.state.isCancelled).to.eq(false);
+          expect(fn.state.error).to.eq(fn.name);
+          expect(fn.state.errorName).to.eq('ACTION_CANCELED');
+          expect(Math.ceil(Number(fn.state.executionTime))).to.be.greaterThanOrEqual(
+            ACTION_TIMEOUT
+          );
+        });
+
+        void Promise.all(
+          statefulFunctions.map((fn) => {
+            const promise = fn();
+
+            fn.state.isCancelled = true;
+
+            return promise;
+          })
+        ).catch((error) => {
+          expect(statefulFunctions.map((fn) => fn.name)).to.include(error.message);
+          expect(error.name).to.eq('ACTION_CANCELED');
+
+          resolve(undefined);
+        });
+      }, ACTION_TIMEOUT + 1);
     });
   });
 });

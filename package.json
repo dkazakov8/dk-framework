@@ -6,6 +6,7 @@
     "pub": "pnpm run test&&lerna version --exact --force-publish --yes&&lerna publish from-git --yes&&pnpm run upd&&git add .&&git commit --amend --no-edit&&git push -f",
     "build": "lerna run build",
     "test": "lerna run test",
+    "test-watch": "bash -c 'lerna watch --scope=\"$@\" -- lerna run test --scope=\\$LERNA_PACKAGE_NAME' bash",
     "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
     "analyze:style": "stylelint --ignore-path .formatignore \"**/*.scss\"",
     "format:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" --fix",
