@@ -2,7 +2,7 @@
   "name": "dk-mobx-restore-state",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Restores state from initial data object",
   "repository": {
     "type": "git",
