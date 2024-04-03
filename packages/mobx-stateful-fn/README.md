@@ -150,7 +150,7 @@ import { action, observable, runInAction } from 'mobx';
 const transformers = { action, batch: runInAction, observable }
 
 function addStateToAnonymousMethod(ctx: any, fn: TypeFnAsync, name: string) {
-  ctx[fn.name] = addState({
+  ctx[name] = addState({
     fn,
     name,
     transformers,
