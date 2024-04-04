@@ -275,4 +275,64 @@ describe('addState', () => {
       }, ACTION_TIMEOUT + 1);
     });
   });
+
+  it('(async) parallel not working', () => {
+    const fnAsync = addState({ fn: functions.asyncNoParams, name: 'asyncNoParams', transformers });
+
+    startNoError(fnAsync);
+
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    const newTimeout = ACTION_TIMEOUT + 10;
+
+    return new Promise((resolve) => {
+      expect(fnAsync.state.executionTime).to.be.eq(0);
+      expect(fnAsync.state.isExecuting).to.eq(true);
+      expect(fnAsync.state.timeStart).to.be.greaterThan(0);
+
+      const prevTimeStart = fnAsync.state.timeStart;
+
+      /**
+       * Start fnAsync another time when it has not been finished yet
+       * and we see that "timeStart" has become a new one
+       *
+       */
+
+      void fnAsync(newTimeout);
+
+      expect(fnAsync.state.executionTime).to.be.eq(0);
+      expect(fnAsync.state.isExecuting).to.eq(true);
+      expect(fnAsync.state.timeStart).to.be.greaterThan(prevTimeStart);
+
+      setTimeout(() => {
+        /**
+         * The first call fnAsync has been finished yet
+         * and we see that "isExecuting" became a false,
+         * and that "executionTime" is incorrect,
+         * but we surely know that the last call has not been finished!
+         *
+         */
+
+        expect(fnAsync.state.executionTime).to.be.greaterThan(0);
+        expect(fnAsync.state.isExecuting).to.eq(false);
+        expect(fnAsync.state.timeStart).to.be.eq(0);
+
+        const prevExecutionTime = fnAsync.state.executionTime;
+
+        setTimeout(() => {
+          /**
+           * Now all calls of fnAsync have been finished
+           * and we see that "executionTime" has been changed!
+           * and it's also incorrect
+           *
+           */
+
+          expect(fnAsync.state.executionTime).to.be.greaterThan(prevExecutionTime);
+          expect(fnAsync.state.isExecuting).to.eq(false);
+          expect(fnAsync.state.timeStart).to.be.eq(0);
+
+          resolve(undefined);
+        }, newTimeout);
+      }, ACTION_TIMEOUT + 1);
+    });
+  });
 });

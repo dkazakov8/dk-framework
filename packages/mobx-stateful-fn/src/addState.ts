@@ -18,6 +18,12 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
   };
 }) {
   function beforeExecution() {
+    if (wrappedAction.state.isExecuting) {
+      console.warn(
+        `addState: function ${name} is already running, but was called a second time. Parallel execution is not supported`
+      );
+    }
+
     wrappedAction.state.executionTime = 0;
     wrappedAction.state.isExecuting = true;
     wrappedAction.state.timeStart = getCurrentTime();

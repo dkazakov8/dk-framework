@@ -1,9 +1,9 @@
 import { ACTION_TIMEOUT } from './constants';
 
 export const functions = {
-  asyncNoParams() {
+  asyncNoParams(timeout: number = ACTION_TIMEOUT) {
     return new Promise<void>((resolve) => {
-      setTimeout(resolve, ACTION_TIMEOUT);
+      setTimeout(resolve, timeout);
     });
   },
   asyncParams(param1: string, param2: string) {

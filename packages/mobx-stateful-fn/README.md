@@ -28,6 +28,7 @@ a Promise, but the approach here is enough for 99% apps)
   - [Show errors](#show-errors)
   - [Cancel execution](#cancel-execution)
   - [SSR](#ssr)
+- [Limitations](#limitations)
 
 ### Installation
 
@@ -43,7 +44,7 @@ import { action, observable, runInAction, autorun } from 'mobx';
 
 function asyncFunction() {
   return new Promise<void>((resolve) => {
-    setTimeout(resolve, ACTION_TIMEOUT);
+    setTimeout(resolve, 100);
    });
 }
 
@@ -76,7 +77,7 @@ function addStateToNamedFunction(fn: TypeFnAsync) {
 
 function asyncFunction() {
   return new Promise<void>((resolve) => {
-    setTimeout(resolve, ACTION_TIMEOUT);
+    setTimeout(resolve, 100);
   });
 }
 
@@ -325,4 +326,81 @@ If the Actions layer is not separate, but is a part of the Stores layer, you sti
 in `actionsLayer` and use the recipe above.
 
 This way you are not limited by implementation and can easily add SSR to your app.
+
+### Limitations
+
+Because 1 stateful function has only 1 state, parallel execution is not supported. This code will
+result in inconsistency
+
+```typescript
+function asyncFunction() {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, 100);
+  });
+}
+
+const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
+
+asyncFunctionStateful();
+
+setTimeout(() => asyncFunctionStateful(), 1);
+```
+
+so `state.isExecuting` will become `false` when **first** call has been finished and 
+`state.executionTime` will also be calculated incorrectly. You should either ensure that the
+stateful function has been finished like
+
+```typescript
+function asyncFunction() {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, 100);
+  });
+}
+
+const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
+
+asyncFunctionStateful();
+
+const interval = setInterval(() => {
+  if (!asyncFunctionStateful.state.isExecuting) {
+    // make the second call
+    asyncFunctionStateful();
+  }
+}, 10)
+
+// or smth. like
+
+mobx.reaction(
+  () => asyncFunctionStateful.state.isExecuting,
+  (isExecuting) => {
+    if (!isExecuting) {
+      // make the second call
+      asyncFunctionStateful();
+    }
+  }
+)
+```
+
+or create several stateful functions like
+
+```typescript
+function asyncFunction() {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, 100);
+  });
+}
+
+const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
+const asyncFunctionStateful2 = addStateToNamedFunction(asyncFunction);
+
+asyncFunctionStateful();
+asyncFunctionStateful2();
+```
+
+
+
+
+
+
+
 
