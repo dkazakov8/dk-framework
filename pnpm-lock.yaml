@@ -193,6 +193,15 @@ importers:
         specifier: 6.9.0
         version: registry.npmjs.org/mobx@6.9.0
 
+  packages/mobx-use-store:
+    devDependencies:
+      mobx:
+        specifier: 6.9.0
+        version: registry.npmjs.org/mobx@6.9.0
+      react:
+        specifier: 18.2.0
+        version: registry.npmjs.org/react@18.2.0
+
   packages/react-mobx-config-form:
     devDependencies:
       '@types/react':
