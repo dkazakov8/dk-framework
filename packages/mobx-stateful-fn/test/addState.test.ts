@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { spy } from 'sinon';
 import { autorun, observable } from 'mobx';
 
 import { addState } from '../src/addState';
@@ -111,6 +112,23 @@ describe('addState', () => {
       });
       expect(fn.name).to.eq(name);
     });
+  });
+
+  it('error when no function name', () => {
+    const spyLog = spy(console, 'warn');
+
+    const fn = functionsAnonymous[0][1];
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const fnStateful = addState({ fn, name: fn.name, transformers });
+
+    expect(
+      spyLog.calledWith(
+        `addState: name is empty, please provide a valid name for the stateful function`
+      )
+    ).to.be.eq(true);
+
+    spyLog.restore();
   });
 
   it('params are typed & result is passed', () => {
@@ -297,7 +315,15 @@ describe('addState', () => {
        *
        */
 
+      const spyLog = spy(console, 'warn');
+
       void fnAsync(newTimeout);
+
+      expect(
+        spyLog.calledWith(
+          'addState: function asyncNoParams is already running, but was called a second time. Parallel execution is not supported'
+        )
+      ).to.be.eq(true);
 
       expect(fnAsync.state.executionTime).to.be.eq(0);
       expect(fnAsync.state.isExecuting).to.eq(true);
@@ -329,6 +355,8 @@ describe('addState', () => {
           expect(fnAsync.state.executionTime).to.be.greaterThan(prevExecutionTime);
           expect(fnAsync.state.isExecuting).to.eq(false);
           expect(fnAsync.state.timeStart).to.be.eq(0);
+
+          spyLog.restore();
 
           resolve(undefined);
         }, newTimeout);

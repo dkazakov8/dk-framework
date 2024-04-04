@@ -17,6 +17,10 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
     observable: typeof observable;
   };
 }) {
+  if (!name) {
+    console.warn(`addState: name is empty, please provide a valid name for the stateful function`);
+  }
+
   function beforeExecution() {
     if (wrappedAction.state.isExecuting) {
       console.warn(
