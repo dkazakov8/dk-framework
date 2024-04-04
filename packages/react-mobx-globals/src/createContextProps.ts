@@ -37,7 +37,7 @@ export function createContextProps<TGlobals extends TypeGlobalsAny>({
     },
     createWrappedAction: (fn: TypeActionGenerator<TGlobals, any>) => {
       return addState({
-        fn: fn.bind(null, globals),
+        fn: (fn as any).bind(null, globals),
         name: fn.name,
         transformers,
       });

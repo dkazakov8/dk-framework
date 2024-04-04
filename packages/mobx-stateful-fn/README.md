@@ -365,6 +365,8 @@ const interval = setInterval(() => {
   if (!asyncFunctionStateful.state.isExecuting) {
     // make the second call
     asyncFunctionStateful();
+    
+    clearInterval(interval);
   }
 }, 10)
 
@@ -397,10 +399,20 @@ asyncFunctionStateful();
 asyncFunctionStateful2();
 ```
 
+or create a function factory with closures
 
+```typescript
+function createRequestFunction(url: string) {
+  return function request() {
+    return fetch(url)
+  }
+}
 
+const getUsers = addStateToNamedFunction(createRequestFunction('/api/users'));
+const getData = addStateToNamedFunction(createRequestFunction('/api/data'));
 
+// getUsers.name === getData.name === 'request'
+// so better set name explicitly
+```
 
-
-
-
+But these cases are rare in the real development.
