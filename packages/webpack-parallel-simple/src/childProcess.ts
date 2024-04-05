@@ -1,4 +1,4 @@
-import '@swc-node/register';
+import 'tsx/cjs';
 
 const configPath = process.argv[2];
 

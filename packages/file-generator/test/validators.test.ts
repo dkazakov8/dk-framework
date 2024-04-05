@@ -191,7 +191,7 @@ describe('generate validators', () => {
   }
 
   it('creates validators', () => {
-    const headerTemplate = '// some-comment\n\nimport "@swc-node/register"\n\n';
+    const headerTemplate = '// some-comment\n\n';
 
     generateValidators({
       config: [{ folder, targetFolder, headerTemplate }],

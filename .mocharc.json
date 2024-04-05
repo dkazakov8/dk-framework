@@ -1,7 +1,7 @@
 {
-  "extension": ["ts"],
-  "spec": "test/**/*.test.ts",
-  "require": "@swc-node/register",
+  "extension": ["ts", "tsx"],
+  "spec": ["test/**/*.test.ts", "test/**/*.test.tsx"],
+  "require": "tsx/cjs",
   "bail": true,
   "slow": 2
 }
