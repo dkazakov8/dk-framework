@@ -34,5 +34,5 @@
   },
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "gitHead": "13a06537ff328c33a5fe1997a437e6e48adcdadf"
+  "gitHead": "4e864f69d1f82a93f53233cf5669fe13d023d132"
 }

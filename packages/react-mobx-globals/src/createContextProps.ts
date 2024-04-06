@@ -13,7 +13,6 @@ export function createContextProps<TGlobals extends TypeGlobalsAny>({
   res,
   api,
   request,
-  transformers,
   staticStores,
   globalActions,
   apiValidators,
@@ -26,21 +25,16 @@ export function createContextProps<TGlobals extends TypeGlobalsAny>({
     store: {},
     actions: {},
     createWrappedApi: ({ ...configParams }: Omit<TypeRequestParams, 'requestParams'>) => {
-      const action: any = addState({
-        fn: (requestParams: TypeRequestParams['requestParams'] = {}) =>
+      const action: any = addState(
+        (requestParams: TypeRequestParams['requestParams'] = {}) =>
           request({ ...configParams, mock: action.state.mock, requestParams }, globals),
-        name: configParams.apiName,
-        transformers,
-      });
+        configParams.apiName
+      );
 
       return action;
     },
     createWrappedAction: (fn: TypeActionGenerator<TGlobals, any>) => {
-      return addState({
-        fn: (fn as any).bind(null, globals),
-        name: fn.name,
-        transformers,
-      });
+      return addState((fn as any).bind(null, globals), fn.name);
     },
   } as any;
 
