@@ -2,7 +2,7 @@
   "name": "dk-localize",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.2.5-alpha.0",
+  "version": "3.2.6-alpha.0",
   "description": "Library for including texts",
   "repository": {
     "type": "git",
