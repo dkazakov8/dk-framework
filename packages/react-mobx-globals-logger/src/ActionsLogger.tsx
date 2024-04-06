@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-literals */
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-import { TypeCreateContextParams } from 'dk-react-mobx-globals';
+import { observable, runInAction } from 'mobx';
 
 import { TypeActionLog } from './TypeActionLog';
 
@@ -83,25 +83,22 @@ const ActionsLoggerColumn = observer(
 export const ActionsLogger = observer(
   class ActionsLogger extends Component<{
     actionsLogs: Array<Array<TypeActionLog>>;
-    transformers: TypeCreateContextParams['transformers'];
   }> {
-    localState: { highlightedLog: Array<TypeActionLog> } = this.props.transformers.observable({
+    localState: { highlightedLog: Array<TypeActionLog> } = observable({
       highlightedLog: [],
     });
 
     handleClearData = () => {
-      const { actionsLogs, transformers } = this.props;
+      const { actionsLogs } = this.props;
 
-      transformers.batch(() => {
+      runInAction(() => {
         actionsLogs.splice(0, actionsLogs.length);
         this.localState.highlightedLog = [];
       });
     };
 
     handleSetHighlightedLogIndex = (highlightedLog: Array<TypeActionLog>) => () => {
-      const { transformers } = this.props;
-
-      transformers.batch(() => (this.localState.highlightedLog = highlightedLog));
+      runInAction(() => (this.localState.highlightedLog = highlightedLog));
     };
 
     get groupsByRoute() {

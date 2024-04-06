@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { action, autorun, makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { createContextProps } from 'dk-react-mobx-globals';
-import { findRouteByPathname, createRouterConfig } from 'dk-react-mobx-router';
+import { createRouterConfig, findRouteByPathname } from 'dk-react-mobx-router';
 
 import { getActionsLogs } from '../src/getActionsLogs';
 import { TypeActionLog } from '../src/TypeActionLog';
@@ -76,7 +76,6 @@ function createStore() {
       },
     },
     apiValidators: {},
-    transformers: { action, batch: runInAction, autorun, observable },
   });
 }
 
@@ -118,7 +117,6 @@ describe('getActionsLogs', function test() {
       isClient: true,
       actionsLogs,
       routerStore,
-      transformers: { action, batch: runInAction, autorun, observable },
     });
 
     expect(actionsLogs).to.deep.eq([]);

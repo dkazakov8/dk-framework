@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { request } from 'dk-request';
 import { ICheckerSuite } from 'ts-interface-checker';
-import { action, observable, runInAction, autorun } from 'mobx';
 
 import { TypeActionAny } from './TypeActionAny';
 
@@ -18,10 +17,4 @@ export type TypeCreateContextParams = {
   staticStores: Record<string, new () => any>;
   globalActions: Record<string, Record<string, TypeActionAny>>;
   apiValidators: Record<string, ICheckerSuite>;
-  transformers: {
-    batch: typeof runInAction;
-    action: typeof action;
-    autorun: typeof autorun;
-    observable: typeof observable;
-  };
 };

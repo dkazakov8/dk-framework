@@ -17,7 +17,6 @@ type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   isClient: boolean;
   redirectTo: any;
   routerStore: any;
-  transformers: { batch: typeof runInAction };
   routeError404: TRoutes[keyof TRoutes];
   routeError500: TRoutes[keyof TRoutes];
 };
@@ -29,7 +28,6 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
   isClient,
   redirectTo,
   routerStore,
-  transformers,
   routeError404,
   routeError500,
 }: TypeParamsGenerator<TRoutes>): (redirectParams: TypeRedirectToParams<TRoutes>) => Promise<void> {
@@ -86,7 +84,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
       })
       .then(() => loadComponentToConfig({ componentConfig: routes[route.name] }))
       .then(() => {
-        transformers.batch(() => {
+        runInAction(() => {
           /**
            * Optimistically update currentRoute and synchronize it with browser's URL field
            *
@@ -131,7 +129,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
 
         console.error(error);
 
-        transformers.batch(() => {
+        runInAction(() => {
           routerStore.currentRoute = {
             name: routeError500.name,
             path: routeError500.path,

@@ -1,11 +1,11 @@
-import { getPlainActions, TypeCreateContextParams } from 'dk-react-mobx-globals';
+import { getPlainActions } from 'dk-react-mobx-globals';
+import { autorun, runInAction } from 'mobx';
 
 import { TypeActionLog } from './TypeActionLog';
 
 function getLoggedActions({
   type,
   lastItem,
-  transformers,
   actionsArray,
   currentRouteName,
 }: {
@@ -13,7 +13,6 @@ function getLoggedActions({
   lastItem: Array<TypeActionLog> | undefined;
   actionsArray: Array<any>;
   currentRouteName: string;
-  transformers: TypeCreateContextParams['transformers'];
 }) {
   return actionsArray
     .filter((actionFn) => {
@@ -31,7 +30,7 @@ function getLoggedActions({
          *
          */
 
-        transformers.batch(() => {
+        runInAction(() => {
           lastItemFn!.executionTime = actionFn.state.executionTime;
         });
 
@@ -58,15 +57,13 @@ export function getActionsLogs({
   isClient,
   actionsLogs,
   routerStore,
-  transformers,
 }: {
   globals: any;
   isClient: boolean;
   actionsLogs: Array<Array<TypeActionLog>>;
   routerStore: any;
-  transformers: TypeCreateContextParams['transformers'];
 }) {
-  return transformers.autorun(() => {
+  return autorun(() => {
     /**
      * Actions are extendable, so have to loop every time
      *
@@ -85,19 +82,17 @@ export function getActionsLogs({
         lastItem,
         actionsArray: plainActions,
         currentRouteName,
-        transformers,
       }),
       ...getLoggedActions({
         type: 'API',
         lastItem,
         actionsArray: plainApi,
         currentRouteName,
-        transformers,
       }),
     ];
 
     if (finalItem.length > 0 && JSON.stringify(lastItem) !== JSON.stringify(finalItem)) {
-      transformers.batch(() => actionsLogs.push(finalItem as any));
+      runInAction(() => actionsLogs.push(finalItem as any));
     }
   });
 }

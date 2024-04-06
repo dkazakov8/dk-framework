@@ -6,14 +6,9 @@ export function restoreState({
   source,
   noBatch,
   prevKey,
-  transformers,
 }: {
   target: Record<string, any>;
   source: Record<string, any>;
-  transformers: {
-    batch: typeof runInAction;
-    observable: typeof observable;
-  };
   logs?: boolean;
   noBatch?: boolean;
   prevKey?: string;
@@ -28,7 +23,7 @@ export function restoreState({
 
       if (Object.prototype.toString.call(sourceItem) === '[object Object]') {
         if (!targetItem) {
-          target[key] = transformers.observable({});
+          target[key] = observable({});
 
           if (logs) {
             // eslint-disable-next-line no-console
@@ -39,7 +34,6 @@ export function restoreState({
         restoreState({
           target: target[key],
           source: sourceItem,
-          transformers,
           noBatch: true,
           prevKey: prevKey ? `${prevKey}.${key}` : key,
           logs,
@@ -59,7 +53,7 @@ export function restoreState({
   }
 
   if (noBatch) merge();
-  else transformers.batch(merge);
+  else runInAction(merge);
 
   return target;
 }

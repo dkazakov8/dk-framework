@@ -1,14 +1,11 @@
-import { IReactionDisposer } from 'mobx';
+import { autorun, IReactionDisposer } from 'mobx';
 import { Component } from 'react';
-
-import { TypeCreateContextParams } from '../types/TypeCreateContextParams';
 
 export function appendAutorun(
   ctx: Component & { autorunDisposers?: Array<IReactionDisposer> },
-  fn: () => void,
-  transformers: TypeCreateContextParams['transformers']
+  fn: () => void
 ): void {
-  const disposer = transformers.autorun(fn);
+  const disposer = autorun(fn);
 
   if (!ctx.autorunDisposers) {
     Object.defineProperty(ctx, 'autorunDisposers', { value: [] });

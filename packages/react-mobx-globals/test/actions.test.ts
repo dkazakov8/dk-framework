@@ -22,7 +22,6 @@ function createStore() {
     },
     staticStores: {},
     apiValidators: {},
-    transformers: { action, batch: runInAction, autorun, observable },
   });
 }
 

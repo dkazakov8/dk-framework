@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { observable, runInAction } from 'mobx';
+import { observable } from 'mobx';
 
 import { restoreState } from '../src/restoreState';
 
@@ -29,13 +29,6 @@ describe('restoreState', function test() {
       nonExistent2: undefined,
     };
 
-    expect(
-      restoreState({
-        logs: true,
-        target,
-        source,
-        transformers: { batch: runInAction, observable },
-      })
-    ).to.deep.eq(source);
+    expect(restoreState({ logs: true, target, source })).to.deep.eq(source);
   });
 });
