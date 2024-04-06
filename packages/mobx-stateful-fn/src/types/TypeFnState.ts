@@ -1,6 +1,6 @@
 export type TypeFnState = {
   state: {
-    mock?: any;
+    mock?: Promise<any>;
     error?: string;
     timeStart: number;
     errorName?: string;

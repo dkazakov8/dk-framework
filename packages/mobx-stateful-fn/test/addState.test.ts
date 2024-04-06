@@ -363,4 +363,37 @@ describe('addState', () => {
       }, ACTION_TIMEOUT + 1);
     });
   });
+
+  it('mocks work', () => {
+    const statefulFunctions = createStatefulFunctions([
+      'asyncNoParams',
+      'asyncParams',
+      'asyncError',
+      'syncNoParams',
+      'syncParams',
+      'syncError',
+    ]);
+
+    return Promise.all(
+      statefulFunctions.map(({ fn }) => {
+        fn.state.mock = Promise.resolve(1);
+
+        expect(fn.state.timeStart).to.eq(0);
+        expect(fn.state.isExecuting).to.eq(false);
+        expect(fn.state.error).to.eq(undefined);
+        expect(fn.state.errorName).to.eq(undefined);
+
+        const result = fn();
+
+        expect(fn.state.timeStart).to.eq(0);
+        expect(fn.state.isExecuting).to.eq(false);
+        expect(fn.state.error).to.eq(undefined);
+        expect(fn.state.errorName).to.eq(undefined);
+
+        return result;
+      })
+    ).then((data) => {
+      expect(data).to.deep.eq(statefulFunctions.map(() => 1));
+    });
+  });
 });

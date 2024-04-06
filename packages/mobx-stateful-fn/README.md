@@ -29,6 +29,7 @@ a Promise, but the approach here is enough for 99% apps)
 - [Usage: classes](#usage-classes)
   - [Named methods (from prototype)](#named-methods-from-prototype)
   - [Anonymous methods](#anonymous-methods)
+- [Usage: mocks](#usage-mocks)
 - [Use cases](#use-cases)
   - [Track execution / show loaders](#track-execution--show-loaders)
   - [Track execution time](#track-execution-time)
@@ -53,7 +54,7 @@ function asyncFunction() {
   return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
-const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name)
+const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name);
 
 // Now you can track this function's execution like
 
@@ -106,6 +107,31 @@ class ClassFunctions {
     return new Promise((resolve) => setTimeout(resolve, 100));
   };
 }
+```
+
+### Usage: mocks
+
+When a mock is defined, the `asyncFunctionStateful` will not trigger any lifecycle and will
+directly return the value defined in the mock. The logic inside `asyncFunction` 
+**will not be executed at all**. This is useful for tests or SSR.
+
+```typescript
+import { addState } from 'dk-mobx-stateful-fn';
+import { runInAction } from 'mobx';
+
+function asyncFunction() {
+  // WILL NOT BE EXECUTED
+
+  return new Promise((resolve) => setTimeout(() => resolve(1), 100));
+}
+
+const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name);
+
+runInAction(() => {
+  asyncFunctionStateful.state.mock = Promise.resolve(2);
+});
+
+asyncFunctionStateful().then(data => console.log(data)) // 2
 ```
 
 #### Anonymous methods

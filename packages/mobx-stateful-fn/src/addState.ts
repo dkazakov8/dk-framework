@@ -74,6 +74,8 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>(
 
   const wrappedAction = Object.defineProperties(
     action(function wrappedActionDecorator(...args: Parameters<TApiFn>) {
+      if (wrappedAction.state.mock) return wrappedAction.state.mock;
+
       try {
         beforeExecution();
 
@@ -87,7 +89,8 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>(
       } catch (error: any) {
         return afterExecutionError(error);
       }
-    } as ((...args: Parameters<TApiFn>) => ReturnType<TApiFn>) & TypeFnState & { name: TName }),
+    } as unknown as ((...args: Parameters<TApiFn>) => ReturnType<TApiFn>) &
+      TypeFnState & { name: TName }),
     {
       state: {
         value: observable({

@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Context, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Context, useContext, useEffect, useRef, useState } from 'react';
 import { observable, runInAction } from 'mobx';
 
 import { ViewModelConstructor } from './types/ViewModelConstructor';
 
 export function createUseStore<TContext extends any>(
   ctx: Context<TContext>,
-  beforeUnmount?: (context: TContext, vm?: any) => void
+  options?: {
+    beforeMount?: (context: TContext, vm?: any) => void;
+    afterMount?: (context: TContext, vm?: any) => void;
+    beforeUnmount?: (context: TContext, vm?: any) => void;
+  }
 ) {
   function useStore(): { context: TContext };
   function useStore<TViewModel extends new (context: TContext) => ViewModelConstructor<TContext>>(
@@ -35,13 +39,14 @@ export function createUseStore<TContext extends any>(
       const instance = new ViewModel(context, observable(props || {}, exclude));
 
       runInAction(() => {
+        options?.beforeMount?.(context, instance);
         instance.beforeMount?.();
       });
 
       return instance;
     });
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (isFirstRenderRef.current) {
         isFirstRenderRef.current = false;
       } else if (props) {
@@ -52,10 +57,11 @@ export function createUseStore<TContext extends any>(
     }, [props]);
 
     useEffect(() => {
+      options?.afterMount?.(context, vm);
       vm.afterMount?.();
 
       return () => {
-        beforeUnmount?.(context, vm);
+        options?.beforeUnmount?.(context, vm);
 
         // @ts-ignore
         vm.autorunDisposers?.forEach((disposer) => disposer());
