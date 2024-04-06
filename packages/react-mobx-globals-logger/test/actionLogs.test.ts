@@ -76,7 +76,6 @@ function createStore() {
       },
     },
     apiValidators: {},
-    transformers: {} as any,
   });
 }
 
