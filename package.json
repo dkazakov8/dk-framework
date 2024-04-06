@@ -18,7 +18,6 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@swc/core": "1.4.12",
     "@types/sinon": "17.0.3",
     "@types/chai": "4.3.14",
     "@types/mocha": "10.0.6",

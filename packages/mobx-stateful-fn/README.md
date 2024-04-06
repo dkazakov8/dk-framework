@@ -4,6 +4,12 @@
 [![npm](https://img.shields.io/npm/v/dk-mobx-stateful-fn)](https://www.npmjs.com/package/dk-mobx-stateful-fn)
 [![license](https://img.shields.io/npm/l/dk-mobx-stateful-fn)](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/LICENSE)
 
+> [!WARNING]  
+> It's fine if you use this library from NPM package with a **static versioning** in case you
+> want it for some pet-project or to test it's capabilities.
+> But for production use it's **strongly recommended** to create a fork, because I do not write
+> Changelogs and may break / add some functionality without notice.
+
 The purpose of this library is to simplify tracking of async function execution. It uses a pattern
 "function as object", adding an observable state to the function, so you could easily:
 - show loaders in your React / any framework components
@@ -43,7 +49,7 @@ import { addState } from 'dk-mobx-stateful-fn';
 import { autorun } from 'mobx';
 
 function asyncFunction() {
-  return new Promise<void>((resolve) => setTimeout(resolve, 100));
+  return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name)
@@ -96,9 +102,7 @@ class ClassFunctions {
     // "this" is working and bound to the instance
     // console.log(this)
   
-    return new Promise<void>((resolve) => {
-      setTimeout(resolve, 100);
-    });
+    return new Promise((resolve) => setTimeout(resolve, 100));
   };
 }
 ```
@@ -125,9 +129,7 @@ class ClassFunctions {
     // "this" is working and bound to the instance
     // console.log(this)
   
-    return new Promise<void>((resolve) => {
-      setTimeout(resolve, 100);
-    });
+    return new Promise((resolve) => setTimeout(resolve, 100));
   };
 }
 ```
@@ -285,9 +287,7 @@ result in inconsistency
 
 ```typescript
 function asyncFunction() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 100);
-  });
+  return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
@@ -303,9 +303,7 @@ stateful function has been finished like
 
 ```typescript
 function asyncFunction() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 100);
-  });
+  return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
@@ -338,9 +336,7 @@ or create several stateful functions like
 
 ```typescript
 function asyncFunction() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 100);
-  });
+  return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
