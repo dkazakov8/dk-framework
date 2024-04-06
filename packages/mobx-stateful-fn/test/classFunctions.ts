@@ -2,14 +2,10 @@ import { makeAutoObservable } from 'mobx';
 
 import { addState } from '../src/addState';
 
-import { ACTION_TIMEOUT, transformers } from './constants';
+import { ACTION_TIMEOUT } from './constants';
 
 function decorateWithState(ctx: any, fn: any) {
-  ctx[fn.name] = addState({
-    fn: fn.bind(ctx),
-    name: fn.name,
-    transformers,
-  });
+  ctx[fn.name] = addState(fn.bind(ctx), fn.name);
 }
 
 export class ClassFunctions {
@@ -29,11 +25,7 @@ export class ClassFunctions {
     );
 
     // a way with arrow methods
-    this.asyncNoParams = addState({
-      fn: this.asyncNoParams,
-      name: 'asyncNoParams',
-      transformers,
-    });
+    this.asyncNoParams = addState(this.asyncNoParams, 'asyncNoParams');
 
     // a way with prototype methods
     decorateWithState(this, this.asyncParams);

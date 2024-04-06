@@ -5,7 +5,7 @@ import { autorun, observable } from 'mobx';
 import { addState } from '../src/addState';
 import { TypeFnState } from '../src/types/TypeFnState';
 
-import { ACTION_TIMEOUT, TIMEOUT_SYNC, transformers } from './constants';
+import { ACTION_TIMEOUT, TIMEOUT_SYNC } from './constants';
 import { functions } from './functions';
 import { functionsAnonymous } from './functionsAnonymous';
 import { ClassFunctions } from './classFunctions';
@@ -15,13 +15,13 @@ function createStatefulFunctions(names: Array<keyof typeof functions>) {
     ...names.map((name) => {
       return {
         name,
-        fn: addState({ fn: functions[name], name: functions[name].name, transformers }),
+        fn: addState(functions[name], functions[name].name),
       };
     }),
     ...names.map((name) => {
       const targetFn = functionsAnonymous.find(([n]) => n === name)![1];
 
-      return { name, fn: addState({ fn: targetFn as any, name, transformers }) };
+      return { name, fn: addState(targetFn as any, name) };
     }),
     ...names.map((name) => {
       const classFunctions = new ClassFunctions();
@@ -120,7 +120,7 @@ describe('addState', () => {
     const fn = functionsAnonymous[0][1];
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fnStateful = addState({ fn, name: fn.name, transformers });
+    const fnStateful = addState(fn, fn.name);
 
     expect(
       spyLog.calledWith(
@@ -295,7 +295,7 @@ describe('addState', () => {
   });
 
   it('(async) parallel not working', () => {
-    const fnAsync = addState({ fn: functions.asyncNoParams, name: 'asyncNoParams', transformers });
+    const fnAsync = addState(functions.asyncNoParams, 'asyncNoParams');
 
     startNoError(fnAsync);
 

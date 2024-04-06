@@ -40,19 +40,13 @@ Add `dk-mobx-stateful-fn` to package.json and install.
 
 ```typescript
 import { addState } from 'dk-mobx-stateful-fn';
-import { action, observable, runInAction, autorun } from 'mobx';
+import { autorun } from 'mobx';
 
 function asyncFunction() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 100);
-   });
+  return new Promise<void>((resolve) => setTimeout(resolve, 100));
 }
 
-const asyncFunctionStateful = addState({ 
-  fn: asyncFunction, 
-  name: asyncFunction.name, 
-  transformers: { action, batch: runInAction, observable }
-})
+const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name)
 
 // Now you can track this function's execution like
 
@@ -63,42 +57,15 @@ autorun(() => {
 asyncFunctionStateful();
 ```
 
-You probably would like to add a high-order function to make things easier like
-
-```typescript
-import { addState, TypeFnAsync } from 'dk-mobx-stateful-fn';
-import { action, observable, runInAction } from 'mobx';
-
-const transformers = { action, batch: runInAction, observable }
-
-function addStateToNamedFunction(fn: TypeFnAsync) {
-  return addState({ fn: asyncFunction, name: asyncFunction.name, transformers })
-}
-
-function asyncFunction() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 100);
-  });
-}
-
-const asyncFunctionStateful = addStateToNamedFunction(asyncFunction);
-```
-
 #### Anonymous functions
 
-In case the function does not have a name you should provide it manually
+In case the function does not have a name you should provide it manually, otherwise a warning
+will be displayed in the console.
 
 ```typescript
-import { addState, TypeFnAsync } from 'dk-mobx-stateful-fn';
-import { action, observable, runInAction } from 'mobx';
+import { addState } from 'dk-mobx-stateful-fn';
 
-const transformers = { action, batch: runInAction, observable }
-
-function addStateToAnonymousFunction(fn: TypeFnAsync, name: string) {
-  return addState({ fn: asyncFunction, name, transformers })
-}
-
-const asyncFunctionStateful = addStateToAnonymousFunction(() => Promise.resolve(), 'asyncFunctionStateful');
+const asyncFunctionStateful = addState(() => Promise.resolve(), 'asyncFunctionStateful');
 ```
 
 ### Usage: classes
@@ -107,16 +74,10 @@ const asyncFunctionStateful = addStateToAnonymousFunction(() => Promise.resolve(
 
 ```typescript
 import { addState, TypeFnAsync } from 'dk-mobx-stateful-fn';
-import { action, observable, runInAction } from 'mobx';
-
-const transformers = { action, batch: runInAction, observable }
+import { makeAutoObservable } from 'mobx';
 
 function addStateToNamedMethod(ctx: any, fn: TypeFnAsync) {
-  ctx[fn.name] = addState({
-    fn: fn.bind(ctx),
-    name: fn.name,
-    transformers,
-  });
+  ctx[fn.name] = addState(fn.bind(ctx), fn.name);
 }
 
 class ClassFunctions {
@@ -145,18 +106,8 @@ class ClassFunctions {
 #### Anonymous methods
 
 ```typescript
-import { addState, TypeFnAsync } from 'dk-mobx-stateful-fn';
-import { action, observable, runInAction } from 'mobx';
-
-const transformers = { action, batch: runInAction, observable }
-
-function addStateToAnonymousMethod(ctx: any, fn: TypeFnAsync, name: string) {
-  ctx[name] = addState({
-    fn,
-    name,
-    transformers,
-  });
-}
+import { addState } from 'dk-mobx-stateful-fn';
+import { makeAutoObservable } from 'mobx';
 
 class ClassFunctions {
   constructor() {
@@ -167,7 +118,7 @@ class ClassFunctions {
       { autoBind: true }
     );
     
-    this.asyncFunction = addStateToAnonymousMethod(this, this.asyncFunction, 'asyncFunction');
+    this.asyncFunction = addState(this.asyncFunction, 'asyncFunction');
   }
 
   asyncFunction = () => {

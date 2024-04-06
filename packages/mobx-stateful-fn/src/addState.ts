@@ -4,19 +4,10 @@ import { getCurrentTime } from './utils/getCurrentTime';
 import { TypeFnState } from './types/TypeFnState';
 import { TypeFnAsync } from './types/TypeFnAsync';
 
-export function addState<TApiFn extends TypeFnAsync, TName extends string>({
-  fn,
-  name,
-  transformers,
-}: {
-  fn: TApiFn;
-  name: TName;
-  transformers: {
-    batch: typeof runInAction;
-    action: typeof action;
-    observable: typeof observable;
-  };
-}) {
+export function addState<TApiFn extends TypeFnAsync, TName extends string>(
+  fn: TApiFn,
+  name: TName
+) {
   if (!name) {
     console.warn(`addState: name is empty, please provide a valid name for the stateful function`);
   }
@@ -43,7 +34,7 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
       throw error;
     }
 
-    transformers.batch(() => {
+    runInAction(() => {
       wrappedAction.state.isExecuting = false;
       wrappedAction.state.executionTime = Number(
         (getCurrentTime() - wrappedAction.state.timeStart).toFixed(1)
@@ -53,7 +44,7 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
   }
 
   function afterExecutionError(error: any) {
-    transformers.batch(() => {
+    runInAction(() => {
       wrappedAction.state.isExecuting = false;
       wrappedAction.state.executionTime = Number(
         (getCurrentTime() - wrappedAction.state.timeStart).toFixed(1)
@@ -79,10 +70,10 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
     return Promise.reject(error);
   }
 
-  const fnAction = transformers.action(fn);
+  const fnAction = action(fn);
 
   const wrappedAction = Object.defineProperties(
-    transformers.action(function wrappedActionDecorator(...args: Parameters<TApiFn>) {
+    action(function wrappedActionDecorator(...args: Parameters<TApiFn>) {
       try {
         beforeExecution();
 
@@ -99,7 +90,7 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>({
     } as ((...args: Parameters<TApiFn>) => ReturnType<TApiFn>) & TypeFnState & { name: TName }),
     {
       state: {
-        value: transformers.observable({
+        value: observable({
           timeStart: 0,
           isExecuting: false,
           executionTime: 0,
