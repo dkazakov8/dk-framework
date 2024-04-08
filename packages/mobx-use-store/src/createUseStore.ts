@@ -31,9 +31,19 @@ export function createUseStore<TContext extends any>(
     const isFirstRenderRef = useRef(true);
     const context = useContext(ctx);
 
-    if (!ViewModel) {
-      return { context };
-    }
+    useState(() => {
+      if (!ViewModel) options?.beforeMount?.(context);
+    });
+
+    useEffect(() => {
+      if (!ViewModel) options?.afterMount?.(context);
+
+      return () => {
+        if (!ViewModel) options?.beforeUnmount?.(context);
+      };
+    }, []);
+
+    if (!ViewModel) return { context };
 
     const [vm] = useState(() => {
       const instance = new ViewModel(context, observable(props || {}, exclude));

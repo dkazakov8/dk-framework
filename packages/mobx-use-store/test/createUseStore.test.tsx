@@ -2,7 +2,7 @@
 @typescript-eslint/naming-convention, react/jsx-no-literals, @typescript-eslint/no-empty-function,
 no-useless-constructor */
 
-import React from 'react';
+import React, { ContextType, useContext } from 'react';
 import { expect } from 'chai';
 import { renderHook, render } from '@testing-library/react/pure';
 import {
@@ -29,6 +29,10 @@ describe('createUseStore', () => {
     [1],
     function someFunction() {},
   ];
+
+  function getElementContent(container: any, className: string) {
+    return container.getElementsByClassName(className)[0].innerHTML;
+  }
 
   it('hook (empty): context is correct', () => {
     function check<TContext>(contextValue: TContext) {
@@ -212,6 +216,108 @@ describe('createUseStore', () => {
     testContextValues.forEach((contextValue) => check(contextValue, { data: 'string' }));
   });
 
+  it('BUG: component (VM + props): excluded props do not trigger rerender', () => {
+    function check<TContext>(
+      contextValue: TContext,
+      initialProps: { dataObs: string; data: { foo: string } }
+    ) {
+      const StoreContext = React.createContext(contextValue);
+
+      const useStore = createUseStore(StoreContext);
+
+      const spy_autorun = spy();
+      const spy_autorunObs = spy();
+
+      type ViewModel = ViewModelConstructor<TContext>;
+
+      class VM implements ViewModel {
+        constructor(public context: TContext, public props: typeof initialProps) {
+          makeAutoObservable(this, { context: false, props: false }, { autoBind: true });
+
+          autorun(() => {
+            spy_autorun(`${this.props.data.foo}_computed`);
+          });
+
+          autorun(() => {
+            spy_autorunObs(`${this.props.dataObs}_computed`);
+          });
+        }
+
+        get computedData() {
+          return `${this.props.data.foo}_computed`;
+        }
+      }
+
+      const MyComponent = observer((props: typeof initialProps) => {
+        const { vm } = useStore(VM, props, { data: false });
+
+        return <div className={'computed'}>{vm.computedData}</div>;
+      });
+
+      const { container, rerender } = render(<MyComponent {...initialProps} />);
+
+      expect(getElementContent(container, 'computed')).to.eq(`string_computed`);
+
+      expect(spy_autorun.callCount, 'spy_autorun').to.deep.eq(1);
+      expect(spy_autorun.getCall(0).args[0], 'spy_autorun').to.deep.eq('string_computed');
+
+      expect(spy_autorunObs.callCount, 'spy_autorunObs').to.deep.eq(1);
+      expect(spy_autorunObs.getCall(0).args[0], 'spy_autorunObs').to.deep.eq('123_computed');
+
+      rerender(<MyComponent dataObs={'321'} data={{ foo: `string2` }} />);
+
+      expect(getElementContent(container, 'computed')).to.eq(`string_computed`);
+
+      expect(spy_autorun.callCount, 'spy_autorun').to.deep.eq(1);
+      expect(spy_autorun.getCall(0).args[0], 'spy_autorun').to.deep.eq('string_computed');
+
+      expect(spy_autorunObs.callCount, 'spy_autorunObs').to.deep.eq(1);
+      expect(spy_autorunObs.getCall(0).args[0], 'spy_autorunObs').to.deep.eq('123_computed');
+    }
+
+    testContextValues.forEach((contextValue) =>
+      check(contextValue, { dataObs: '123', data: { foo: 'string' } })
+    );
+  });
+
+  it('component (VM + props): several contexts', () => {
+    function check<TContext>(contextValue: TContext, initialProps: { data: { foo: string } }) {
+      const StoreContext = React.createContext(contextValue);
+      const StoreContext2 = React.createContext({ data: 'string' });
+
+      const useStore = createUseStore(StoreContext);
+
+      type ViewModel = ViewModelConstructor<TContext>;
+
+      class VM implements ViewModel {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps & { context2: ContextType<typeof StoreContext2> }
+        ) {
+          makeAutoObservable(this, { context: false }, { autoBind: true });
+        }
+
+        get context2Data() {
+          return this.props.context2.data;
+        }
+      }
+
+      const MyComponent = observer((props: typeof initialProps) => {
+        const context2 = useContext(StoreContext2);
+
+        const { vm } = useStore(VM, { ...props, context2 }, { context2: false });
+
+        return <div className={'computed'}>{vm.context2Data}</div>;
+      });
+
+      const { container } = render(<MyComponent {...initialProps} />);
+
+      expect(getElementContent(container, 'computed')).to.eq(`string`);
+    }
+
+    testContextValues.forEach((contextValue) => check(contextValue, { data: { foo: 'string' } }));
+  });
+
   it('hook (VM + props + exclude): props are observable with exclude', () => {
     function check<TContext>(contextValue: TContext, initialProps: any) {
       const StoreContext = React.createContext(contextValue);
@@ -345,6 +451,52 @@ describe('createUseStore', () => {
     );
   });
 
+  it('hook (empty): lifecycle called', () => {
+    function check<TContext>(contextValue: TContext, initialProps: any) {
+      const StoreContext = React.createContext(contextValue);
+
+      const spy_globalBeforeMount = spy();
+      const spy_globalAfterMount = spy();
+      const spy_globalBeforeUnmount = spy();
+
+      const useStore = createUseStore(StoreContext, {
+        beforeMount() {
+          spy_globalBeforeMount();
+        },
+        afterMount() {
+          spy_globalAfterMount();
+        },
+        beforeUnmount() {
+          spy_globalBeforeUnmount();
+        },
+      });
+
+      const { rerender, unmount } = renderHook(() => useStore(), { initialProps });
+
+      expect(spy_globalBeforeMount.callCount, 'spy_globalBeforeMount').to.deep.eq(1);
+      expect(spy_globalAfterMount.callCount, 'spy_globalAfterMount').to.deep.eq(1);
+      expect(spy_globalBeforeUnmount.callCount, 'spy_globalBeforeUnmount').to.deep.eq(0);
+
+      const rerenderProps = {
+        data: 'string2',
+      };
+
+      rerender(rerenderProps);
+
+      expect(spy_globalBeforeMount.callCount, 'spy_globalBeforeMount').to.deep.eq(1);
+      expect(spy_globalAfterMount.callCount, 'spy_globalAfterMount').to.deep.eq(1);
+      expect(spy_globalBeforeUnmount.callCount, 'spy_globalBeforeUnmount').to.deep.eq(0);
+
+      unmount();
+
+      expect(spy_globalBeforeMount.callCount, 'spy_globalBeforeMount').to.deep.eq(1);
+      expect(spy_globalAfterMount.callCount, 'spy_globalAfterMount').to.deep.eq(1);
+      expect(spy_globalBeforeUnmount.callCount, 'spy_globalBeforeUnmount').to.deep.eq(1);
+    }
+
+    testContextValues.forEach((contextValue) => check(contextValue, { data: 'string' }));
+  });
+
   it('hook (only VM): lifecycle called', () => {
     function check<TContext>(contextValue: TContext, initialProps: any) {
       const StoreContext = React.createContext(contextValue);
@@ -422,6 +574,42 @@ describe('createUseStore', () => {
       expect(spy_beforeMount.callCount, 'spy_beforeMount').to.deep.eq(1);
       expect(spy_afterMount.callCount, 'spy_afterMount').to.deep.eq(1);
       expect(spy_beforeUnmount.callCount, 'spy_beforeUnmount').to.deep.eq(1);
+    }
+
+    testContextValues.forEach((contextValue) => check(contextValue, { data: 'string' }));
+  });
+
+  it('component (empty): lifecycle called SSR', () => {
+    function check<TContext>(contextValue: TContext, initialProps: any) {
+      const StoreContext = React.createContext(contextValue);
+
+      const spy_globalBeforeMount = spy();
+      const spy_globalAfterMount = spy();
+      const spy_globalBeforeUnmount = spy();
+
+      const useStore = createUseStore(StoreContext, {
+        beforeMount() {
+          spy_globalBeforeMount();
+        },
+        afterMount() {
+          spy_globalAfterMount();
+        },
+        beforeUnmount() {
+          spy_globalBeforeUnmount();
+        },
+      });
+
+      const MyComponent = () => {
+        useStore();
+
+        return <div className={'test'}>123</div>;
+      };
+
+      renderToString(<MyComponent {...initialProps} />);
+
+      expect(spy_globalBeforeMount.callCount, 'spy_globalBeforeMount').to.deep.eq(1);
+      expect(spy_globalAfterMount.callCount, 'spy_globalAfterMount').to.deep.eq(0);
+      expect(spy_globalBeforeUnmount.callCount, 'spy_globalBeforeUnmount').to.deep.eq(0);
     }
 
     testContextValues.forEach((contextValue) => check(contextValue, { data: 'string' }));

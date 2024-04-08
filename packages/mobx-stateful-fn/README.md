@@ -109,31 +109,6 @@ class ClassFunctions {
 }
 ```
 
-### Usage: mocks
-
-When a mock is defined, the `asyncFunctionStateful` will not trigger any lifecycle and will
-directly return the value defined in the mock. The logic inside `asyncFunction` 
-**will not be executed at all**. This is useful for tests or SSR.
-
-```typescript
-import { addState } from 'dk-mobx-stateful-fn';
-import { runInAction } from 'mobx';
-
-function asyncFunction() {
-  // WILL NOT BE EXECUTED
-
-  return new Promise((resolve) => setTimeout(() => resolve(1), 100));
-}
-
-const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name);
-
-runInAction(() => {
-  asyncFunctionStateful.state.mock = Promise.resolve(2);
-});
-
-asyncFunctionStateful().then(data => console.log(data)) // 2
-```
-
 #### Anonymous methods
 
 ```typescript
@@ -159,6 +134,31 @@ class ClassFunctions {
     return new Promise((resolve) => setTimeout(resolve, 100));
   };
 }
+```
+
+### Usage: mocks
+
+When a mock is defined, the `asyncFunctionStateful` will not trigger any lifecycle and will
+directly return the value defined in the mock. The logic inside `asyncFunction`
+**will not be executed at all**. This is useful for tests or SSR.
+
+```typescript
+import { addState } from 'dk-mobx-stateful-fn';
+import { runInAction } from 'mobx';
+
+function asyncFunction() {
+  // WILL NOT BE EXECUTED
+
+  return new Promise((resolve) => setTimeout(() => resolve(1), 100));
+}
+
+const asyncFunctionStateful = addState(asyncFunction, asyncFunction.name);
+
+runInAction(() => {
+  asyncFunctionStateful.state.mock = Promise.resolve(2);
+});
+
+asyncFunctionStateful().then(data => console.log(data)) // 2
 ```
 
 ### Use cases
