@@ -37,6 +37,8 @@ This library:
 - [Usage: Lifecycle](#usage-lifecycle)
   - [Inside VM](#inside-vm)
   - [Global](#global)
+- [Usage: Reactions (instead of useEffect)](#usage-reactions-instead-of-useeffect)
+- [Limitations](#limitations)
 
 ### Installation
 
