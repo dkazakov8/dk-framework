@@ -136,7 +136,10 @@ const App = observer(() => {
 
 Note that in this example we expect that `StoreContext` is already observable, so no need to wrap
 it by `makeAutoObservable`. But if you want to wrap it, just do not include `{ context: false }` in
-`makeAutoObservable`.
+`makeAutoObservable`. Also you may use `makeObservable` or decorators instead of `makeAutoObservable`,
+arrow methods instead of prototype methods, `private` instead of `public` etc. 
+
+This library does not restrict how you write your code.
 
 #### With VM & props
 
@@ -270,17 +273,17 @@ class VM implements ViewModel {
   
   beforeMount() {
     // this function is invoked both during SSR & Client rendering
-    // React class-component analog: componentWillMount
+    // React class-component equivalent: componentWillMount
   }
 
   afterMount() {
     // this function is invoked during Client rendering only
-    // React class-component analog: componentDidMount
+    // React class-component equivalent: componentDidMount
   }
 
   beforeUnmount() {
     // this function is invoked during Client rendering only
-    // React class-component analog: componentWillUnmount
+    // React class-component equivalent: componentWillUnmount
   }
 }
 
@@ -337,7 +340,7 @@ way to describe them inside VM.
 class VM implements ViewModel {
   autorunDisposers: Array<IReactionDisposer> = [];
         
-  constructor(public context: ContextType<typeof StoreContext>) {
+  constructor(public context: ContextType<typeof StoreContext>, public props: PropsApp) {
     makeAutoObservable(this, { context: false }, { autoBind: true });
     
     // we can describe it here or in beforeMount / afterMount
@@ -350,8 +353,8 @@ class VM implements ViewModel {
   }
 }
 
-const App = observer(() => {
-  const { vm } = useStore(VM);
+const App = observer((props: PropsApp) => {
+  const { vm } = useStore(VM, props);
 
   return null;
 });
@@ -399,8 +402,8 @@ const App = observer(() => {
 ```
 
 This way we can add a reaction with 1 line of code without boilerplate at all. `appendAutorun` will
-also send an error to the console if we forgot exclude the autorun function in `makeAutoObservable`.
-Current versions of MobX do not allow `action function` as an argument to `autorun`.
+also send an error to the console if we forgot to exclude the autorun function in `makeAutoObservable`.
+Current versions of MobX do not allow `action function` as an argument for `autorun`.
 
 ### Limitations
 
@@ -433,7 +436,7 @@ VM props _before_ render. So, the flow of renders will be like this:
 2. `<App user={{ name: 'Mark' }}` shows in console 'John' then 'Mark'
 
 So, the component accepted new prop 'Mark', but `useStore` will update it's `this.props.user.name`
-**after** the render. Then `observer` will detect that `vm.computedFromProps` and trigger
+**after** the render. Then `observer` will detect that `vm.computedFromProps` has changed and trigger
 **the second rerender**. 
 
 We can't overcome this limitation yet, because 2 reactivity systems (React and MobX) work separately.
