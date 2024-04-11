@@ -21,11 +21,11 @@
     "dk-mobx-stateful-fn": "3.2.11"
   },
   "devDependencies": {
-    "@types/express": "4.17.17",
-    "@types/react": "18.2.14",
+    "@types/express": "4.17.21",
+    "@types/react": "18.2.76",
     "dk-localize": "3.2.11",
     "dk-request": "3.2.11",
-    "mobx": "6.9.0",
+    "mobx": "6.12.3",
     "react": "18.2.0",
     "ts-interface-checker": "1.0.2"
   },
