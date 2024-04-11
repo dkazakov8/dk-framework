@@ -13,7 +13,7 @@
 
 The purpose of this library is to safely restore state during SSR.
 
-MobX 4 had a bug where newly added object were not observable, like
+MobX 4 had a bug where newly added objects were not observable, like
 
 ```typescript
 const target = observable({ str: '123' });
