@@ -1,100 +1,142 @@
 import { expect } from 'chai';
-import { isObservable, observable } from 'mobx';
+import { isObservable, makeAutoObservable, observable } from 'mobx';
 
 import { restoreState } from '../src/restoreState';
 
+function getTargetObject() {
+  return observable({
+    arr: [],
+    obj: {},
+    str: '123',
+    num: 123,
+    nonExistent1: null,
+    nonExistent2: undefined,
+  });
+}
+
+function getTargetClassWithInitializer() {
+  return new (class Target {
+    constructor() {
+      makeAutoObservable(this);
+    }
+
+    arr = [];
+    obj = {};
+    obj4: any;
+    str = '123';
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    num = 123;
+    nonExistent1 = null;
+    nonExistent2 = undefined;
+  })();
+}
+
+function getTargetClassWithUndefined() {
+  return new (class Target {
+    constructor() {
+      makeAutoObservable(this);
+    }
+
+    arr = [];
+    obj = {};
+    obj4 = undefined;
+    str = '123';
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    num = 123;
+    nonExistent1 = null;
+    nonExistent2 = undefined;
+  })();
+}
+
+function getTargetClassNotDefined() {
+  return new (class Target {
+    constructor() {
+      makeAutoObservable(this);
+    }
+
+    arr = [];
+    obj = {};
+    str = '123';
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    num = 123;
+    nonExistent1 = null;
+    nonExistent2 = undefined;
+  })();
+}
+
+function getSourceObject() {
+  return {
+    arr: [{ obj3: { param: '123' } }],
+    obj: {
+      obj2: {
+        obj3: { param: '123' },
+      },
+      str: '123',
+    },
+    obj4: {},
+    str: '123',
+    num: 123,
+    nonExistent1: null,
+    nonExistent2: undefined,
+  };
+}
+
 describe('restoreState', function test() {
-  it('merges with restoreState', () => {
-    const target = observable({
-      arr: [],
-      obj: {},
-      str: '123',
-      num: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-    });
+  function check(result: any, source: any) {
+    expect(result, 'result equals source').to.deep.eq(source);
 
-    const source = {
-      arr: [{ obj3: { param: '123' } }],
-      obj: {
-        obj2: {
-          obj3: { param: '123' },
-        },
-        str: '123',
-      },
-      obj4: {},
-      str: '123',
-      str2: '123',
-      num: 123,
-      num2: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-      nonExistent3: null,
-    };
+    expect(isObservable(result), 'result isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr), 'result.arr isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr[0]), 'result.arr[0] isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr[0].obj3), 'result.arr[0].obj3 isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj), 'result.obj isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj4), 'result.obj4 isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj.obj2), 'result.obj.obj2 isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj.obj2.obj3), 'result.obj.obj3 isObservable').to.deep.eq(true);
+  }
 
-    const result = restoreState({ logs: true, target, source });
+  function checkError(result: any, source: any) {
+    expect(result, 'result equals source').to.deep.eq(source);
 
-    expect(result).to.deep.eq(source);
+    expect(isObservable(result), 'result isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr), 'result.arr isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr[0]), 'result.arr[0] isObservable').to.deep.eq(true);
+    expect(isObservable(result.arr[0].obj3), 'result.arr[0].obj3 isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj), 'result.obj isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj4), 'result.obj4 isObservable').to.deep.eq(false); // BUG
+    expect(isObservable(result.obj.obj2), 'result.obj.obj2 isObservable').to.deep.eq(true);
+    expect(isObservable(result.obj.obj2.obj3), 'result.obj.obj3 isObservable').to.deep.eq(true);
+  }
 
-    expect(isObservable(result)).to.deep.eq(true);
-    expect(isObservable(result.arr)).to.deep.eq(true);
-    expect(isObservable(result.arr[0])).to.deep.eq(true);
-    expect(isObservable(result.arr[0].obj3)).to.deep.eq(true);
-    expect(isObservable(result.obj)).to.deep.eq(true);
-    expect(isObservable(result.obj4)).to.deep.eq(true);
-    expect(isObservable(result.obj.obj2)).to.deep.eq(true);
+  it('object: merges with restoreState', () => {
+    const source = getSourceObject();
+    const result = restoreState({ logs: true, target: getTargetObject(), source });
+
+    check(result, source);
   });
 
-  it('merges incorrectly with Object.assign', () => {
-    const target = observable({
-      arr: [],
-      obj: {},
-      str: '123',
-      num: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-    });
+  it('object: merges with Object.assign', () => {
+    const source = getSourceObject();
+    const result = Object.assign(getTargetObject(), source);
 
-    const source = {
-      arr: [{ obj3: { param: '123' } }],
-      obj: {
-        obj2: {
-          obj3: { param: '123' },
-        },
-        str: '123',
-      },
-      obj4: {},
-      str: '123',
-      str2: '123',
-      num: 123,
-      num2: 123,
-      nonExistent1: null,
-      nonExistent2: undefined,
-      nonExistent3: null,
-    };
-
-    const result2 = Object.assign(target, source) as any;
-
-    expect(result2).to.deep.eq(source);
-
-    expect(isObservable(result2)).to.deep.eq(true);
-    expect(isObservable(result2.arr)).to.deep.eq(true);
-    expect(isObservable(result2.arr[0])).to.deep.eq(true);
-    expect(isObservable(result2.arr[0].obj3)).to.deep.eq(true);
-    expect(isObservable(result2.obj)).to.deep.eq(true);
-    expect(isObservable(result2.obj4)).to.deep.eq(false); // BUG
-    expect(isObservable(result2.obj.obj2)).to.deep.eq(true);
-    expect(isObservable(result2.obj.obj2.obj3)).to.deep.eq(true);
+    check(result, source);
+    // expect(isObservable(result2.obj4)).to.deep.eq(false); // BUG in Mobx 4
   });
 
-  it('merges incorrectly with Object.assign (simplified)', () => {
-    const target = observable({ str: '123' });
-    const source = { str: '321', obj: {} };
+  it('class: error with Object.assign if no default value', () => {
+    const source = getSourceObject();
 
-    const result = Object.assign(target, source);
+    checkError(Object.assign(getTargetClassNotDefined(), source), source);
+    checkError(Object.assign(getTargetClassWithInitializer(), source), source);
 
-    expect(result).to.deep.eq(source);
-    expect(isObservable(result)).to.deep.eq(true);
-    expect(isObservable(result.obj)).to.deep.eq(false); // BUG
+    check(Object.assign(getTargetClassWithUndefined(), source), source);
+  });
+
+  it('class: merges with restoreState', () => {
+    const source = getSourceObject();
+
+    check(restoreState({ target: getTargetClassNotDefined(), source }), source);
+    check(restoreState({ target: getTargetClassWithUndefined(), source }), source);
+    check(restoreState({ target: getTargetClassWithInitializer(), source }), source);
   });
 });

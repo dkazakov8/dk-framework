@@ -1,4 +1,4 @@
-## Library for merging observables (DEPRECATED)
+## Library for safe merging of MobX observables
 
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-restore-state/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-mobx-restore-state)](https://www.npmjs.com/package/dk-mobx-restore-state)
@@ -11,31 +11,59 @@
 > But for production use it's **strongly recommended** to create a fork, because I do not write
 > Changelogs and may break / add some functionality without notice.
 
+### Purpose
+
 The purpose of this library is to safely restore state during SSR.
 
 MobX 4 had a bug where newly added objects were not observable, like
 
 ```typescript
-const target = observable({ str: '123' });
-const source = { str: '321', obj: {} };
+const result = Object.assign(observable({ str: '123' }), { str: '321', obj: {} });
 
-const result = Object.assign(target, source);
-
-expect(result).to.deep.eq(source);
-expect(isObservable(result)).to.deep.eq(true);
-expect(isObservable(result.obj)).to.deep.eq(false); // BUG
+expect(isObservable(result.obj)).to.deep.eq(false); // BUG in MobX 4
 ```
 
-Nowadays MobX 5 / 6 versions do not have this bug, we can safely use `Object.assign`. So this library
-is **DEPRECATED** and may be used in legacy-projects only. So with MobX 4 use this:
+Nowadays MobX 5 / 6 versions do not have this bug, we can use `Object.assign`. But when we speak about
+classes, the behavior remain inconsistent:
 
 ```typescript
-const target = observable({ str: '123' });
-const source = { str: '321', obj: {} };
+class Target {
+  constructor() { makeAutoObservable(this); }
+  str = '123';
+}
+    
+const result = Object.assign(new Target(), { str: '321', obj: {} });
 
-const result = restoreState(target, source);
+expect(isObservable(result.obj)).to.deep.eq(false); // BUG in all MobX versions
 
-expect(result).to.deep.eq(source);
-expect(isObservable(result)).to.deep.eq(true);
-expect(isObservable(result.obj)).to.deep.eq(true); // NO BUGS
+class Target {
+  constructor() { makeAutoObservable(this); }
+  str = '123';
+  obj;
+}
+    
+const result = Object.assign(new Target(), { str: '321', obj: {} });
+
+expect(isObservable(result.obj)).to.deep.eq(false); // BUG in all MobX versions
+
+class Target {
+  constructor() { makeAutoObservable(this); }
+  str = '123';
+  obj = undefined;
+}
+    
+const result = Object.assign(new Target(), { str: '321', obj: {} });
+
+expect(isObservable(result.obj)).to.deep.eq(true); // No bug finally!
 ```
+
+So, if you declare fore example `user?: User` inside your model and then SSR gives you a serialized
+object like `user: { name: 'John' }` it will not become observable if you use `Object.assign(store, SSR_DATA)`.
+
+This is very confusing and depends on transpilers (Babel, TSC, Esbuild, SWC) which all behave
+differently. So, this library makes everything **consistent**.
+
+### Usage
+
+Install `dk-mobx-restore-state` and use it instead of `Object.assign` where needed. Everything
+will be `observable` (in MobX 4 or in class objects) in all the cases mentioned above.

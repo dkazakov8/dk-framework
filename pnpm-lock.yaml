@@ -184,8 +184,8 @@ importers:
   packages/mobx-restore-state:
     devDependencies:
       mobx:
-        specifier: 4.15.7
-        version: registry.npmjs.org/mobx@4.15.7
+        specifier: 6.12.3
+        version: registry.npmjs.org/mobx@6.12.3
 
   packages/mobx-stateful-fn:
     devDependencies:
@@ -11688,12 +11688,6 @@ packages:
       mobx-react-lite: registry.npmjs.org/mobx-react-lite@4.0.7(mobx@6.12.3)(react-dom@18.2.0)(react@18.2.0)
       react: registry.npmjs.org/react@18.2.0
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
-    dev: true
-
-  registry.npmjs.org/mobx@4.15.7:
-    resolution: {integrity: sha512-X4uQvuf2zYKHVO5kRT5Utmr+J9fDnRgxWWnSqJ4oiccPTQU38YG+/O3nPmOhUy4jeHexl7XJJpWDBgEnEfp+8w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/mobx/-/mobx-4.15.7.tgz}
-    name: mobx
-    version: 4.15.7
     dev: true
 
   registry.npmjs.org/mobx@6.12.3:
