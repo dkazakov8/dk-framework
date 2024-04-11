@@ -67,3 +67,23 @@ differently. So, this library makes everything **consistent**.
 
 Install `dk-mobx-restore-state` and use it instead of `Object.assign` where needed. Everything
 will be `observable` (in MobX 4 or in class objects) in all the cases mentioned above.
+
+#### Syntax
+
+`restoreState({ logs, target, source })`
+
+`logs` (boolean): logging of operations
+
+`target`: object that needs to be filled with observable data
+
+`source`: object with some data (may be observable or not)
+
+### Alternatives
+
+You can still use `Object.assign` if the source is `observable`. Like this
+
+```typescript
+const result = Object.assign(new Target(), observable({ str: '321', obj: {} }));
+```
+
+It seems to work correctly in most cases.

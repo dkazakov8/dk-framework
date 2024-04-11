@@ -123,13 +123,20 @@ describe('restoreState', function test() {
     // expect(isObservable(result2.obj4)).to.deep.eq(false); // BUG in Mobx 4
   });
 
-  it('class: error with Object.assign if no default value', () => {
+  it('class: error with Object.assign', () => {
     const source = getSourceObject();
 
     checkError(Object.assign(getTargetClassNotDefined(), source), source);
     checkError(Object.assign(getTargetClassWithInitializer(), source), source);
-
     check(Object.assign(getTargetClassWithUndefined(), source), source);
+  });
+
+  it('class: success with Object.assign if source observable', () => {
+    const source = getSourceObject();
+
+    check(Object.assign(getTargetClassNotDefined(), observable(source)), source);
+    check(Object.assign(getTargetClassWithInitializer(), observable(source)), source);
+    check(Object.assign(getTargetClassWithUndefined(), observable(source)), source);
   });
 
   it('class: merges with restoreState', () => {
@@ -138,5 +145,19 @@ describe('restoreState', function test() {
     check(restoreState({ target: getTargetClassNotDefined(), source }), source);
     check(restoreState({ target: getTargetClassWithUndefined(), source }), source);
     check(restoreState({ target: getTargetClassWithInitializer(), source }), source);
+  });
+
+  it('class: merges with restoreState if source observable', () => {
+    const source = getSourceObject();
+
+    check(restoreState({ target: getTargetClassNotDefined(), source: observable(source) }), source);
+    check(
+      restoreState({ target: getTargetClassWithUndefined(), source: observable(source) }),
+      source
+    );
+    check(
+      restoreState({ target: getTargetClassWithInitializer(), source: observable(source) }),
+      source
+    );
   });
 });
