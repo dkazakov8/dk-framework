@@ -10,9 +10,9 @@
   },
   "scripts": {
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
-    "test": "nyc mocha",
     "prepublishOnly": "pnpm run build",
-    "posttest": "nyc report --reporter=json"
+    "test": "nyc mocha&&pnpm run gen-badge",
+    "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"
   },
   "nyc": {
     "include": "src"

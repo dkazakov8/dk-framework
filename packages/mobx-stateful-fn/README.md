@@ -1,6 +1,6 @@
 ## Library for adding MobX observable state to async functions
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-mobx-stateful-fn/master)](https://codecov.io/gh/dkazakov8/dk-mobx-stateful-fn)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-mobx-stateful-fn)](https://www.npmjs.com/package/dk-mobx-stateful-fn)
 [![license](https://img.shields.io/npm/l/dk-mobx-stateful-fn)](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/LICENSE)
 
