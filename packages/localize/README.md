@@ -1,8 +1,8 @@
 ## Library for injecting texts into templates
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-localize/master)](https://codecov.io/gh/dkazakov8/dk-localize)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/localize/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-localize)](https://www.npmjs.com/package/dk-localize)
-[![license](https://img.shields.io/npm/l/dk-localize)](https://github.com/dkazakov8/dk-localize/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-localize)](https://github.com/dkazakov8/dk-framework/blob/master/packages/localize/LICENSE)
 
 > Currently suits English-only projects. Features are limited, development is in progress in accordance to my needs
 

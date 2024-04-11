@@ -12,6 +12,7 @@ yarn.lock
 
 .nyc_output
 coverage
+cover.svg
 .github
 src
 .mocharc.json

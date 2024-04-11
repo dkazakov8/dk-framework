@@ -1,8 +1,8 @@
 ## Simple lib for parallel Webpack builds
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-webpack-parallel-simple/master)](https://codecov.io/gh/dkazakov8/dk-webpack-parallel-simple)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/webpack-parallel-simple/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-webpack-parallel-simple)](https://www.npmjs.com/package/dk-webpack-parallel-simple)
-[![license](https://img.shields.io/npm/l/dk-webpack-parallel-simple)](https://github.com/dkazakov8/dk-webpack-parallel-simple/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-webpack-parallel-simple)](https://github.com/dkazakov8/dk-framework/blob/master/packages/webpack-parallel-simple/LICENSE)
 
 ### Motivation
 

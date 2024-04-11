@@ -1,8 +1,8 @@
 ## Library for connecting MobX View Models to your React components
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-mobx-use-store/master)](https://codecov.io/gh/dkazakov8/dk-mobx-use-store)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-use-store/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-mobx-use-store)](https://www.npmjs.com/package/dk-mobx-use-store)
-[![license](https://img.shields.io/npm/l/dk-mobx-use-store)](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-mobx-use-store)](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-use-store/LICENSE)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

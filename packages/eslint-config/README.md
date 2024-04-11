@@ -1,7 +1,7 @@
 ## Enterprise-quality ESLint config with TypeScript support
 
 [![npm](https://img.shields.io/npm/v/dk-eslint-config)](https://www.npmjs.com/package/dk-eslint-config)
-[![license](https://img.shields.io/npm/l/dk-eslint-config)](https://github.com/dkazakov8/dk-eslint-config/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-eslint-config)](https://github.com/dkazakov8/dk-framework/blob/master/packages/eslint-config/LICENSE)
 
 Use as is or as an inspiration for your projects.
 

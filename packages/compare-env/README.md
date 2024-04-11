@@ -1,8 +1,8 @@
 ## Comparison utility for .env files
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-compare-env/master)](https://codecov.io/gh/dkazakov8/dk-compare-env)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/compare-env/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-compare-env)](https://www.npmjs.com/package/dk-compare-env)
-[![license](https://img.shields.io/npm/l/dk-compare-env)](https://github.com/dkazakov8/dk-compare-env/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-compare-env)](https://github.com/dkazakov8/dk-framework/blob/master/packages/compare-env/LICENSE)
 
 In enterprise projects you often need to pass some environment params to your application.
 The good way is to create different files like

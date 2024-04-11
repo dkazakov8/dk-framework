@@ -1,7 +1,7 @@
 ## Reload browser on files change
 
 [![npm](https://img.shields.io/npm/v/dk-reload-server)](https://www.npmjs.com/package/dk-reload-server)
-[![license](https://img.shields.io/npm/l/dk-reload-server)](https://github.com/dkazakov8/dk-reload-server/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-reload-server)](https://github.com/dkazakov8/dk-framework/blob/master/packages/reload-server/LICENSE)
 
 ### Installation
 

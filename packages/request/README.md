@@ -1,8 +1,8 @@
 ## Request utility with validations based on Axios & ts-interface-checker
 
-[![coverage](https://img.shields.io/codecov/c/gh/dkazakov8/dk-request/master)](https://codecov.io/gh/dkazakov8/dk-request)
+![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/request/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-request)](https://www.npmjs.com/package/dk-request)
-[![license](https://img.shields.io/npm/l/dk-request)](https://github.com/dkazakov8/dk-request/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/dk-request)](https://github.com/dkazakov8/dk-framework/blob/master/packages/request/LICENSE)
 
 > This lib is maintained for my needs, open-source for your inspiration
 
