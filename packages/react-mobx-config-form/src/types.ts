@@ -19,7 +19,7 @@ export type TypeInitialData<TFormConfig extends TypeGenerateFormTypes<any, any>[
 
 export type TypeInputProps<
   TConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
-  TConfigInput extends TypeGenerateFormTypes<any, any>['TypeFormConfig']['inputs']
+  TConfigInput extends TypeGenerateFormTypes<any, any>['TypeFormConfig']['inputs'],
 > = {
   name: keyof TConfig['inputs'];
   formConfig: TConfig;
@@ -29,7 +29,7 @@ export type TypeInputProps<
 
 export type TypeSubmitProps<
   TConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
-  TConfigInput extends TypeGenerateFormTypes<any, any>['TypeFormConfig']['submit']
+  TConfigInput extends TypeGenerateFormTypes<any, any>['TypeFormConfig']['submit'],
 > = {
   formConfig: TConfig;
   inputConfig: TConfigInput;

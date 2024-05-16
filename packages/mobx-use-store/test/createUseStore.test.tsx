@@ -80,7 +80,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
       }
@@ -108,7 +111,10 @@ describe('createUseStore', () => {
       class VM implements ViewModel {
         autorunDisposers: Array<IReactionDisposer> = [];
 
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
 
           this.autorunDisposers.push(
@@ -169,7 +175,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
 
@@ -231,7 +240,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false, props: false }, { autoBind: true });
 
           autorun(() => {
@@ -327,7 +339,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
       }
@@ -362,7 +377,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
       }
@@ -415,7 +433,10 @@ describe('createUseStore', () => {
       type ViewModel = ViewModelConstructor<TContext>;
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
 
@@ -642,7 +663,10 @@ describe('createUseStore', () => {
       const spy_beforeUnmount = spy();
 
       class VM implements ViewModel {
-        constructor(public context: TContext, public props: typeof initialProps) {
+        constructor(
+          public context: TContext,
+          public props: typeof initialProps
+        ) {
           makeAutoObservable(this, { context: false }, { autoBind: true });
         }
 

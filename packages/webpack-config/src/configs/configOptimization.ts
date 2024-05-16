@@ -4,6 +4,7 @@
  *
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 import { TypeConfig } from '../types';

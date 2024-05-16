@@ -6,6 +6,7 @@
  *
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
 import { TypePlugin } from '../types';

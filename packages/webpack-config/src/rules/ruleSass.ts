@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { TypeRule, TypeLoader } from '../types';

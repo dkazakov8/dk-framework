@@ -7,7 +7,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { TypeGenerateFormTypes } from './types';
 
 export class FormConfig<
-  TConfigObject extends TypeGenerateFormTypes<any, any>['TypeFormConfigObject']
+  TConfigObject extends TypeGenerateFormTypes<any, any>['TypeFormConfigObject'],
 > {
   inputs: TConfigObject['inputs'];
   submit: TConfigObject['submit'] | any;

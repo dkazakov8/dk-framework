@@ -21,7 +21,7 @@ export function createUseStore<TContext extends any>(
     TViewModel extends new (
       context: TContext,
       p: ConstructorParameters<TViewModel>[1]
-    ) => ViewModelConstructor<TContext>
+    ) => ViewModelConstructor<TContext>,
   >(
     ViewModel: TViewModel,
     props: ConstructorParameters<TViewModel>[1],

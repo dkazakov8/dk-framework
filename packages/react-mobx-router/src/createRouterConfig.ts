@@ -10,7 +10,7 @@ type TypeRouteInitialItem<TObj extends TypeRouteItem> = TypeRouteItem &
     : {});
 
 type TypeRouteItemFinalGeneric<
-  TConfig extends { [Key in keyof TConfig]: TypeRouteInitialItem<TConfig[Key]> }
+  TConfig extends { [Key in keyof TConfig]: TypeRouteInitialItem<TConfig[Key]> },
 > = {
   [Key in keyof TConfig]: TConfig[Key] & {
     name: Key;
@@ -24,7 +24,7 @@ type TypeRouteItemFinalGeneric<
 export function createRouterConfig<
   TConfig extends {
     [Key in keyof TConfig]: TypeRouteInitialItem<TConfig[Key]>;
-  }
+  },
 >(config: TConfig): TypeRouteItemFinalGeneric<TConfig> {
   return addNames(config);
 }

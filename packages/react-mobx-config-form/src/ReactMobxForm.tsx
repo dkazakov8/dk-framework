@@ -12,7 +12,7 @@ type TypeChildrenProps<TFormConfig extends TypeGenerateFormTypes<any, any>['Type
 };
 
 export type PropsReactMobxForm<
-  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']
+  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
 > = {
   formConfig: TFormConfig;
   children: (childrenProps: TypeChildrenProps<TFormConfig>) => ReactNode;
@@ -28,7 +28,7 @@ type PropsForm<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConf
   };
 
 export class ReactMobxForm<
-  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']
+  TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig'],
 > extends Component<PropsForm<TFormConfig>> {
   handlePreventSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -56,22 +56,25 @@ export class ReactMobxForm<
     const { children, className, formConfig, initialData, componentsMapper } = this.props;
 
     const childrenProps: TypeChildrenProps<TFormConfig> = {
-      inputs: getTypedKeys(formConfig.inputs).reduce((acc, name: keyof TFormConfig['inputs']) => {
-        const inputConfig = formConfig.inputs[name];
-        const Comp = componentsMapper[inputConfig.type];
+      inputs: getTypedKeys(formConfig.inputs).reduce(
+        (acc, name: keyof TFormConfig['inputs']) => {
+          const inputConfig = formConfig.inputs[name];
+          const Comp = componentsMapper[inputConfig.type];
 
-        acc[name] = (
-          <Comp
-            key={name}
-            name={name}
-            formConfig={formConfig}
-            inputConfig={inputConfig!}
-            initialData={initialData?.[name]}
-          />
-        );
+          acc[name] = (
+            <Comp
+              key={name}
+              name={name}
+              formConfig={formConfig}
+              inputConfig={inputConfig!}
+              initialData={initialData?.[name]}
+            />
+          );
 
-        return acc;
-      }, {} as Record<keyof TFormConfig['inputs'], ReactNode>),
+          return acc;
+        },
+        {} as Record<keyof TFormConfig['inputs'], ReactNode>
+      ),
     };
 
     if (formConfig.submit) {

@@ -13,11 +13,14 @@ export function convertCssToJs(template: string): TypeThemes {
   compareByMatrix({ configs, matrix });
 
   return configs.reduce((themesJs, { name, variables }) => {
-    themesJs[name] = variables.reduce((vars, { key, value }) => {
-      vars[key] = value;
+    themesJs[name] = variables.reduce(
+      (vars, { key, value }) => {
+        vars[key] = value;
 
-      return vars;
-    }, {} as TypeThemes[TypeThemeName]);
+        return vars;
+      },
+      {} as TypeThemes[TypeThemeName]
+    );
 
     return themesJs;
   }, {} as TypeThemes);

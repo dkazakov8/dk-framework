@@ -3,6 +3,7 @@
  *
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 
 import { TypePlugin } from '../types';

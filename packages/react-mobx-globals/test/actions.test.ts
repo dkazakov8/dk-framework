@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { action, autorun, observable, runInAction } from 'mobx';
 
 import { createContextProps } from '../src/createContextProps';
 

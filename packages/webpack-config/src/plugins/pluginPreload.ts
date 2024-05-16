@@ -3,6 +3,7 @@
  *
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import PreloadWebpackPlugin from 'preload-webpack-plugin';
 
 import { TypePlugin } from '../types';

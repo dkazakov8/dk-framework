@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import ConditionalAggregateWebpackPlugin from 'dk-conditional-aggregate-webpack-plugin';
 
 import { TypePlugin } from '../types';

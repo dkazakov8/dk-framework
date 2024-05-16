@@ -3,6 +3,7 @@
  *
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import LodashModulePlugin from 'lodash-webpack-plugin';
 
 import { TypePlugin } from '../types';
