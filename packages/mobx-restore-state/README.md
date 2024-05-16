@@ -58,7 +58,7 @@ expect(isObservable(result.obj)).to.eq(false); // BUG in all MobX versions
 This is very confusing and depends on transpilers (Babel, TSC, Esbuild, SWC) which all behave
 differently. So, this library makes everything **consistent**.
 
-Now that you have fixed these errors and feels happy and still don't want `dk-mobx-restore-state`...
+Now that you have fixed these errors and feel happy and still don't want `dk-mobx-restore-state`...
 
 ```typescript
 class Target {
@@ -97,7 +97,7 @@ mergeWith(new Target(), source, (objValue, srcValue) => {
 }
 ```
 
-But... There are some edge-cases in the strategy of merging and you need to see logs of the process...
+But... There are some edge-cases in the strategy of merging and you need to see the logs of the process...
 Actually, you may consider `dk-mobx-restore-state` just from the start. It is thoroughly tested, 1.8kb unminified,
 handles most of edge-cases and has no deps.
 
