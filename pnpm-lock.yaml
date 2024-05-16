@@ -183,6 +183,9 @@ importers:
 
   packages/mobx-restore-state:
     devDependencies:
+      lodash:
+        specifier: 4.17.21
+        version: registry.npmjs.org/lodash@4.17.21
       mobx:
         specifier: 6.12.3
         version: registry.npmjs.org/mobx@6.12.3

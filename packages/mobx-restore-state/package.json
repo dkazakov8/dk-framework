@@ -18,7 +18,8 @@
     "include": "src"
   },
   "devDependencies": {
-    "mobx": "6.12.3"
+    "mobx": "6.12.3",
+    "lodash": "4.17.21"
   },
   "peerDependencies": {
     "mobx": "*"

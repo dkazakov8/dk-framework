@@ -15,16 +15,20 @@
 
 The purpose of this library is to safely restore state during SSR.
 
-MobX 4 had a bug where newly added objects were not observable, like
+If you want to restore your state and see a problem, it may be as follows:
+
+1. You use MobX 4. It has a bug where newly added objects are not observable, like
 
 ```typescript
 const result = Object.assign(observable({ str: '123' }), { str: '321', obj: {} });
 
-expect(isObservable(result.obj)).to.deep.eq(false); // BUG in MobX 4
+expect(isObservable(result.obj)).to.eq(false); // BUG in MobX 4
 ```
 
 Nowadays MobX 5 / 6 versions do not have this bug, we can use `Object.assign`. But when we speak about
-classes, the behavior remain inconsistent:
+classes, the behavior remains inconsistent.
+
+2. You use a class mobx store without enumerated value
 
 ```typescript
 class Target {
@@ -34,38 +38,72 @@ class Target {
     
 const result = Object.assign(new Target(), { str: '321', obj: {} });
 
-expect(isObservable(result.obj)).to.deep.eq(false); // BUG in all MobX versions
-
-class Target {
-  constructor() { makeAutoObservable(this); }
-  str = '123';
-  obj;
-}
-    
-const result = Object.assign(new Target(), { str: '321', obj: {} });
-
-expect(isObservable(result.obj)).to.deep.eq(false); // BUG in all MobX versions
-
-class Target {
-  constructor() { makeAutoObservable(this); }
-  str = '123';
-  obj = undefined;
-}
-    
-const result = Object.assign(new Target(), { str: '321', obj: {} });
-
-expect(isObservable(result.obj)).to.deep.eq(true); // No bug finally!
+expect(isObservable(result.obj)).to.eq(false); // BUG in all MobX versions
 ```
 
-So, if you declare fore example `user?: User` inside your model and then SSR gives you a serialized
-object like `user: { name: 'John' }` it will not become observable if you use `Object.assign(store, SSR_DATA)`.
+3. You use a class mobx store without initial value
+
+```typescript
+class Target {
+  constructor() { makeAutoObservable(this); }
+  str = '123';
+  obj?: SomeType;
+}
+    
+const result = Object.assign(new Target(), { str: '321', obj: {} });
+
+expect(isObservable(result.obj)).to.eq(false); // BUG in all MobX versions
+```
 
 This is very confusing and depends on transpilers (Babel, TSC, Esbuild, SWC) which all behave
 differently. So, this library makes everything **consistent**.
 
+Now that you have fixed these errors and feels happy and still don't want `dk-mobx-restore-state`...
+
+```typescript
+class Target {
+  constructor() { makeAutoObservable(this); }
+  str = '123';
+  obj?: SomeType = undefined;
+}
+    
+const result = Object.assign(new Target(), { str: '321', obj: {} });
+
+expect(isObservable(result.obj)).to.eq(true); // No bug finally!
+```
+
+4. You come across a problem that `Object.assign` is not a **deep merge**. So you can not restore 
+a partial data like
+
+```typescript
+class Target {
+  constructor() { makeAutoObservable(this); }
+  obj = { a: 1 };
+}
+    
+const result = Object.assign(new Target(), { obj: { b: 2 } });
+
+expect(result.obj.a).to.eq(undefined); // Lost some initial data!
+```
+
+5. You try `lodash.merge` and see that it merges deeply, but with the same inconsistencies as 
+`Object.assign`. You write a customizer and feel happy finally...
+
+```typescript
+mergeWith(new Target(), source, (objValue, srcValue) => {
+  if (objValue == null && Object.prototype.toString.call(srcValue) === '[object Object]') {
+    return observable(srcValue);
+  }
+}
+```
+
+But... There are some edge-cases in the strategy of merging and you need to see logs of the process...
+Actually, you may consider `dk-mobx-restore-state` just from the start. It is thoroughly tested, 1.8kb unminified,
+handles most of edge-cases and has no deps.
+
 ### Usage
 
-Install `dk-mobx-restore-state` and use it instead of `Object.assign` where needed. Everything
+Install `dk-mobx-restore-state` and use it instead of `Object.assign / mergeWith` where needed. Everything
 will be `observable` (in MobX 4 or in class objects) in all the cases mentioned above.
 
 #### Syntax
@@ -77,13 +115,3 @@ will be `observable` (in MobX 4 or in class objects) in all the cases mentioned 
 `target`: object that needs to be filled with observable data
 
 `source`: object with some data (may be observable or not)
-
-### Alternatives
-
-You can still use `Object.assign` if the source is `observable`. Like this
-
-```typescript
-const result = Object.assign(new Target(), observable({ str: '321', obj: {} }));
-```
-
-It seems to work correctly in most cases.
