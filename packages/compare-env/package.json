@@ -2,7 +2,7 @@
   "name": "dk-compare-env",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.2.17",
+  "version": "3.2.18",
   "description": "Compare .env files",
   "repository": {
     "type": "git",
