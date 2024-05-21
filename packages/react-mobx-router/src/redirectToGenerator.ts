@@ -1,34 +1,27 @@
-import { createBrowserHistory } from 'history';
-import { Response } from 'express';
 import { runInAction } from 'mobx';
 
 import { TypeRedirectToParams } from './types/TypeRedirectToParams';
+import { history } from './utils/history';
+import { constants } from './utils/constants';
 import { getDynamicValues } from './utils/getDynamicValues';
-import { setResponseStatus } from './utils/setResponseStatus';
 import { replaceDynamicValues } from './utils/replaceDynamicValues';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
 import { TypeRouteItemFinal } from './types/TypeRouteItemFinal';
 
 type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   routes: TRoutes;
-  history: ReturnType<typeof createBrowserHistory>;
-  globals: { res?: Response };
-  isClient: boolean;
-  redirectTo: any;
   routerStore: any;
   routeError500: TRoutes[keyof TRoutes];
 };
 
 export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItemFinal>>({
   routes,
-  globals,
-  history,
-  isClient,
-  redirectTo,
   routerStore,
   routeError500,
 }: TypeParamsGenerator<TRoutes>): (redirectParams: TypeRedirectToParams<TRoutes>) => Promise<void> {
-  return ({ route, params = {}, noHistoryPush }) => {
+  const isClient = constants.isClient;
+
+  return function redirectInner({ route, params = {}, noHistoryPush }): Promise<void> {
     const currentRouteConfig = routes[routerStore.currentRoute?.name];
     const prevPathname = currentRouteConfig
       ? replaceDynamicValues({
@@ -45,9 +38,8 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
     }
 
     return Promise.resolve()
-      .then(() => setResponseStatus({ res: globals.res, routes, route, isClient }))
-      .then(() => currentRouteConfig?.beforeLeave?.(globals, route))
-      .then(() => route.beforeEnter?.(globals))
+      .then(() => currentRouteConfig?.beforeLeave?.(route))
+      .then(() => route.beforeEnter?.())
       .then((redirectParams?: TypeRedirectToParams<TRoutes>) => {
         if (typeof redirectParams === 'object') {
           const err = new Error(
@@ -57,7 +49,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
             })
           );
 
-          err.name = 'REDIRECT';
+          err.name = constants.errorRedirect;
 
           // @ts-ignore
           if (isClient) err.data = redirectParams;
@@ -101,7 +93,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
         if (error?.name === 'SILENT') return Promise.resolve();
 
         if (isClient && error.data) {
-          return redirectTo(error.data);
+          return redirectInner(error.data);
         }
 
         /**
@@ -110,7 +102,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
          *
          */
 
-        if (error.name === 'REDIRECT') throw error;
+        if (error.name === constants.errorRedirect) throw error;
 
         console.error(error);
 

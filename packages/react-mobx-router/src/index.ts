@@ -1,3 +1,4 @@
+export { history } from './utils/history';
 export { getInitialRoute } from './utils/getInitialRoute';
 export { createRouterConfig } from './createRouterConfig';
 export { redirectToGenerator } from './redirectToGenerator';

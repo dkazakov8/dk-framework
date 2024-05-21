@@ -17,15 +17,15 @@
   "nyc": {
     "include": "src"
   },
+  "dependencies": {
+    "history": "5.3.0"
+  },
   "devDependencies": {
-    "@types/express": "4.17.21",
     "@types/loadable__component": "5.13.9",
-    "history": "5.3.0",
     "mobx": "6.12.3",
     "react": "18.2.0"
   },
   "peerDependencies": {
-    "history": "*",
     "mobx": "*",
     "react": "*"
   },

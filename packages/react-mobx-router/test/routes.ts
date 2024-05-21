@@ -11,7 +11,7 @@ export const routes = createRouterConfig({
     validators: {
       static: (value: string) => value.length > 2,
     },
-    params: { static: '1' as string },
+    params: { static: '' as string },
     loader: undefined as any,
   },
   dynamicRoute2: {
@@ -19,7 +19,7 @@ export const routes = createRouterConfig({
     validators: {
       static: (value: string) => value.length > 2,
     },
-    params: { static: '1' as string },
+    params: { static: '' as string },
     loader: undefined as any,
   },
   dynamicRoute3: {
@@ -29,13 +29,13 @@ export const routes = createRouterConfig({
       ':static': (value: string) => value.length > 2,
     },
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    params: { ':static': '1' as string },
+    params: { ':static': '' as string },
     loader: undefined as any,
   },
   // @ts-ignore
   dynamicRouteNoValidators: {
     path: '/test2/:param',
-    params: { param: '1' as string },
+    params: { param: '' as string },
     loader: undefined as any,
   },
   dynamicRouteMultiple: {
@@ -44,7 +44,7 @@ export const routes = createRouterConfig({
       param: (value: string) => value.length > 2,
       param2: (value: string) => value.length > 2,
     },
-    params: { param: '1' as string, param2: '1' as string },
+    params: { param: '' as string, param2: '' as string },
     loader: undefined as any,
   },
   errorRoute: {

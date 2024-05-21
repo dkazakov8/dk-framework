@@ -291,6 +291,10 @@ importers:
         version: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
 
   packages/react-mobx-router:
+    dependencies:
+      history:
+        specifier: 5.3.0
+        version: registry.npmjs.org/history@5.3.0
     devDependencies:
       '@types/express':
         specifier: 4.17.21
@@ -298,9 +302,6 @@ importers:
       '@types/loadable__component':
         specifier: 5.13.9
         version: registry.npmjs.org/@types/loadable__component@5.13.9
-      history:
-        specifier: 5.3.0
-        version: registry.npmjs.org/history@5.3.0
       mobx:
         specifier: 6.12.3
         version: registry.npmjs.org/mobx@6.12.3
@@ -9172,7 +9173,7 @@ packages:
     version: 5.3.0
     dependencies:
       '@babel/runtime': registry.npmjs.org/@babel/runtime@7.24.0
-    dev: true
+    dev: false
 
   registry.npmjs.org/hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/hosted-git-info/-/hosted-git-info-2.8.9.tgz}
