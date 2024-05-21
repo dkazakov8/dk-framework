@@ -5,7 +5,6 @@ import { runInAction } from 'mobx';
 import { TypeRedirectToParams } from './types/TypeRedirectToParams';
 import { getDynamicValues } from './utils/getDynamicValues';
 import { setResponseStatus } from './utils/setResponseStatus';
-import { findRouteByPathname } from './utils/findRouteByPathname';
 import { replaceDynamicValues } from './utils/replaceDynamicValues';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
 import { TypeRouteItemFinal } from './types/TypeRouteItemFinal';
@@ -17,7 +16,6 @@ type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   isClient: boolean;
   redirectTo: any;
   routerStore: any;
-  routeError404: TRoutes[keyof TRoutes];
   routeError500: TRoutes[keyof TRoutes];
 };
 
@@ -28,22 +26,9 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
   isClient,
   redirectTo,
   routerStore,
-  routeError404,
   routeError500,
 }: TypeParamsGenerator<TRoutes>): (redirectParams: TypeRedirectToParams<TRoutes>) => Promise<void> {
-  return ({ route, params = {}, noHistoryPush, pathname }) => {
-    if (!route) {
-      if (!pathname) throw new Error('redirectToGenerator: pathname should exist when no route');
-
-      const nextRoute = findRouteByPathname({ pathname, routes }) || routeError404;
-
-      return redirectTo({
-        route: nextRoute,
-        params: getDynamicValues({ routesObject: nextRoute, pathname }),
-        noHistoryPush,
-      });
-    }
-
+  return ({ route, params = {}, noHistoryPush }) => {
     const currentRouteConfig = routes[routerStore.currentRoute?.name];
     const prevPathname = currentRouteConfig
       ? replaceDynamicValues({
