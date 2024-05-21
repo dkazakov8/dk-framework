@@ -3,4 +3,5 @@ export const constants = {
   pathPartSeparator: '/',
   isClient: typeof window !== 'undefined',
   errorRedirect: 'REDIRECT',
+  errorPrevent: 'PREVENT_REDIRECT',
 };

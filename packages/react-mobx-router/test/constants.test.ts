@@ -9,6 +9,7 @@ describe('constants', () => {
       pathPartSeparator: '/',
       isClient: false,
       errorRedirect: 'REDIRECT',
+      errorPrevent: 'PREVENT_REDIRECT',
     });
   });
 });

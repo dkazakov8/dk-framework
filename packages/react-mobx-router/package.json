@@ -11,7 +11,7 @@
   "scripts": {
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
     "prepublishOnly": "pnpm run build",
-    "test": "nyc mocha&&pnpm run gen-badge",
+    "test": "nyc mocha --no-parallel&&pnpm run gen-badge",
     "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"
   },
   "nyc": {

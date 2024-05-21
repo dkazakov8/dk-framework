@@ -3,5 +3,5 @@
   "spec": ["test/**/*.test.ts", "test/**/*.test.tsx"],
   "require": "tsx/cjs",
   "bail": true,
-  "slow": 2
+  "slow": 10
 }

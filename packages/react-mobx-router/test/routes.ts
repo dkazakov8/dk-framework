@@ -47,9 +47,16 @@ export const routes = createRouterConfig({
     params: { param: '' as string, param2: '' as string },
     loader: undefined as any,
   },
-  errorRoute: {
-    path: '/test/error',
+  error404: {
+    path: '/error404',
     params: {},
+    props: { errorNumber: 404 },
+    loader: undefined as any,
+  },
+  error500: {
+    path: '/error500',
+    params: {},
+    props: { errorNumber: 500 },
     loader: undefined as any,
   },
 });
