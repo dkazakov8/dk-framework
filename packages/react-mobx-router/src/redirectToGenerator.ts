@@ -12,12 +12,14 @@ type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   routes: TRoutes;
   routerStore: any;
   routeError500: TRoutes[keyof TRoutes];
+  lifecycleParams?: Array<any>;
 };
 
 export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItemFinal>>({
   routes,
   routerStore,
   routeError500,
+  lifecycleParams,
 }: TypeParamsGenerator<TRoutes>): (redirectParams: TypeRedirectToParams<TRoutes>) => Promise<void> {
   const isClient = constants.isClient;
 
@@ -38,8 +40,8 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
     }
 
     return Promise.resolve()
-      .then(() => currentRouteConfig?.beforeLeave?.(route))
-      .then(() => route.beforeEnter?.())
+      .then(() => currentRouteConfig?.beforeLeave?.(route, ...(lifecycleParams || [])))
+      .then(() => route.beforeEnter?.(...(lifecycleParams || [])))
       .then((redirectParams?: TypeRedirectToParams<TRoutes>) => {
         if (typeof redirectParams === 'object') {
           const err = new Error(

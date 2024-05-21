@@ -6,6 +6,6 @@ export type TypeRouteItem = {
   params: Record<string, string>;
   props?: Record<string, any>;
   validators?: Record<string, (param: string) => boolean>;
-  beforeEnter?: () => Promise<any>;
-  beforeLeave?: (nextRoute: any, event?: BeforeUnloadEvent) => Promise<any> | null;
+  beforeEnter?: (...args: Array<any>) => Promise<any>;
+  beforeLeave?: (nextRoute: any, ...args: Array<any>) => Promise<any> | null;
 };
