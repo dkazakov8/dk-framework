@@ -70,16 +70,10 @@ export const routes = createRouterConfig({
 import { redirectToGenerator, TypeRedirectToParams } from 'dk-react-mobx-router';
 
 import { routes } from 'routes';
-import { history } from 'utils';
-import { TypeAction } from 'models';
 
 export const redirectTo = (params: TypeRedirectToParams<typeof routes>) => {
   return redirectToGenerator({
     routes,
-    history,
-    globals,
-    isClient: IS_CLIENT,
-    redirectTo: globals.actions.routing.redirectTo,
     routerStore: globals.store.router,
     routeError500: routes.error500,
   })(params);

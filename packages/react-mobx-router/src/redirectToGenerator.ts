@@ -7,10 +7,11 @@ import { getDynamicValues } from './utils/getDynamicValues';
 import { replaceDynamicValues } from './utils/replaceDynamicValues';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
 import { TypeRouteItemFinal } from './types/TypeRouteItemFinal';
+import { InterfaceRouterStore } from './types/InterfaceRouterStore';
 
 type TypeParamsGenerator<TRoutes extends Record<string, TypeRouteItemFinal>> = {
   routes: TRoutes;
-  routerStore: any;
+  routerStore: InterfaceRouterStore<TRoutes>;
   routeError500: TRoutes[keyof TRoutes];
   lifecycleParams?: Array<any>;
 };
@@ -75,10 +76,9 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
           routerStore.currentRoute = {
             name: route.name,
             path: route.path,
+            props: routes[route.name].props,
             params: nextParams,
             pageName: routes[route.name].pageName,
-            beforeLeave: route.beforeLeave,
-            beforeEnter: route.beforeEnter,
           };
 
           const lastPathname = routerStore.routesHistory[routerStore.routesHistory.length - 1];
@@ -112,7 +112,9 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRouteItem
           routerStore.currentRoute = {
             name: routeError500.name,
             path: routeError500.path,
-            params: {},
+            props: routes[routeError500.name].props,
+            params: routes[routeError500.name].params,
+            pageName: routes[routeError500.name].pageName,
           };
         });
 

@@ -6,3 +6,4 @@ export { findRouteByPathname } from './utils/findRouteByPathname';
 export { loadComponentToConfig } from './utils/loadComponentToConfig';
 
 export type { TypeRedirectToParams } from './types/TypeRedirectToParams';
+export type { InterfaceRouterStore } from './types/InterfaceRouterStore';
