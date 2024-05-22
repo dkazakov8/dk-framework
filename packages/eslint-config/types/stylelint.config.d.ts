@@ -1,4 +1,4 @@
-declare const _extends: string[];
+declare let _extends: string[];
 export { _extends as extends };
-export declare const customSyntax: string;
+export declare let customSyntax: string;
 //# sourceMappingURL=stylelint.config.d.ts.map

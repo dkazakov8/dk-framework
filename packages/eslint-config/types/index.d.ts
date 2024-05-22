@@ -1,4 +1,4 @@
-export const prettierRules: {
+export let prettierRules: {
     semi: boolean;
     tabWidth: number;
     proseWrap: string;
@@ -9,12 +9,12 @@ export const prettierRules: {
     bracketSpacing: boolean;
     bracketSameLine: boolean;
 };
-export const getEslintConfig: typeof import("./eslint.config");
-export const stylelintConfig: {
+export let getEslintConfig: typeof import("./eslint.config");
+export let stylelintConfig: {
     extends: string[];
     customSyntax: string;
 };
-export const lintStagedConfig: {
+export let lintStagedConfig: {
     '(*.js|*.ts|*.tsx)': string[];
     '*.scss': string[];
 };
