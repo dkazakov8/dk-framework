@@ -9,12 +9,12 @@ import { getInitialRoute } from '../src/utils/getInitialRoute';
 import { createRouterConfig } from '../src/createRouterConfig';
 import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
-import { TypeRouteItemFinal } from '../src/types/TypeRouteItemFinal';
+import { TypeRoute } from '../src/types/TypeRoute';
 
 import { routes } from './routes';
 import { getData } from './helpers';
 
-function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRouteItemFinal>) {
+function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRoute>) {
   expect(routerStore.routesHistory).to.deep.eq(
     history.map((c) =>
       replaceDynamicValues({
@@ -25,7 +25,7 @@ function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<Typ
   );
 }
 
-function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRouteItemFinal) {
+function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRoute) {
   expect(routerStore.currentRoute).to.deep.eq({
     name: route.name,
     path: route.path,
@@ -35,10 +35,7 @@ function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRouteIt
   });
 }
 
-function checkHistoryAndCurrent(
-  routerStore: InterfaceRouterStore<any>,
-  history: Array<TypeRouteItemFinal>
-) {
+function checkHistoryAndCurrent(routerStore: InterfaceRouterStore<any>, history: Array<TypeRoute>) {
   checkHistory(routerStore, history);
   checkCurrent(routerStore, history[history.length - 1]);
 }
@@ -202,7 +199,7 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes, ['']);
 
-    const history: Array<TypeRouteItemFinal> = [];
+    const history: Array<TypeRoute> = [];
     let countSpy1 = 0;
     let countSpy2 = 0;
 
@@ -351,7 +348,7 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes, ['']);
 
-    const history: Array<TypeRouteItemFinal> = [];
+    const history: Array<TypeRoute> = [];
     let countSpy1 = 0;
     let countSpy2 = 0;
 
@@ -449,5 +446,5 @@ describe('redirectToGenerator', () => {
   it('Several redirect to same route', () => test4('separate').then(() => test4('store')));
   it('Several redirects', () => test5('separate').then(() => test5('store')));
   it('Before enter', () => test6('separate').then(() => test6('store')));
-  it.only('Before leave', () => test7('separate').then(() => test7('store')));
+  it('Before leave', () => test7('separate').then(() => test7('store')));
 });

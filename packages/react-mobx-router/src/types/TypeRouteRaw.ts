@@ -1,6 +1,6 @@
 import loadable from '@loadable/component';
 
-export type TypeRouteItem = {
+export type TypeRouteRaw = {
   path: string;
   loader: ReturnType<typeof loadable> | (() => Promise<{ default: any }>);
   params: Record<string, string>;

@@ -1,4 +1,4 @@
-import { TypeRouteItemFinal } from '../types/TypeRouteItemFinal';
+import { TypeRoute } from '../types/TypeRoute';
 
 import { constants } from './constants';
 import { isDynamic } from './isDynamic';
@@ -11,7 +11,7 @@ function completeStaticMatch(pathname: string, path: string) {
   );
 }
 
-export function findRouteByPathname<TRoutes extends Record<string, TypeRouteItemFinal>>({
+export function findRouteByPathname<TRoutes extends Record<string, TypeRoute>>({
   pathname,
   routes,
 }: {

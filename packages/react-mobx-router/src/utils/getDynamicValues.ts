@@ -1,10 +1,10 @@
-import { TypeRouteItem } from '../types/TypeRouteItem';
+import { TypeRouteRaw } from '../types/TypeRouteRaw';
 
 import { constants } from './constants';
 import { isDynamic } from './isDynamic';
 import { clearDynamic } from './clearDynamic';
 
-export function getDynamicValues<TRouteItem extends TypeRouteItem>(params: {
+export function getDynamicValues<TRouteItem extends TypeRouteRaw>(params: {
   routesObject: TRouteItem;
   pathname: string;
 }): TRouteItem['params'] {

@@ -1,9 +1,9 @@
-import { TypeRouteItemFinal } from '../types/TypeRouteItemFinal';
+import { TypeRoute } from '../types/TypeRoute';
 
 import { findRouteByPathname } from './findRouteByPathname';
 import { getDynamicValues } from './getDynamicValues';
 
-export function getInitialRoute<TRoutes extends Record<string, TypeRouteItemFinal>>(params: {
+export function getInitialRoute<TRoutes extends Record<string, TypeRoute>>(params: {
   routes: TRoutes;
   pathname: string;
   fallback: TRoutes[keyof TRoutes];

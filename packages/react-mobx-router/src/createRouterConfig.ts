@@ -2,9 +2,9 @@ import { ComponentClass } from 'react';
 
 import { addNames } from './utils/addNames';
 import { TypeIsEmptyObject } from './types/TypeIsEmptyObject';
-import { TypeRouteItem } from './types/TypeRouteItem';
+import { TypeRouteRaw } from './types/TypeRouteRaw';
 
-type TypeRouteInitialItem<TObj extends TypeRouteItem> = TypeRouteItem &
+type TypeRouteInitialItem<TObj extends TypeRouteRaw> = TypeRouteRaw &
   (TypeIsEmptyObject<TObj['params']> extends false
     ? { validators: Record<keyof TObj['params'], (param: string) => boolean> }
     : {});

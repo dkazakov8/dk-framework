@@ -1,10 +1,8 @@
 import { ComponentClass } from 'react';
 
-import { TypeRouteItemFinal } from '../types/TypeRouteItemFinal';
+import { TypeRoute } from '../types/TypeRoute';
 
-export function loadComponentToConfig(params: {
-  componentConfig: TypeRouteItemFinal;
-}): Promise<void> {
+export function loadComponentToConfig(params: { componentConfig: TypeRoute }): Promise<void> {
   const { componentConfig } = params;
 
   if (!componentConfig.component && componentConfig.loader) {

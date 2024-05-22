@@ -1,8 +1,8 @@
 import { ComponentClass } from 'react';
 
-import { TypeRouteItem } from './TypeRouteItem';
+import { TypeRouteRaw } from './TypeRouteRaw';
 
-export type TypeRouteItemFinal = TypeRouteItem & {
+export type TypeRoute = TypeRouteRaw & {
   name: string;
   store?: any;
   actions?: any;
