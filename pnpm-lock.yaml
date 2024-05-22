@@ -305,6 +305,9 @@ importers:
       mobx:
         specifier: 6.12.3
         version: registry.npmjs.org/mobx@6.12.3
+      mobx-react-lite:
+        specifier: 4.0.7
+        version: registry.npmjs.org/mobx-react-lite@4.0.7(mobx@6.12.3)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: registry.npmjs.org/react@18.2.0

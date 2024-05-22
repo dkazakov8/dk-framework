@@ -1,8 +1,9 @@
 /* eslint-disable react/no-set-state, @typescript-eslint/naming-convention */
 
 import React, { ContextType, createContext, ReactElement } from 'react';
-import { autorun, makeAutoObservable, runInAction } from 'mobx';
+import { autorun, IReactionDisposer, makeAutoObservable, runInAction } from 'mobx';
 import { createUseStore, ViewModelConstructor } from 'dk-mobx-use-store';
+import { observer } from 'mobx-react-lite';
 
 import { history } from './utils/history';
 import { constants } from './utils/constants';
@@ -27,18 +28,10 @@ type TypeProps<TRoutes extends Record<string, TypeRoute>> = {
   // eslint-disable-next-line react/no-unused-prop-types
   beforeMount?: () => void;
   // eslint-disable-next-line react/no-unused-prop-types
-  beforeSetPageComponent?: (componentConfig: any) => void;
+  beforeSetPageComponent?: (componentConfig: TRoutes[keyof TRoutes]) => void;
   // eslint-disable-next-line react/no-unused-prop-types
   beforeUpdatePageComponent?: () => void;
 };
-
-export function appendAutorun(ctx: ViewModel, fn: () => void) {
-  if (!ctx.autorunDisposers) {
-    Object.defineProperty(ctx, 'autorunDisposers', { value: [] });
-  }
-
-  ctx.autorunDisposers!.push(autorun(fn));
-}
 
 class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
   constructor(
@@ -51,7 +44,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
       { autoBind: true }
     );
   }
-
+  autorunDisposers: Array<IReactionDisposer> = [];
   loadedComponentName?: keyof TRoutes = undefined;
   loadedComponentPage?: string = undefined;
   loadedComponent?: ReactElement;
@@ -61,7 +54,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
 
     this.redirectOnHistoryPop();
 
-    appendAutorun(this, this.setLoadedComponent);
+    this.autorunDisposers.push(autorun(this.setLoadedComponent));
   }
 
   redirectOnHistoryPop() {
@@ -88,7 +81,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
     });
   }
 
-  setLoadedComponent() {
+  setLoadedComponent = () => {
     const { loadedComponentName, loadedComponentPage } = this;
 
     const currentRouteName = this.props.routerStore.currentRoute.name;
@@ -109,7 +102,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
 
       this.setComponent(currentRouteName);
     }
-  }
+  };
 
   setComponent(currentRouteName: keyof TRoutes) {
     const componentConfig = this.props.routes[currentRouteName];
@@ -120,16 +113,23 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
 
     this.props.beforeSetPageComponent?.(componentConfig);
 
-    runInAction(() => {
-      this.loadedComponentName = currentRouteName;
-      this.loadedComponentPage = componentConfig.pageName;
-      this.loadedComponent = <RouteComponent {...props} />;
-    });
+    this.loadedComponentName = currentRouteName;
+    this.loadedComponentPage = componentConfig.pageName;
+    this.loadedComponent = <RouteComponent {...props} />;
   }
 }
 
-export const Router = <TRoutes extends Record<string, TypeRoute>>(props: TypeProps<TRoutes>) => {
-  const { vm } = useStore(VM<TRoutes>, props);
+export const Router = observer(
+  <TRoutes extends Record<string, TypeRoute>>(props: TypeProps<TRoutes>) => {
+    const { vm } = useStore(VM<TRoutes>, props, {
+      routes: false,
+      redirectTo: false,
+      routerStore: false,
+      beforeMount: false,
+      beforeSetPageComponent: false,
+      beforeUpdatePageComponent: false,
+    });
 
-  return vm.loadedComponentName ? vm.loadedComponent || null : null;
-};
+    return vm.loadedComponentName ? vm.loadedComponent || null : null;
+  }
+);
