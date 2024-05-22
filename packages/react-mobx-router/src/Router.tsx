@@ -83,9 +83,10 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
 
   setLoadedComponent = () => {
     const { loadedComponentName, loadedComponentPage } = this;
+    const { currentRoute } = this.props.routerStore;
 
-    const currentRouteName = this.props.routerStore.currentRoute.name;
-    const currentRoutePage = this.props.routerStore.currentRoute.pageName;
+    const currentRouteName = currentRoute.name;
+    const currentRoutePage = currentRoute.pageName;
 
     if (
       (this.props.redirectTo as any).state.isExecuting ||
@@ -95,13 +96,15 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
       return;
     }
 
-    if (!loadedComponentName) {
-      this.setComponent(currentRouteName);
-    } else {
-      this.props.beforeUpdatePageComponent?.();
+    runInAction(() => {
+      if (!loadedComponentName) {
+        this.setComponent(currentRouteName);
+      } else {
+        this.props.beforeUpdatePageComponent?.();
 
-      this.setComponent(currentRouteName);
-    }
+        this.setComponent(currentRouteName);
+      }
+    });
   };
 
   setComponent(currentRouteName: keyof TRoutes) {
