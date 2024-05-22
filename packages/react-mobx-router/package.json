@@ -2,7 +2,7 @@
   "name": "dk-react-mobx-router",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.2.21",
+  "version": "3.2.22",
   "description": "Router for React+MobX",
   "repository": {
     "type": "git",
@@ -18,8 +18,8 @@
     "include": "src"
   },
   "dependencies": {
-    "history": "5.3.0",
-    "dk-mobx-use-store": "3.2.21"
+    "dk-mobx-use-store": "3.2.22",
+    "history": "5.3.0"
   },
   "devDependencies": {
     "@types/loadable__component": "5.13.9",
