@@ -2,7 +2,7 @@
   "name": "dk-bff-server",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.2.24",
+  "version": "3.2.25",
   "description": "Simple Backend-For-Frontend server",
   "repository": {
     "type": "git",
