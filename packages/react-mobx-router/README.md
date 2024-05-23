@@ -23,43 +23,56 @@ I CURRENTLY WRITE THIS DOCUMENTATIONS, IT'S NOT READY YET
 - TypeScript works for every route and it's dynamic params
 - It is a separate layer, no more markup like `<Route path="..." />` inside React components
 
-### Usage
+### Setup
 
-1. Install `dk-react-mobx-router`
+The setup consists of 3 parts:
+- routes config - describes your routes in a plain object
+- router store - a MobX store or an object that includes current route data and transitions history
+- redirect function - may be a part of the router store or a separate function
+
+1. Install `dk-react-mobx-router`, `dk-mobx-stateful-fn` and `mobx-react-lite`
 2. Create a basic routes config `routes.ts`
 
 ```typescript
 import { createRouterConfig } from 'dk-react-mobx-router';
 
+import PageHome from 'src/pages/PageHome';
 import PageError from 'src/pages/PageError';
 import PageStatic from 'src/pages/PageStatic';
 import PageDynamic from 'src/pages/PageDynamic';
 
 export const routes = createRouterConfig({
-  staticRoute: {
+  home: {
+    path: '/',
+    params: {},
+    loader: (() => import('./pages/home')) as any,
+  },
+  static: {
     path: '/static',
     params: {},
-    component: PageStatic as any,
+    loader: (() => import('./pages/static')) as any,
   },
-  dynamicRoute: {
-    path: '/:dynamic',
+  dynamic: {
+    path: '/page/:param',
     validators: {
-      dynamic: (value: string) => value.length > 2,
+      param: (value: string) => value.length > 2,
     },
-    params: { dynamic: '' },
-    component: PageDynamic as any,
+    params: { param: '' as string },
+    loader: (() => import('./pages/dynamic')) as any,
   },
   error404: {
-    path: '/test/error',
+    // this page is necessary
+    path: '/error',
     params: {},
     props: { errorCode: 404 },
-    component: PageError as any,
+    loader: (() => import('./pages/error')) as any,
   },
   error500: {
-    path: '/test/error',
+    // this page is necessary
+    path: '/error',
     params: {},
     props: { errorCode: 500 },
-    component: PageError as any,
+    loader: (() => import('./pages/error')) as any,
   },
 });
 ```
@@ -97,16 +110,11 @@ import { addState } from 'dk-mobx-stateful-fn';
 import { routes } from 'routes';
 import { routerStore } from 'routerStore';
 
-const redirectToWithoutState = redirectToGenerator({
+const redirectToWithoutState = addState(redirectToGenerator({
   routes,
   routerStore,
   routeError500: routes.error500,
-});
-
-// This is optional, but helpful in lots of scenarios
-// Read https://github.com/dkazakov8/dk-framework/tree/master/packages/mobx-stateful-fn
-
-export const redirectTo = addState(redirectToWithoutState, 'redirectTo');
+}), 'redirectTo');
 ```
 
 Or may be a part of `RouterStore` if you need SSR
@@ -118,10 +126,7 @@ export class RouterStore implements TInterfaceRouterStore {
   constructor() {
     makeAutoObservable(this, { redirectTo: false });
     
-    // This is optional, but helpful in lots of scenarios
-    // Read https://github.com/dkazakov8/dk-framework/tree/master/packages/mobx-stateful-fn
-    
-    this.redirectTo = addState(this.redirectTo.bind(this), 'redirectTo');
+    this.redirectTo = addState(this.redirectTo, 'redirectTo');
   }
 
   routesHistory: TInterfaceRouterStore['routesHistory'] = [];
@@ -141,7 +146,77 @@ does not dictate you how to write the code, it's very flexible.
 5. Now it is time to create a Router React component that will react to changes of `routerStore.currentRoute`
 and render a relevant page component.
 
+```typescript
+import { Router as RouterMobx } from 'dk-react-mobx-router';
+import { observer } from 'mobx-react-lite';
 
+import { routes } from 'routes';
+import { routerStore } from 'routerStore';
+
+export const Router = observer(() => {
+  return (
+    <RouterMobx
+      routes={routes}
+      redirectTo={routerStore.redirectTo}
+      routerStore={routerStore}
+    />
+  );
+});
+```
+
+6. The last step to make it work - find an initial route and render React application (an example for SPA
+without SSR)
+
+```typescript
+import { getInitialRoute } from 'dk-react-mobx-router';
+import { observer } from 'mobx-react-lite';
+import { createRoot } from 'react-dom/client';
+
+import { Router } from 'components/Router';
+import { routes } from 'routes';
+import { routerStore } from 'routerStore';
+
+const App = observer(() => {
+  return (
+    <>
+      <div className="menu">
+        <div 
+          onClick={() => routerStore.redirectTo({ route: routes.home })}
+          className={routerStore.currentRoute.name === 'home' ? 'active' : ''}
+        >
+          Home
+        </div>
+        <div 
+          onClick={() => routerStore.redirectTo({ route: routes.static })}
+          className={routerStore.currentRoute.name === 'static' ? 'active' : ''}
+        >
+          Static
+        </div>
+        <div 
+          onClick={() => routerStore.redirectTo({ route: routes.dynamic, params: { param: 'test' } })}
+          className={routerStore.currentRoute.name === 'dynamic' ? 'active' : ''}
+        >
+          Dynamic
+        </div>
+      </div>
+      <Router />
+    </>
+  );
+});
+
+Promise.resolve()
+  .then(() => routerStore.redirectTo(getInitialRoute({ 
+    routes, 
+    pathname: location.pathname, 
+    fallback: routes.error404 
+  })))
+  .then(() => createRoot(document.getElementById('app')!).render(<App />));
+```
+
+The full code for this example (SPA without SSR version) is 
+[here](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-router/examples/simple_spa).
+It is configured with code-splitting for every page, but it's easy to disable this function
+in bundler config.
 
 
 

@@ -12,4 +12,9 @@ const eslintConfig = getEslintConfig({
   react: true,
 });
 
+eslintConfig.overrides.push({
+  files: ['*.ts', '*.tsx'],
+  rules: { '@typescript-eslint/naming-convention': ['off'], 'react/jsx-no-literals': ['off'] },
+});
+
 module.exports = eslintConfig;

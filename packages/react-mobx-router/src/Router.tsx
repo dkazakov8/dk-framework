@@ -6,7 +6,6 @@ import { createUseStore, ViewModelConstructor } from 'dk-mobx-use-store';
 import { observer } from 'mobx-react-lite';
 
 import { history } from './utils/history';
-import { constants } from './utils/constants';
 import { TypeRoute } from './types/TypeRoute';
 import { getInitialRoute } from './utils/getInitialRoute';
 import { InterfaceRouterStore } from './types/InterfaceRouterStore';
@@ -53,6 +52,8 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
     this.props.beforeMount?.();
 
     this.redirectOnHistoryPop();
+
+    this.setLoadedComponent();
 
     this.autorunDisposers.push(autorun(this.setLoadedComponent));
   }
@@ -110,9 +111,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
   setComponent(currentRouteName: keyof TRoutes) {
     const componentConfig = this.props.routes[currentRouteName];
     const props = 'props' in componentConfig ? componentConfig.props : {};
-    const RouteComponent: any = constants.isClient
-      ? componentConfig.component
-      : componentConfig.loader;
+    const RouteComponent: any = componentConfig.component;
 
     this.props.beforeSetPageComponent?.(componentConfig);
 
