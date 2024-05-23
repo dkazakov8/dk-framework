@@ -1,4 +1,4 @@
-import { getInitialRoute } from 'dk-react-mobx-router';
+import { loadComponentToConfig } from 'dk-react-mobx-router';
 import { hydrateRoot } from 'react-dom/client';
 import { restoreState } from 'dk-mobx-restore-state';
 
@@ -13,15 +13,13 @@ const initialData = window.INITIAL_DATA;
 
 void Promise.resolve()
   .then(() => restoreState({ target: contextValue, source: initialData }))
-  .then(() =>
-    contextValue.routerStore.redirectTo(
-      getInitialRoute({
-        routes,
-        pathname: contextValue.routerStore.currentRoute.path,
-        fallback: routes.error404,
-      })
-    )
-  )
+  .then(() => {
+    const preloadedRouteName = Object.keys(routes).find(
+      (routeName) => contextValue.routerStore.currentRoute.name === routeName
+    ) as keyof typeof routes;
+
+    return loadComponentToConfig({ componentConfig: routes[preloadedRouteName] });
+  })
   .then(() =>
     hydrateRoot(
       document.getElementById('app')!,
