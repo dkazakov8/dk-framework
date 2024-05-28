@@ -4,6 +4,6 @@ export type TypeCurrentRoute<TRoute extends TypeRoute> = {
   name: TRoute['name'];
   path: TRoute['path'];
   props: TRoute['props'];
-  params: TRoute['params'];
+  params: Record<string, string>;
   pageName: TRoute['pageName'];
 };

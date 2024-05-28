@@ -36,41 +36,32 @@ The setup consists of 3 parts:
 ```typescript
 import { createRouterConfig } from 'dk-react-mobx-router';
 
-import PageHome from 'src/pages/PageHome';
-import PageError from 'src/pages/PageError';
-import PageStatic from 'src/pages/PageStatic';
-import PageDynamic from 'src/pages/PageDynamic';
-
 export const routes = createRouterConfig({
   home: {
     path: '/',
-    params: {},
     loader: (() => import('./pages/home')) as any,
   },
   static: {
     path: '/static',
-    params: {},
     loader: (() => import('./pages/static')) as any,
   },
   dynamic: {
-    path: '/page/:param',
-    validators: {
-      param: (value: string) => value.length > 2,
+    path: '/page/:foo/id/:bar',
+    params: {
+      foo: (value) => value.length > 2,
+      bar: (value) => value.length > 0,
     },
-    params: { param: '' as string },
     loader: (() => import('./pages/dynamic')) as any,
   },
   error404: {
     // this page is necessary
     path: '/error',
-    params: {},
     props: { errorCode: 404 },
     loader: (() => import('./pages/error')) as any,
   },
   error500: {
     // this page is necessary
     path: '/error',
-    params: {},
     props: { errorCode: 500 },
     loader: (() => import('./pages/error')) as any,
   },
@@ -193,7 +184,7 @@ const App = observer(() => {
           Static
         </div>
         <div 
-          onClick={() => routerStore.redirectTo({ route: routes.dynamic, params: { param: 'test' } })}
+          onClick={() => routerStore.redirectTo({ route: routes.dynamic, params: { foo: 'test', bar: 'smth' } })}
           className={routerStore.currentRoute.name === 'dynamic' ? 'active' : ''}
         >
           Dynamic

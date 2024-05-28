@@ -10,11 +10,13 @@ import { createRouterConfig } from '../src/createRouterConfig';
 import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
 import { TypeRoute } from '../src/types/TypeRoute';
+import { TypeRouteWithParams } from '../src/types/TypeRouteWithParams';
+import { TypeRedirectToParams } from '../src';
 
 import { routes } from './routes';
 import { getData } from './helpers';
 
-function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRoute>) {
+function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRouteWithParams>) {
   expect(routerStore.routesHistory).to.deep.eq(
     history.map((c) =>
       replaceDynamicValues({
@@ -25,19 +27,32 @@ function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<Typ
   );
 }
 
-function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRoute) {
+function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRouteWithParams) {
   expect(routerStore.currentRoute).to.deep.eq({
     name: route.name,
     path: route.path,
     props: route.props,
-    params: route.params,
+    params: route.params || {},
     pageName: undefined,
   });
 }
 
-function checkHistoryAndCurrent(routerStore: InterfaceRouterStore<any>, history: Array<TypeRoute>) {
+function checkHistoryAndCurrent(
+  routerStore: InterfaceRouterStore<any>,
+  history: Array<TypeRouteWithParams>
+) {
   checkHistory(routerStore, history);
   checkCurrent(routerStore, history[history.length - 1]);
+}
+
+function cloneWithParams<TRoute extends TypeRoute>(
+  config: TypeRedirectToParams<TRoute>
+): TypeRouteWithParams {
+  if ('params' in config) {
+    return Object.assign(_.cloneDeep(config.route) as any, { params: config.params });
+  }
+
+  return _.cloneDeep(config.route) as any;
 }
 
 describe('redirectToGenerator', () => {
@@ -64,9 +79,15 @@ describe('redirectToGenerator', () => {
       fallback: customRoutes.error404,
     });
 
+    const history: Array<TypeRouteWithParams> = [];
+
     return Promise.resolve()
       .then(() => redirectTo(initialRoute))
-      .then(() => checkHistoryAndCurrent(routerStore, [customRoutes.staticRoute]));
+      .then(() => {
+        history.push(cloneWithParams({ route: customRoutes.staticRoute }));
+
+        checkHistoryAndCurrent(routerStore, history);
+      });
   }
 
   function test3(mode: 'separate' | 'store') {
@@ -80,9 +101,15 @@ describe('redirectToGenerator', () => {
       fallback: customRoutes.error404,
     });
 
+    const history: Array<TypeRouteWithParams> = [];
+
     return Promise.resolve()
       .then(() => redirectTo(initialRoute))
-      .then(() => checkHistoryAndCurrent(routerStore, [customRoutes.error404]));
+      .then(() => {
+        history.push(cloneWithParams({ route: customRoutes.error404 }));
+
+        checkHistoryAndCurrent(routerStore, history);
+      });
   }
 
   function test4(mode: 'separate' | 'store') {
@@ -90,13 +117,21 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes);
 
+    const history: Array<TypeRouteWithParams> = [];
+
     return (
       Promise.resolve()
         .then(() => redirectTo({ route: customRoutes.staticRoute }))
-        .then(() => checkHistoryAndCurrent(routerStore, [customRoutes.staticRoute]))
+        .then(() => {
+          history.push(cloneWithParams({ route: customRoutes.staticRoute }));
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
         .then(() => redirectTo({ route: customRoutes.staticRoute }))
         // Does not add to routesHistory, it's good
-        .then(() => checkHistoryAndCurrent(routerStore, [customRoutes.staticRoute]))
+        .then(() => {
+          checkHistoryAndCurrent(routerStore, history);
+        })
     );
   }
 
@@ -105,41 +140,45 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes);
 
-    return Promise.resolve()
-      .then(() => redirectTo({ route: customRoutes.staticRoute }))
-      .then(() => checkHistoryAndCurrent(routerStore, [customRoutes.staticRoute]))
-      .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'asd' } }))
-      .then(() =>
-        checkHistoryAndCurrent(routerStore, [
-          customRoutes.staticRoute,
-          { ..._.cloneDeep(customRoutes.dynamicRoute), params: { static: 'asd' } },
-        ])
-      )
-      .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'asd' } }))
-      .then(() =>
-        checkHistoryAndCurrent(routerStore, [
-          customRoutes.staticRoute,
-          { ..._.cloneDeep(customRoutes.dynamicRoute), params: { static: 'asd' } },
-        ])
-      )
-      .then(() => redirectTo({ route: routes.dynamicRoute }))
-      .catch((error) => {
-        expect(error.message).to.deep.eq(
-          'replaceDynamicValues: no param ":static" passed for route dynamicRoute'
-        );
-        checkHistoryAndCurrent(routerStore, [
-          customRoutes.staticRoute,
-          { ..._.cloneDeep(customRoutes.dynamicRoute), params: { static: 'asd' } },
-        ]);
-      })
-      .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'foo' } }))
-      .then(() =>
-        checkHistoryAndCurrent(routerStore, [
-          customRoutes.staticRoute,
-          { ..._.cloneDeep(customRoutes.dynamicRoute), params: { static: 'asd' } },
-          { ..._.cloneDeep(customRoutes.dynamicRoute), params: { static: 'foo' } },
-        ])
-      );
+    const history: Array<TypeRouteWithParams> = [];
+
+    return (
+      Promise.resolve()
+        .then(() => redirectTo({ route: customRoutes.staticRoute }))
+        .then(() => {
+          history.push(cloneWithParams({ route: customRoutes.staticRoute }));
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'asd' } }))
+        .then(() => {
+          history.push(
+            cloneWithParams({ route: customRoutes.dynamicRoute, params: { static: 'asd' } })
+          );
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'asd' } }))
+        .then(() => {
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        // @ts-ignore
+        .then(() => redirectTo({ route: routes.dynamicRoute }))
+        .catch((error) => {
+          expect(error.message).to.deep.eq(
+            'replaceDynamicValues: no param ":static" passed for route dynamicRoute'
+          );
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'foo' } }))
+        .then(() => {
+          history.push(
+            cloneWithParams({ route: customRoutes.dynamicRoute, params: { static: 'foo' } })
+          );
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+    );
   }
 
   function test6(mode: 'separate' | 'store') {
@@ -149,7 +188,6 @@ describe('redirectToGenerator', () => {
     const customRoutes = createRouterConfig({
       spyOne: {
         path: '/test/static',
-        params: {},
         loader: undefined as any,
         beforeEnter(param: string) {
           beforeEnter_spy(param);
@@ -159,10 +197,9 @@ describe('redirectToGenerator', () => {
       },
       spyTwoDynamic: {
         path: '/test/:static',
-        validators: {
-          static: (value: string) => value.length > 2,
+        params: {
+          static: (value) => value.length > 2,
         },
-        params: { static: '' as string },
         loader: undefined as any,
         beforeEnter(param: string) {
           beforeEnter_spy2(param);
@@ -172,7 +209,6 @@ describe('redirectToGenerator', () => {
       },
       redirectToSpyOne: {
         path: '/test/static3',
-        params: {},
         loader: undefined as any,
         beforeEnter: (() => {
           return Promise.resolve({ route: customRoutes.spyOne });
@@ -180,7 +216,6 @@ describe('redirectToGenerator', () => {
       },
       buggyCode: {
         path: '/test/static4',
-        params: {},
         loader: undefined as any,
         beforeEnter: (() => {
           // eslint-disable-next-line no-unused-expressions
@@ -191,7 +226,6 @@ describe('redirectToGenerator', () => {
       },
       error500: {
         path: '/error500',
-        params: {},
         props: { errorNumber: 500 },
         loader: undefined as any,
       },
@@ -199,7 +233,7 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes, ['']);
 
-    const history: Array<TypeRoute> = [];
+    const history: Array<TypeRouteWithParams> = [];
     let countSpy1 = 0;
     let countSpy2 = 0;
 
@@ -211,7 +245,7 @@ describe('redirectToGenerator', () => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
         expect(beforeEnter_spy.getCall(0).args[0], 'beforeEnter_spy').to.deep.eq('');
 
-        history.push(customRoutes.spyOne);
+        history.push(cloneWithParams({ route: customRoutes.spyOne }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -229,7 +263,9 @@ describe('redirectToGenerator', () => {
         expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
         expect(beforeEnter_spy2.getCall(0).args[0], 'beforeEnter_spy2').to.deep.eq('');
 
-        history.push({ ..._.cloneDeep(customRoutes.spyTwoDynamic), params: { static: 'asd' } });
+        history.push(
+          cloneWithParams({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } })
+        );
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -240,7 +276,9 @@ describe('redirectToGenerator', () => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
         expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
 
-        history.push({ ..._.cloneDeep(customRoutes.spyTwoDynamic), params: { static: 'xyz' } });
+        history.push(
+          cloneWithParams({ route: customRoutes.spyTwoDynamic, params: { static: 'xyz' } })
+        );
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -258,7 +296,7 @@ describe('redirectToGenerator', () => {
         expect(error.message).to.deep.eq('a is not defined');
 
         checkHistory(routerStore, history);
-        checkCurrent(routerStore, customRoutes.error500);
+        checkCurrent(routerStore, cloneWithParams({ route: customRoutes.error500 }));
       })
       .then(() => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
@@ -273,7 +311,7 @@ describe('redirectToGenerator', () => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
         expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
 
-        history.push(customRoutes.spyOne);
+        history.push(cloneWithParams({ route: customRoutes.spyOne }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -281,7 +319,7 @@ describe('redirectToGenerator', () => {
       .then(() => {
         // Front does not throw an exception on buggy code, replace currentRoute with error500
         checkHistory(routerStore, history);
-        checkCurrent(routerStore, customRoutes.error500);
+        checkCurrent(routerStore, cloneWithParams({ route: customRoutes.error500 }));
       });
   }
 
@@ -292,7 +330,6 @@ describe('redirectToGenerator', () => {
     const customRoutes = createRouterConfig({
       spyOne: {
         path: '/test/static',
-        params: {},
         loader: undefined as any,
         beforeLeave(route: any, param: string) {
           beforeLeave_spy(param);
@@ -302,10 +339,9 @@ describe('redirectToGenerator', () => {
       },
       spyTwoDynamic: {
         path: '/test/:static',
-        validators: {
-          static: (value: string) => value.length > 2,
+        params: {
+          static: (value) => value.length > 2,
         },
-        params: { static: '' as string },
         loader: undefined as any,
         beforeLeave(nextRoute: any, param: string) {
           beforeLeave_spy2(param);
@@ -315,7 +351,6 @@ describe('redirectToGenerator', () => {
       },
       preventRedirect: {
         path: '/test/prevent-redirect',
-        params: {},
         loader: undefined as any,
         beforeLeave: ((nextRoute: any) => {
           if (nextRoute.name === 'spyOne') {
@@ -329,7 +364,6 @@ describe('redirectToGenerator', () => {
       },
       buggyCode: {
         path: '/test/buggy-code',
-        params: {},
         loader: undefined as any,
         beforeLeave: (() => {
           // eslint-disable-next-line no-unused-expressions
@@ -340,7 +374,6 @@ describe('redirectToGenerator', () => {
       },
       error500: {
         path: '/error500',
-        params: {},
         props: { errorNumber: 500 },
         loader: undefined as any,
       },
@@ -348,7 +381,7 @@ describe('redirectToGenerator', () => {
 
     const { redirectTo, routerStore } = getData(mode, customRoutes, ['']);
 
-    const history: Array<TypeRoute> = [];
+    const history: Array<TypeRouteWithParams> = [];
     let countSpy1 = 0;
     let countSpy2 = 0;
 
@@ -358,7 +391,7 @@ describe('redirectToGenerator', () => {
         expect(beforeLeave_spy.callCount, 'beforeLeave_spy').to.deep.eq(countSpy1);
         expect(beforeLeave_spy.callCount, 'beforeLeave_spy').to.deep.eq(countSpy2);
 
-        history.push(customRoutes.spyOne);
+        history.push(cloneWithParams({ route: customRoutes.spyOne }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -377,7 +410,9 @@ describe('redirectToGenerator', () => {
 
         expect(beforeLeave_spy2.callCount, 'beforeLeave_spy2').to.deep.eq(countSpy2);
 
-        history.push({ ..._.cloneDeep(customRoutes.spyTwoDynamic), params: { static: 'asd' } });
+        history.push(
+          cloneWithParams({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } })
+        );
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -389,13 +424,13 @@ describe('redirectToGenerator', () => {
         expect(beforeLeave_spy2.callCount, 'beforeLeave_spy2').to.deep.eq(countSpy2);
         expect(beforeLeave_spy2.getCall(0).args[0], 'beforeLeave_spy2').to.deep.eq('');
 
-        history.push(customRoutes.spyOne);
+        history.push(cloneWithParams({ route: customRoutes.spyOne }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
       .then(() => redirectTo({ route: customRoutes.preventRedirect }))
       .then(() => {
-        history.push(customRoutes.preventRedirect);
+        history.push(cloneWithParams({ route: customRoutes.preventRedirect }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -403,18 +438,20 @@ describe('redirectToGenerator', () => {
       .then(() => {
         // Redirect to spyOne prevented
         checkHistoryAndCurrent(routerStore, history);
-        checkCurrent(routerStore, customRoutes.preventRedirect);
+        checkCurrent(routerStore, cloneWithParams({ route: customRoutes.preventRedirect }));
       })
       .then(() => redirectTo({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } }))
       .then(() => {
         // Redirect to spyTwoDynamic not prevented
-        history.push({ ..._.cloneDeep(customRoutes.spyTwoDynamic), params: { static: 'asd' } });
+        history.push(
+          cloneWithParams({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } })
+        );
 
         checkHistoryAndCurrent(routerStore, history);
       })
       .then(() => redirectTo({ route: customRoutes.buggyCode }))
       .then(() => {
-        history.push(customRoutes.buggyCode);
+        history.push(cloneWithParams({ route: customRoutes.buggyCode }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
@@ -424,7 +461,7 @@ describe('redirectToGenerator', () => {
         expect(error.message).to.deep.eq('a is not defined');
 
         checkHistory(routerStore, history);
-        checkCurrent(routerStore, customRoutes.error500);
+        checkCurrent(routerStore, cloneWithParams({ route: customRoutes.error500 }));
       })
       .then(() => redirectTo({ route: customRoutes.buggyCode, asClient: true }))
       .then(() => {
@@ -436,7 +473,7 @@ describe('redirectToGenerator', () => {
         expect(error.message).to.deep.eq('a is not defined');
 
         checkHistory(routerStore, history);
-        checkCurrent(routerStore, customRoutes.error500);
+        checkCurrent(routerStore, cloneWithParams({ route: customRoutes.error500 }));
       });
   }
 

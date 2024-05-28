@@ -55,7 +55,7 @@ export function findRouteByPathname<TRoutes extends Record<string, TypeRoute>>({
 
       if (!isDynamic(paramName)) return paramName !== paramFromUrl;
 
-      const validator = route.validators?.[clearDynamic(paramName)];
+      const validator = route.params?.[clearDynamic(paramName)];
 
       if (typeof validator !== 'function') {
         throw new Error(`findRoute: missing validator for param "${paramName}"`);

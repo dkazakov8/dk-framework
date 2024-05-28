@@ -1,8 +1,16 @@
 import { TypeRoute } from './TypeRoute';
+import { TypeValidator } from './TypeValidator';
 
-export type TypeRedirectToParams<TRoutes extends Record<string, TypeRoute>> = {
-  route: TRoutes[keyof TRoutes];
-  params?: TRoutes[keyof TRoutes]['params'];
-  asClient?: boolean;
-  noHistoryPush?: boolean;
-};
+export type TypeRedirectToParams<TRoute extends TypeRoute> =
+  TRoute['params'] extends Record<string, TypeValidator>
+    ? {
+        route: TRoute;
+        params: Record<keyof TRoute['params'], string>;
+        asClient?: boolean;
+        noHistoryPush?: boolean;
+      }
+    : {
+        route: TRoute;
+        asClient?: boolean;
+        noHistoryPush?: boolean;
+      };

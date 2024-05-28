@@ -35,8 +35,7 @@ describe('replaceDynamicValues', () => {
     expect(() => {
       replaceDynamicValues({
         routesObject: routes.dynamicRoute,
-        // @ts-ignore
-        params: {},
+        params: {} as any,
       });
     }).to.throw(`replaceDynamicValues: no param ":static" passed for route dynamicRoute`);
   });
@@ -45,8 +44,7 @@ describe('replaceDynamicValues', () => {
     expect(() => {
       replaceDynamicValues({
         routesObject: routes.dynamicRouteMultiple,
-        // @ts-ignore
-        params: { param: 'dynamic' },
+        params: { param: 'dynamic' } as any,
       });
     }).to.throw(`replaceDynamicValues: no param ":param2" passed for route dynamicRoute`);
   });

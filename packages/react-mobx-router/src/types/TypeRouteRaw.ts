@@ -1,11 +1,12 @@
 import loadable from '@loadable/component';
 
+import { TypeValidator } from './TypeValidator';
+
 export type TypeRouteRaw = {
   path: string;
   loader: ReturnType<typeof loadable> | (() => Promise<{ default: any }>);
-  params: Record<string, string>;
   props?: Record<string, any>;
-  validators?: Record<string, (param: string) => boolean>;
+  params?: Record<string, TypeValidator>;
   beforeEnter?: (...args: Array<any>) => Promise<any>;
   beforeLeave?: (nextRoute: any, ...args: Array<any>) => Promise<any> | null;
 };

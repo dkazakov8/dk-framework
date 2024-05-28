@@ -23,9 +23,11 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
   routerStore,
   routeError500,
   lifecycleParams,
-}: TypeParamsGenerator<TRoutes>): (redirectParams: TypeRedirectToParams<TRoutes>) => Promise<void> {
-  return async function redirectTo(config): Promise<void> {
-    const { route, params = {}, noHistoryPush, asClient } = config;
+}: TypeParamsGenerator<TRoutes>) {
+  return async function redirectTo<TRoute extends TypeRoute>(
+    config: TypeRedirectToParams<TRoute>
+  ): Promise<void> {
+    const { route, noHistoryPush, asClient } = config;
 
     const isClient = asClient ? true : constants.isClient;
     const currentRouteConfig = routes[routerStore.currentRoute?.name];
@@ -35,7 +37,10 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
           params: routerStore.currentRoute.params,
         })
       : null;
-    const nextPathname = replaceDynamicValues({ routesObject: route, params });
+    const nextPathname = replaceDynamicValues({
+      routesObject: route,
+      params: 'params' in config ? config.params : undefined,
+    });
     const nextParams = getDynamicValues({ routesObject: route, pathname: nextPathname });
 
     // Prevent redirect to the same route
@@ -45,15 +50,14 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
 
     try {
       await currentRouteConfig?.beforeLeave?.(route, ...(lifecycleParams || []));
-      const redirectParams: TypeRedirectToParams<TRoutes> = await route.beforeEnter?.(
-        ...(lifecycleParams || [])
-      );
+      const redirectParams: TypeRedirectToParams<TRoutes[keyof TRoutes]> =
+        await route.beforeEnter?.(...(lifecycleParams || []));
 
       if (typeof redirectParams === 'object') {
         throw Object.assign(
           new Error(
             replaceDynamicValues({
-              params: redirectParams.params || {},
+              params: 'params' in redirectParams ? redirectParams.params : undefined,
               routesObject: redirectParams.route!,
             })
           ),
@@ -81,7 +85,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
           name: routeError500.name,
           path: routeError500.path,
           props: routes[routeError500.name].props,
-          params: routes[routeError500.name].params,
+          params: {},
           pageName: routes[routeError500.name].pageName,
         };
       });
