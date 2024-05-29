@@ -1,4 +1,5 @@
 export { history } from './utils/history';
+export { isDynamicRoute } from './utils/isDynamicRoute';
 export { getInitialRoute } from './utils/getInitialRoute';
 export { createRouterConfig } from './createRouterConfig';
 export { redirectToGenerator } from './redirectToGenerator';
