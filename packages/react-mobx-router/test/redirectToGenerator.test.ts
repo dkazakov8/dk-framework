@@ -33,8 +33,19 @@ function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRouteWi
     path: route.path,
     props: route.props,
     params: route.params || {},
-    pageName: undefined,
+    pageName:
+      // eslint-disable-next-line no-nested-ternary
+      route.path === '/test/static'
+        ? 'static'
+        : ['/error404', '/error500'].includes(route.path)
+          ? 'error'
+          : 'dynamic',
   });
+
+  if (route.path === '/test/static') {
+    expect(route.store).to.deep.eq('');
+    expect(route.actions).to.deep.eq('');
+  }
 }
 
 function checkHistoryAndCurrent(
@@ -188,7 +199,7 @@ describe('redirectToGenerator', () => {
     const customRoutes = createRouterConfig({
       spyOne: {
         path: '/test/static',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/static'))) as any,
         beforeEnter(param: string) {
           beforeEnter_spy(param);
 
@@ -200,7 +211,7 @@ describe('redirectToGenerator', () => {
         params: {
           static: (value) => value.length > 2,
         },
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter(param: string) {
           beforeEnter_spy2(param);
 
@@ -209,14 +220,14 @@ describe('redirectToGenerator', () => {
       },
       redirectToSpyOne: {
         path: '/test/static3',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
           return Promise.resolve({ route: customRoutes.spyOne });
         }) as any,
       },
       buggyCode: {
         path: '/test/static4',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
           // eslint-disable-next-line no-unused-expressions
           a;
@@ -227,7 +238,7 @@ describe('redirectToGenerator', () => {
       error500: {
         path: '/error500',
         props: { errorNumber: 500 },
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/error'))) as any,
       },
     });
 
@@ -330,7 +341,7 @@ describe('redirectToGenerator', () => {
     const customRoutes = createRouterConfig({
       spyOne: {
         path: '/test/static',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/static'))) as any,
         beforeLeave(route: any, param: string) {
           beforeLeave_spy(param);
 
@@ -342,7 +353,7 @@ describe('redirectToGenerator', () => {
         params: {
           static: (value) => value.length > 2,
         },
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeLeave(nextRoute: any, param: string) {
           beforeLeave_spy2(param);
 
@@ -351,7 +362,7 @@ describe('redirectToGenerator', () => {
       },
       preventRedirect: {
         path: '/test/prevent-redirect',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeLeave: ((nextRoute: any) => {
           if (nextRoute.name === 'spyOne') {
             const err = Object.assign(new Error(''), { name: constants.errorPrevent });
@@ -364,7 +375,7 @@ describe('redirectToGenerator', () => {
       },
       buggyCode: {
         path: '/test/buggy-code',
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeLeave: (() => {
           // eslint-disable-next-line no-unused-expressions
           a;
@@ -375,7 +386,7 @@ describe('redirectToGenerator', () => {
       error500: {
         path: '/error500',
         props: { errorNumber: 500 },
-        loader: undefined as any,
+        loader: (() => Promise.resolve(require('./pages/error'))) as any,
       },
     });
 
@@ -477,7 +488,7 @@ describe('redirectToGenerator', () => {
       });
   }
 
-  it('Creates', () => test1('separate').then(() => test2('store')));
+  it('Creates', () => test1('separate').then(() => test1('store')));
   it('Sets initial route', () => test2('separate').then(() => test2('store')));
   it('Sets initial route not found', () => test3('separate').then(() => test3('store')));
   it('Several redirect to same route', () => test4('separate').then(() => test4('store')));

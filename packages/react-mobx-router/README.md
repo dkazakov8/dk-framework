@@ -39,6 +39,8 @@ import { createRouterConfig } from 'dk-react-mobx-router';
 export const routes = createRouterConfig({
   home: {
     path: '/',
+    // "as any" prevents TypeScript circular dependency error 
+    // if you import "routes" inside your component
     loader: (() => import('./pages/home')) as any,
   },
   static: {
@@ -53,14 +55,14 @@ export const routes = createRouterConfig({
     },
     loader: (() => import('./pages/dynamic')) as any,
   },
+  // this page is necessary
   error404: {
-    // this page is necessary
     path: '/error',
     props: { errorCode: 404 },
     loader: (() => import('./pages/error')) as any,
   },
+  // this page is necessary
   error500: {
-    // this page is necessary
     path: '/error',
     props: { errorCode: 500 },
     loader: (() => import('./pages/error')) as any,
@@ -84,10 +86,10 @@ export class RouterStore implements TInterfaceRouterStore {
   }
 
   routesHistory: TInterfaceRouterStore['routesHistory'] = [];
+  // we will load/hydrate initial route before app render, so "as any" is safe
   currentRoute: TInterfaceRouterStore['currentRoute'] = {} as any;
 }
 
-// Singlton pattern does not work in SSR so create where needed
 export const routerStore = new RouterStore();
 ```
 
@@ -108,7 +110,7 @@ const redirectToWithoutState = addState(redirectToGenerator({
 }), 'redirectTo');
 ```
 
-Or may be a part of `RouterStore` if you need SSR
+Or may be a part of `RouterStore`
 
 ```typescript
 import { addState } from 'dk-mobx-stateful-fn';
@@ -144,6 +146,7 @@ import { observer } from 'mobx-react-lite';
 import { routes } from 'routes';
 import { routerStore } from 'routerStore';
 
+// observer decorator is not necessary, it just gives "memo"
 export const Router = observer(() => {
   return (
     <RouterMobx
@@ -196,6 +199,7 @@ const App = observer(() => {
 });
 
 Promise.resolve()
+  // be sure to load an initial route
   .then(() => routerStore.redirectTo(getInitialRoute({ 
     routes, 
     pathname: location.pathname, 

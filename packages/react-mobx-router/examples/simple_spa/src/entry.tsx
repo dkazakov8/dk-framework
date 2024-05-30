@@ -42,7 +42,7 @@ const App = observer(() => {
 
             void routerStore.redirectTo({
               route: routes.dynamic,
-              params: { param: 'dynamic-value' },
+              params: { foo: 'dynamic-value' },
             });
           }}
           className={routerStore.currentRoute.name === 'dynamic' ? 'active' : ''}

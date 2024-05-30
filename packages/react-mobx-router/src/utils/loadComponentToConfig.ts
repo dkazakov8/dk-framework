@@ -2,22 +2,22 @@ import { ComponentClass } from 'react';
 
 import { TypeRoute } from '../types/TypeRoute';
 
-export function loadComponentToConfig(params: { componentConfig: TypeRoute }): Promise<void> {
-  const { componentConfig } = params;
+export function loadComponentToConfig(params: { route: TypeRoute }): Promise<void> {
+  const { route } = params;
 
-  if (!componentConfig.component && componentConfig.loader) {
+  if (!route.component && route.loader) {
     const loadingFn =
-      typeof componentConfig.loader === 'function'
-        ? componentConfig.loader
+      typeof route.loader === 'function'
+        ? route.loader
         : // @ts-ignore
-          componentConfig.loader.load;
+          route.loader.load;
 
     return loadingFn().then(
       (module: { default: ComponentClass; store?: any; actions?: any; pageName: string }) => {
-        componentConfig.component = module.default;
-        componentConfig.store = module.store;
-        componentConfig.actions = module.actions;
-        componentConfig.pageName = module.pageName;
+        route.component = module.default;
+        route.store = module.store;
+        route.actions = module.actions;
+        route.pageName = module.pageName;
       }
     );
   }

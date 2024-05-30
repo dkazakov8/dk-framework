@@ -29,7 +29,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
   ): Promise<void> {
     const { route, noHistoryPush, asClient } = config;
 
-    const isClient = asClient ? true : constants.isClient;
+    const isClient = typeof asClient === 'boolean' ? asClient : constants.isClient;
     const currentRouteConfig = routes[routerStore.currentRoute?.name];
     const prevPathname = currentRouteConfig
       ? replaceDynamicValues({
@@ -45,7 +45,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
 
     // Prevent redirect to the same route
     if (prevPathname === nextPathname) {
-      return loadComponentToConfig({ componentConfig: routes[routerStore.currentRoute.name] });
+      return loadComponentToConfig({ route: routes[routerStore.currentRoute.name] });
     }
 
     try {
@@ -68,7 +68,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
         );
       }
 
-      await loadComponentToConfig({ componentConfig: routes[route.name] });
+      await loadComponentToConfig({ route: routes[route.name] });
     } catch (error: any) {
       if (error?.name === constants.errorPrevent) return Promise.resolve();
 
@@ -79,6 +79,8 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
       }
 
       console.error(error);
+
+      await loadComponentToConfig({ route: routeError500 });
 
       runInAction(() => {
         routerStore.currentRoute = {

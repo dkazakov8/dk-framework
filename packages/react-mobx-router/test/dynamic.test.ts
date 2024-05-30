@@ -2,6 +2,9 @@ import { expect } from 'chai';
 
 import { isDynamic } from '../src/utils/isDynamic';
 import { clearDynamic } from '../src/utils/clearDynamic';
+import { isDynamicRoute } from '../src/utils/isDynamicRoute';
+
+import { routes } from './routes';
 
 describe('isDynamic', () => {
   it('Correctly detects', () => {
@@ -20,5 +23,12 @@ describe('clearDynamic', () => {
     expect(clearDynamic('test')).to.eq('test');
     expect(clearDynamic(':t:e:s:t:')).to.eq('t:e:s:t:');
     expect(clearDynamic('::t:e:s:t:')).to.eq(':t:e:s:t:');
+  });
+});
+
+describe('isDynamicRoute', () => {
+  it('Correctly detects', () => {
+    expect(isDynamicRoute(routes.staticRoute)).to.eq(false);
+    expect(isDynamicRoute(routes.dynamicRoute)).to.eq(true);
   });
 });

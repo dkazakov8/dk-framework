@@ -14,7 +14,7 @@ const Dynamic = observer(() => {
         onClick={() => {
           void routerStore.redirectTo({
             route: routes.dynamic,
-            params: { param: String(Math.random()).slice(2) },
+            params: { foo: String(Math.random()).slice(2) },
           });
         }}
       >

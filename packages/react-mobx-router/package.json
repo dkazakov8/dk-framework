@@ -11,7 +11,7 @@
   "scripts": {
     "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
     "prepublishOnly": "pnpm run build",
-    "test": "nyc mocha --no-parallel&&pnpm run gen-badge",
+    "test": "nyc mocha&&pnpm run gen-badge",
     "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"
   },
   "nyc": {
@@ -22,6 +22,7 @@
     "history": "5.3.0"
   },
   "devDependencies": {
+    "dk-mobx-stateful-fn": "3.2.27",
     "@types/loadable__component": "5.13.9",
     "mobx": "6.12.3",
     "mobx-react-lite": "4.0.7",

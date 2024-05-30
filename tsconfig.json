@@ -4,6 +4,7 @@
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
+    "moduleResolution": "node",
     "module": "commonjs",
     "target": "ES2015",
     "ignoreDeprecations": "5.0",

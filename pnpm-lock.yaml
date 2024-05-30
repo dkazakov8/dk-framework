@@ -8,6 +8,12 @@ importers:
 
   .:
     devDependencies:
+      '@testing-library/jest-dom':
+        specifier: 6.4.2
+        version: registry.npmjs.org/@testing-library/jest-dom@6.4.2
+      '@testing-library/react':
+        specifier: 15.0.1
+        version: registry.npmjs.org/@testing-library/react@15.0.1(react-dom@18.2.0)(react@18.2.0)
       '@types/chai':
         specifier: 4.3.14
         version: registry.npmjs.org/@types/chai@4.3.14
@@ -23,12 +29,18 @@ importers:
       chai:
         specifier: 4.4.1
         version: registry.npmjs.org/chai@4.4.1
+      global-jsdom:
+        specifier: 24.0.0
+        version: registry.npmjs.org/global-jsdom@24.0.0(jsdom@24.0.0)
       husky:
         specifier: 9.0.11
         version: registry.npmjs.org/husky@9.0.11
       istanbul-cobertura-badger:
         specifier: 1.3.1
         version: registry.npmjs.org/istanbul-cobertura-badger@1.3.1
+      jsdom:
+        specifier: 24.0.0
+        version: registry.npmjs.org/jsdom@24.0.0
       lerna:
         specifier: 8.1.2
         version: registry.npmjs.org/lerna@8.1.2
@@ -198,18 +210,6 @@ importers:
 
   packages/mobx-use-store:
     devDependencies:
-      '@testing-library/jest-dom':
-        specifier: 6.4.2
-        version: registry.npmjs.org/@testing-library/jest-dom@6.4.2
-      '@testing-library/react':
-        specifier: 15.0.1
-        version: registry.npmjs.org/@testing-library/react@15.0.1(react-dom@18.2.0)(react@18.2.0)
-      global-jsdom:
-        specifier: 24.0.0
-        version: registry.npmjs.org/global-jsdom@24.0.0(jsdom@24.0.0)
-      jsdom:
-        specifier: 24.0.0
-        version: registry.npmjs.org/jsdom@24.0.0
       mobx:
         specifier: 6.12.3
         version: registry.npmjs.org/mobx@6.12.3
@@ -302,6 +302,9 @@ importers:
       '@types/loadable__component':
         specifier: 5.13.9
         version: registry.npmjs.org/@types/loadable__component@5.13.9
+      dk-mobx-stateful-fn:
+        specifier: 3.2.27
+        version: link:../mobx-stateful-fn
       mobx:
         specifier: 6.12.3
         version: registry.npmjs.org/mobx@6.12.3

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { makeAutoObservable } from 'mobx';
+import { addState } from 'dk-mobx-stateful-fn';
 
 import { redirectToGenerator } from '../src/redirectToGenerator';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
@@ -22,12 +23,15 @@ function createSeparateFunction(customRoutes: any = routes, lifecycleParams?: an
 
   const routerStore = new RouterStore();
 
-  const redirectTo = redirectToGenerator({
-    routes: customRoutes,
-    routerStore,
-    lifecycleParams,
-    routeError500: customRoutes.error500,
-  });
+  const redirectTo = addState(
+    redirectToGenerator({
+      routes: customRoutes,
+      routerStore,
+      lifecycleParams,
+      routeError500: customRoutes.error500,
+    }),
+    'redirectTo'
+  );
 
   return { redirectTo, routerStore };
 }
@@ -36,6 +40,8 @@ function createStoreFunction(customRoutes: any = routes, lifecycleParams?: any) 
   class RouterStore implements TInterfaceRouterStore {
     constructor() {
       makeAutoObservable(this, { redirectTo: false });
+
+      this.redirectTo = addState(this.redirectTo, 'redirectTo');
     }
 
     routesHistory: TInterfaceRouterStore['routesHistory'] = [];

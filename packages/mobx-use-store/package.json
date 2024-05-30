@@ -18,10 +18,6 @@
     "include": "src"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "6.4.2",
-    "@testing-library/react": "15.0.1",
-    "global-jsdom": "24.0.0",
-    "jsdom": "24.0.0",
     "mobx": "6.12.3",
     "mobx-react-lite": "4.0.7",
     "react": "18.2.0",

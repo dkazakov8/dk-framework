@@ -1,0 +1,6 @@
+import { default as PageComponent } from './Dynamic';
+
+export const pageName = __dirname.split('/').pop();
+
+// eslint-disable-next-line import/no-default-export
+export default PageComponent;
