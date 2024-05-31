@@ -24,24 +24,25 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
   routeError500,
   lifecycleParams,
 }: TypeParamsGenerator<TRoutes>) {
-  return async function redirectTo<TRoute extends TypeRoute>(
-    config: TypeRedirectToParams<TRoute>
+  return async function redirectTo<TRouteName extends keyof TRoutes>(
+    config: TypeRedirectToParams<TRoutes, TRouteName>
   ): Promise<void> {
-    const { route, noHistoryPush, asClient } = config;
+    const { route: routeName, noHistoryPush, asClient } = config;
 
     const isClient = typeof asClient === 'boolean' ? asClient : constants.isClient;
+    const route = routes[routeName];
     const currentRouteConfig = routes[routerStore.currentRoute?.name];
     const prevPathname = currentRouteConfig
       ? replaceDynamicValues({
-          routesObject: currentRouteConfig,
+          route: currentRouteConfig,
           params: routerStore.currentRoute.params,
         })
       : null;
     const nextPathname = replaceDynamicValues({
-      routesObject: route,
+      route,
       params: 'params' in config ? config.params : undefined,
     });
-    const nextParams = getDynamicValues({ routesObject: route, pathname: nextPathname });
+    const nextParams = getDynamicValues({ route, pathname: nextPathname });
 
     // Prevent redirect to the same route
     if (prevPathname === nextPathname) {
@@ -50,7 +51,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
 
     try {
       await currentRouteConfig?.beforeLeave?.(route, ...(lifecycleParams || []));
-      const redirectParams: TypeRedirectToParams<TRoutes[keyof TRoutes]> =
+      const redirectParams: TypeRedirectToParams<TRoutes, keyof TRoutes> =
         await route.beforeEnter?.(...(lifecycleParams || []));
 
       if (typeof redirectParams === 'object') {
@@ -58,7 +59,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
           new Error(
             replaceDynamicValues({
               params: 'params' in redirectParams ? redirectParams.params : undefined,
-              routesObject: redirectParams.route!,
+              route: routes[redirectParams.route]!,
             })
           ),
           {

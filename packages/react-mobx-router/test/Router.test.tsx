@@ -28,14 +28,14 @@ describe('Router', () => {
     });
 
     return Promise.resolve()
-      .then(() => redirectTo({ route: customRoutes.staticRoute }))
+      .then(() => redirectTo({ route: 'staticRoute' }))
       .then(() => {
         const html = renderToString(<App />);
 
         expect(html).to.eq('Static');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
       })
-      .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'asd' } }))
+      .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
       .then(() => {
         const html = renderToString(<App />);
 
@@ -70,7 +70,7 @@ describe('Router', () => {
     const { container } = render(<App />);
 
     return Promise.resolve()
-      .then(() => redirectTo({ route: customRoutes.staticRoute }))
+      .then(() => redirectTo({ route: 'staticRoute' }))
       .then(() => {
         expect(container.innerHTML).to.eq('Static');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
@@ -79,7 +79,7 @@ describe('Router', () => {
           0
         );
       })
-      .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'asd' } }))
+      .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
       .then(() => {
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
@@ -88,7 +88,7 @@ describe('Router', () => {
           1
         );
       })
-      .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'dsa' } }))
+      .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'dsa' } }))
       .then(() => {
         // No rerender if only params changed and route is the same
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');
@@ -98,7 +98,7 @@ describe('Router', () => {
           1
         );
       })
-      .then(() => redirectTo({ route: customRoutes.dynamicRoute2, params: { static: 'dsa' } }))
+      .then(() => redirectTo({ route: 'dynamicRoute2', params: { static: 'dsa' } }))
       .then(() => {
         // No rerender if only params changed and pageName is the same
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');

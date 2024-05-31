@@ -5,30 +5,31 @@ import { addState } from 'dk-mobx-stateful-fn';
 
 import { redirectToGenerator } from '../src/redirectToGenerator';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
+import { TypeRoute } from '../src';
 
 import { routes } from './routes';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type TInterfaceRouterStore = InterfaceRouterStore<typeof routes>;
-
-function createSeparateFunction(customRoutes: any = routes, lifecycleParams?: any) {
-  class RouterStore implements TInterfaceRouterStore {
+function createSeparateFunction<TRoutes extends Record<string, TypeRoute>>(
+  customRoutes: TRoutes,
+  lifecycleParams?: any
+) {
+  class RouterStore implements InterfaceRouterStore<TRoutes> {
     constructor() {
       makeAutoObservable(this);
     }
 
-    routesHistory: TInterfaceRouterStore['routesHistory'] = [];
-    currentRoute: TInterfaceRouterStore['currentRoute'] = {} as any;
+    routesHistory: InterfaceRouterStore<TRoutes>['routesHistory'] = [];
+    currentRoute: InterfaceRouterStore<TRoutes>['currentRoute'] = {} as any;
   }
 
   const routerStore = new RouterStore();
 
   const redirectTo = addState(
     redirectToGenerator({
-      routes: customRoutes,
+      routes: customRoutes || routes,
       routerStore,
       lifecycleParams,
-      routeError500: customRoutes.error500,
+      routeError500: customRoutes.error500 as any,
     }),
     'redirectTo'
   );
@@ -36,22 +37,25 @@ function createSeparateFunction(customRoutes: any = routes, lifecycleParams?: an
   return { redirectTo, routerStore };
 }
 
-function createStoreFunction(customRoutes: any = routes, lifecycleParams?: any) {
-  class RouterStore implements TInterfaceRouterStore {
+function createStoreFunction<TRoutes extends Record<string, TypeRoute>>(
+  customRoutes: TRoutes,
+  lifecycleParams?: any
+) {
+  class RouterStore implements InterfaceRouterStore<TRoutes> {
     constructor() {
       makeAutoObservable(this, { redirectTo: false });
 
       this.redirectTo = addState(this.redirectTo, 'redirectTo');
     }
 
-    routesHistory: TInterfaceRouterStore['routesHistory'] = [];
-    currentRoute: TInterfaceRouterStore['currentRoute'] = {} as any;
+    routesHistory: InterfaceRouterStore<TRoutes>['routesHistory'] = [];
+    currentRoute: InterfaceRouterStore<TRoutes>['currentRoute'] = {} as any;
 
     redirectTo = redirectToGenerator({
-      routes: customRoutes,
+      routes: customRoutes || routes,
       routerStore: this,
       lifecycleParams,
-      routeError500: customRoutes.error500,
+      routeError500: customRoutes.error500 as any,
     });
   }
 
@@ -60,9 +64,13 @@ function createStoreFunction(customRoutes: any = routes, lifecycleParams?: any) 
   return { routerStore };
 }
 
-export function getData(mode: 'separate' | 'store', customRoutes: any, lifecycleParams?: any) {
-  let redirectTo: ReturnType<typeof redirectToGenerator>;
-  let routerStore: TInterfaceRouterStore;
+export function getData<TRoutes extends Record<string, TypeRoute>>(
+  mode: 'separate' | 'store',
+  customRoutes: TRoutes,
+  lifecycleParams?: any
+) {
+  let redirectTo: ReturnType<typeof redirectToGenerator<TRoutes>>;
+  let routerStore: InterfaceRouterStore<TRoutes>;
 
   if (mode === 'store') {
     const output = createStoreFunction(customRoutes, lifecycleParams);

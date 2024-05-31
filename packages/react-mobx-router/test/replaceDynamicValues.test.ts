@@ -7,14 +7,14 @@ import { routes } from './routes';
 describe('replaceDynamicValues', () => {
   it('Dynamic params', () => {
     const pathname = replaceDynamicValues({
-      routesObject: routes.dynamicRoute,
+      route: routes.dynamicRoute,
       params: { static: 'dynamic' },
     });
 
     expect(pathname).to.be.eq('/test/dynamic');
 
     const pathname2 = replaceDynamicValues({
-      routesObject: routes.dynamicRoute3,
+      route: routes.dynamicRoute3,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       params: { ':static': 'dynamic' },
     });
@@ -24,7 +24,7 @@ describe('replaceDynamicValues', () => {
 
   it('Dynamic params multiple', () => {
     const pathname = replaceDynamicValues({
-      routesObject: routes.dynamicRouteMultiple,
+      route: routes.dynamicRouteMultiple,
       params: { param: 'dynamic', param2: 'dynamic2' },
     });
 
@@ -34,7 +34,7 @@ describe('replaceDynamicValues', () => {
   it('(error) No dynamic param value', () => {
     expect(() => {
       replaceDynamicValues({
-        routesObject: routes.dynamicRoute,
+        route: routes.dynamicRoute,
         params: {} as any,
       });
     }).to.throw(`replaceDynamicValues: no param ":static" passed for route dynamicRoute`);
@@ -43,7 +43,7 @@ describe('replaceDynamicValues', () => {
   it('(error) No dynamic param value multiple', () => {
     expect(() => {
       replaceDynamicValues({
-        routesObject: routes.dynamicRouteMultiple,
+        route: routes.dynamicRouteMultiple,
         params: { param: 'dynamic' } as any,
       });
     }).to.throw(`replaceDynamicValues: no param ":param2" passed for route dynamicRoute`);

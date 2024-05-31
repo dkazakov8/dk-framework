@@ -76,7 +76,7 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
         ...getInitialRoute({
           routes: this.props.routes,
           pathname: history.location.pathname,
-          fallback: this.props.routes.error404 as any,
+          fallback: 'error404',
         }),
       });
     });

@@ -11,7 +11,6 @@ import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
 import { TypeRoute } from '../src/types/TypeRoute';
 import { TypeRouteWithParams } from '../src/types/TypeRouteWithParams';
-import { TypeRedirectToParams } from '../src';
 
 import { routes } from './routes';
 import { getData } from './helpers';
@@ -20,7 +19,7 @@ function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<Typ
   expect(routerStore.routesHistory).to.deep.eq(
     history.map((c) =>
       replaceDynamicValues({
-        routesObject: c,
+        route: c,
         params: c.params,
       })
     )
@@ -56,9 +55,10 @@ function checkHistoryAndCurrent(
   checkCurrent(routerStore, history[history.length - 1]);
 }
 
-function cloneWithParams<TRoute extends TypeRoute>(
-  config: TypeRedirectToParams<TRoute>
-): TypeRouteWithParams {
+function cloneWithParams<TRoute extends TypeRoute>(config: {
+  route: TRoute;
+  params?: Record<keyof TRoute['params'], string>;
+}): TypeRouteWithParams {
   if ('params' in config) {
     return Object.assign(_.cloneDeep(config.route) as any, { params: config.params });
   }
@@ -87,7 +87,7 @@ describe('redirectToGenerator', () => {
     const initialRoute = getInitialRoute({
       routes: customRoutes,
       pathname: customRoutes.staticRoute.path,
-      fallback: customRoutes.error404,
+      fallback: 'error404',
     });
 
     const history: Array<TypeRouteWithParams> = [];
@@ -109,7 +109,7 @@ describe('redirectToGenerator', () => {
     const initialRoute = getInitialRoute({
       routes: customRoutes,
       pathname: '/testX/static',
-      fallback: customRoutes.error404,
+      fallback: 'error404',
     });
 
     const history: Array<TypeRouteWithParams> = [];
@@ -132,13 +132,13 @@ describe('redirectToGenerator', () => {
 
     return (
       Promise.resolve()
-        .then(() => redirectTo({ route: customRoutes.staticRoute }))
+        .then(() => redirectTo({ route: 'staticRoute' }))
         .then(() => {
           history.push(cloneWithParams({ route: customRoutes.staticRoute }));
 
           checkHistoryAndCurrent(routerStore, history);
         })
-        .then(() => redirectTo({ route: customRoutes.staticRoute }))
+        .then(() => redirectTo({ route: 'staticRoute' }))
         // Does not add to routesHistory, it's good
         .then(() => {
           checkHistoryAndCurrent(routerStore, history);
@@ -155,13 +155,13 @@ describe('redirectToGenerator', () => {
 
     return (
       Promise.resolve()
-        .then(() => redirectTo({ route: customRoutes.staticRoute }))
+        .then(() => redirectTo({ route: 'staticRoute' }))
         .then(() => {
           history.push(cloneWithParams({ route: customRoutes.staticRoute }));
 
           checkHistoryAndCurrent(routerStore, history);
         })
-        .then(() => redirectTo({ route: customRoutes.dynamicRoute, params: { static: 'asd' } }))
+        .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
         .then(() => {
           history.push(
             cloneWithParams({ route: customRoutes.dynamicRoute, params: { static: 'asd' } })
@@ -169,19 +169,19 @@ describe('redirectToGenerator', () => {
 
           checkHistoryAndCurrent(routerStore, history);
         })
-        .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'asd' } }))
+        .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
         .then(() => {
           checkHistoryAndCurrent(routerStore, history);
         })
         // @ts-ignore
-        .then(() => redirectTo({ route: routes.dynamicRoute }))
+        .then(() => redirectTo({ route: 'dynamicRoute' }))
         .catch((error) => {
           expect(error.message).to.deep.eq(
             'replaceDynamicValues: no param ":static" passed for route dynamicRoute'
           );
           checkHistoryAndCurrent(routerStore, history);
         })
-        .then(() => redirectTo({ route: routes.dynamicRoute, params: { static: 'foo' } }))
+        .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'foo' } }))
         .then(() => {
           history.push(
             cloneWithParams({ route: customRoutes.dynamicRoute, params: { static: 'foo' } })
@@ -222,7 +222,7 @@ describe('redirectToGenerator', () => {
         path: '/test/static3',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
-          return Promise.resolve({ route: customRoutes.spyOne });
+          return Promise.resolve({ route: 'spyOne' });
         }) as any,
       },
       buggyCode: {
@@ -249,7 +249,7 @@ describe('redirectToGenerator', () => {
     let countSpy2 = 0;
 
     return Promise.resolve()
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         countSpy1 += 1;
 
@@ -260,13 +260,13 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } }))
+      .then(() => redirectTo({ route: 'spyTwoDynamic', params: { static: 'asd' } }))
       .then(() => {
         countSpy2 += 1;
 
@@ -280,7 +280,7 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyTwoDynamic, params: { static: 'xyz' } }))
+      .then(() => redirectTo({ route: 'spyTwoDynamic', params: { static: 'xyz' } }))
       .then(() => {
         countSpy2 += 1;
 
@@ -293,7 +293,7 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.redirectToSpyOne }))
+      .then(() => redirectTo({ route: 'redirectToSpyOne' }))
       .catch((error) => {
         // SSR should handle redirects manually and not push to history or change current
         expect(error.name).to.deep.eq(constants.errorRedirect);
@@ -301,7 +301,7 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.buggyCode }))
+      .then(() => redirectTo({ route: 'buggyCode' }))
       .catch((error) => {
         // SSR on syntax error should not push to history, replace currentRoute with error500
         expect(error.message).to.deep.eq('a is not defined');
@@ -313,7 +313,7 @@ describe('redirectToGenerator', () => {
         expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
         expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
 
-        return redirectTo({ route: customRoutes.redirectToSpyOne, asClient: true });
+        return redirectTo({ route: 'redirectToSpyOne', asClient: true });
       })
       .then(() => {
         countSpy1 += 1;
@@ -326,7 +326,7 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.buggyCode, asClient: true }))
+      .then(() => redirectTo({ route: 'buggyCode', asClient: true }))
       .then(() => {
         // Front does not throw an exception on buggy code, replace currentRoute with error500
         checkHistory(routerStore, history);
@@ -397,7 +397,7 @@ describe('redirectToGenerator', () => {
     let countSpy2 = 0;
 
     return Promise.resolve()
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         expect(beforeLeave_spy.callCount, 'beforeLeave_spy').to.deep.eq(countSpy1);
         expect(beforeLeave_spy.callCount, 'beforeLeave_spy').to.deep.eq(countSpy2);
@@ -406,13 +406,13 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         expect(beforeLeave_spy.callCount, 'beforeLeave_spy').to.deep.eq(countSpy1);
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } }))
+      .then(() => redirectTo({ route: 'spyTwoDynamic', params: { static: 'asd' } }))
       .then(() => {
         countSpy1 += 1;
 
@@ -427,7 +427,7 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         countSpy2 += 1;
 
@@ -439,19 +439,19 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.preventRedirect }))
+      .then(() => redirectTo({ route: 'preventRedirect' }))
       .then(() => {
         history.push(cloneWithParams({ route: customRoutes.preventRedirect }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .then(() => {
         // Redirect to spyOne prevented
         checkHistoryAndCurrent(routerStore, history);
         checkCurrent(routerStore, cloneWithParams({ route: customRoutes.preventRedirect }));
       })
-      .then(() => redirectTo({ route: customRoutes.spyTwoDynamic, params: { static: 'asd' } }))
+      .then(() => redirectTo({ route: 'spyTwoDynamic', params: { static: 'asd' } }))
       .then(() => {
         // Redirect to spyTwoDynamic not prevented
         history.push(
@@ -460,13 +460,13 @@ describe('redirectToGenerator', () => {
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.buggyCode }))
+      .then(() => redirectTo({ route: 'buggyCode' }))
       .then(() => {
         history.push(cloneWithParams({ route: customRoutes.buggyCode }));
 
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne }))
+      .then(() => redirectTo({ route: 'spyOne' }))
       .catch((error) => {
         // SSR on syntax error should not push to history, replace currentRoute with error500
         expect(error.message).to.deep.eq('a is not defined');
@@ -474,11 +474,11 @@ describe('redirectToGenerator', () => {
         checkHistory(routerStore, history);
         checkCurrent(routerStore, cloneWithParams({ route: customRoutes.error500 }));
       })
-      .then(() => redirectTo({ route: customRoutes.buggyCode, asClient: true }))
+      .then(() => redirectTo({ route: 'buggyCode', asClient: true }))
       .then(() => {
         checkHistoryAndCurrent(routerStore, history);
       })
-      .then(() => redirectTo({ route: customRoutes.spyOne, asClient: true }))
+      .then(() => redirectTo({ route: 'spyOne', asClient: true }))
       .catch((error) => {
         // Front on syntax error should not push to history, replace currentRoute with error500
         expect(error.message).to.deep.eq('a is not defined');

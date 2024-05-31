@@ -39,13 +39,11 @@ import { createRouterConfig } from 'dk-react-mobx-router';
 export const routes = createRouterConfig({
   home: {
     path: '/',
-    // "as any" prevents TypeScript circular dependency error 
-    // if you import "routes" inside your component
-    loader: (() => import('./pages/home')) as any,
+    loader: (() => import('./pages/home')),
   },
   static: {
     path: '/static',
-    loader: (() => import('./pages/static')) as any,
+    loader: (() => import('./pages/static')),
   },
   dynamic: {
     path: '/page/:foo/id/:bar',
@@ -53,19 +51,19 @@ export const routes = createRouterConfig({
       foo: (value) => value.length > 2,
       bar: (value) => value.length > 0,
     },
-    loader: (() => import('./pages/dynamic')) as any,
+    loader: (() => import('./pages/dynamic')),
   },
   // this page is necessary
   error404: {
     path: '/error',
     props: { errorCode: 404 },
-    loader: (() => import('./pages/error')) as any,
+    loader: (() => import('./pages/error')),
   },
   // this page is necessary
   error500: {
     path: '/error',
     props: { errorCode: 500 },
-    loader: (() => import('./pages/error')) as any,
+    loader: (() => import('./pages/error')),
   },
 });
 ```
@@ -175,19 +173,19 @@ const App = observer(() => {
     <>
       <div className="menu">
         <div 
-          onClick={() => routerStore.redirectTo({ route: routes.home })}
+          onClick={() => routerStore.redirectTo({ route: 'home' })}
           className={routerStore.currentRoute.name === 'home' ? 'active' : ''}
         >
           Home
         </div>
         <div 
-          onClick={() => routerStore.redirectTo({ route: routes.static })}
+          onClick={() => routerStore.redirectTo({ route: 'static' })}
           className={routerStore.currentRoute.name === 'static' ? 'active' : ''}
         >
           Static
         </div>
         <div 
-          onClick={() => routerStore.redirectTo({ route: routes.dynamic, params: { foo: 'test', bar: 'smth' } })}
+          onClick={() => routerStore.redirectTo({ route: 'dynamic', params: { foo: 'test', bar: 'smth' } })}
           className={routerStore.currentRoute.name === 'dynamic' ? 'active' : ''}
         >
           Dynamic
@@ -203,7 +201,7 @@ Promise.resolve()
   .then(() => routerStore.redirectTo(getInitialRoute({ 
     routes, 
     pathname: location.pathname, 
-    fallback: routes.error404 
+    fallback: 'error404'
   })))
   .then(() => createRoot(document.getElementById('app')!).render(<App />));
 ```

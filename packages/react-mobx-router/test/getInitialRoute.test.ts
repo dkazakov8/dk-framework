@@ -9,37 +9,37 @@ describe('getInitialRoute', () => {
     const routeData = getInitialRoute({
       routes,
       pathname: '/test/static',
-      fallback: routes.error404,
+      fallback: 'error404',
     });
 
-    expect(routeData).to.deep.eq({ route: routes.staticRoute, params: {} });
+    expect(routeData).to.deep.eq({ route: 'staticRoute', params: {} });
   });
 
   it('Get correct dynamic route by path', () => {
     const routeData = getInitialRoute({
       routes,
       pathname: '/test/foo',
-      fallback: routes.error404,
+      fallback: 'error404',
     });
 
-    expect(routeData).to.deep.eq({ route: routes.dynamicRoute, params: { static: 'foo' } });
+    expect(routeData).to.deep.eq({ route: 'dynamicRoute', params: { static: 'foo' } });
   });
 
   it('Fallback', () => {
     let routeData = getInitialRoute({
       routes,
       pathname: '/testX/static',
-      fallback: routes.error404,
+      fallback: 'error404',
     });
 
-    expect(routeData).to.deep.eq({ route: routes.error404, params: {} });
+    expect(routeData).to.deep.eq({ route: 'error404', params: {} });
 
     routeData = getInitialRoute({
       routes,
       pathname: '/testX/foo',
-      fallback: routes.error404,
+      fallback: 'error404',
     });
 
-    expect(routeData).to.deep.eq({ route: routes.error404, params: {} });
+    expect(routeData).to.deep.eq({ route: 'error404', params: {} });
   });
 });

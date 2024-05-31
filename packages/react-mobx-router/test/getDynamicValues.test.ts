@@ -7,14 +7,14 @@ import { routes } from './routes';
 describe('getDynamicValues', () => {
   it('Should return params from pathname', () => {
     const params = getDynamicValues({
-      routesObject: routes.dynamicRoute,
+      route: routes.dynamicRoute,
       pathname: '/test/dynamic',
     });
 
     expect(params).to.deep.equal({ static: 'dynamic' });
 
     const params2 = getDynamicValues({
-      routesObject: routes.dynamicRoute3,
+      route: routes.dynamicRoute3,
       pathname: '/test4/dynamic',
     });
 
@@ -24,7 +24,7 @@ describe('getDynamicValues', () => {
 
   it('Should return multi params from pathname', () => {
     const params = getDynamicValues({
-      routesObject: routes.dynamicRouteMultiple,
+      route: routes.dynamicRouteMultiple,
       pathname: '/test/dynamic/dynamic2',
     });
 
@@ -33,7 +33,7 @@ describe('getDynamicValues', () => {
 
   it('Should return empty params', () => {
     const params = getDynamicValues({
-      routesObject: routes.staticRoute,
+      route: routes.staticRoute,
       pathname: '/test/static',
     });
 
