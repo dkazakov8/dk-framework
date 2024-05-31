@@ -18,7 +18,7 @@ void Promise.resolve()
       (routeName) => contextValue.routerStore.currentRoute.name === routeName
     ) as keyof typeof routes;
 
-    return loadComponentToConfig({ componentConfig: routes[preloadedRouteName] });
+    return loadComponentToConfig({ route: routes[preloadedRouteName] });
   })
   .then(() =>
     hydrateRoot(

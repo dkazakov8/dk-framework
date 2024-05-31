@@ -8,15 +8,21 @@
   "dependencies": {
     "mobx": "6.12.3",
     "mobx-react-lite": "4.0.7",
-    "dk-react-mobx-router": "3.2.27",
-    "dk-mobx-stateful-fn": "3.2.27",
-    "dk-mobx-restore-state": "3.2.27",
+    "dk-react-mobx-router": "3.2.28",
+    "dk-mobx-stateful-fn": "3.2.28",
+    "dk-mobx-restore-state": "3.2.28",
     "dk-bff-server": "3.2.25",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "body-parser": "1.20.2",
+    "compression": "1.7.4",
+    "express": "4.19.2",
+    "helmet": "7.1.0",
+    "nocache": "4.0.0",
+    "serve-static": "1.15.0"
   },
   "devDependencies": {
-    "dk-reload-server": "3.2.27",
+    "dk-reload-server": "3.2.28",
     "better-spawn": "1.0.4",
     "node-dev": "7.4.3",
     "tsx": "4.7.3",

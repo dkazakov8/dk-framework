@@ -1,8 +1,13 @@
-import path from 'path';
+/* eslint-disable no-restricted-syntax */
 
-import { runServer } from 'dk-bff-server';
+import path from 'path';
+import http from 'http';
+import fs from 'fs';
+
 import { getInitialRoute } from 'dk-react-mobx-router';
 import { renderToString } from 'react-dom/server';
+import express from 'express';
+import serveStatic from 'serve-static';
 
 import { RouterStore } from './routerStore';
 import { StoreContext } from './components/StoreContext';
@@ -10,54 +15,63 @@ import { App } from './components/App';
 import { routes } from './routes';
 import { escapeAllStrings } from './utils/escapeAllStrings';
 
-const self = `'self'`;
-const unsafeInline = `'unsafe-inline'`;
-
-void runServer({
-  port: 8000,
-  https: false,
-  templatePath: path.resolve(__dirname, '../build/index.html'),
-  template500Path: path.resolve(__dirname, '../build/index.html'),
-  staticFilesPath: path.resolve(__dirname, '../build'),
-  versionIdentifier: 'local',
-  templateModifier: ({ template, req }) => {
+const app = express()
+  .disable('x-powered-by')
+  .use(serveStatic(path.resolve(__dirname, '../build/public')))
+  .get('*', async (req, res) => {
     const contextValue = { routerStore: new RouterStore() };
-    const app = (
+    const reactApp = (
       <StoreContext.Provider value={contextValue}>
         <App />
       </StoreContext.Provider>
     );
 
-    return Promise.resolve()
-      .then(() =>
-        contextValue.routerStore.redirectTo(
-          getInitialRoute({
-            routes,
-            pathname: req.originalUrl,
-            fallback: routes.error404,
-          })
-        )
-      )
-      .then(() => renderToString(app))
-      .then((htmlMarkup) => {
-        const storeJS = JSON.parse(JSON.stringify(contextValue));
+    try {
+      await contextValue.routerStore.redirectTo(
+        getInitialRoute({
+          routes,
+          pathname: req.originalUrl,
+          fallback: 'error404',
+        })
+      );
+    } catch (error: any) {
+      if (error.name === 'REDIRECT') {
+        // eslint-disable-next-line no-console
+        console.log('redirect', error.message);
 
-        const hotReloadUrl = `http://${req.headers.host?.split(':')[0]}:8001`;
+        res.redirect(error.message);
 
-        return template
-          .replace(`<!-- HTML -->`, htmlMarkup)
-          .replace('<!-- INITIAL_DATA -->', JSON.stringify(escapeAllStrings(storeJS)))
-          .replace('<!-- HOT_RELOAD -->', `<script src="${hotReloadUrl}"></script>`);
-      });
-  },
-  helmetOptions: {
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: [self],
-        scriptSrc: [self, unsafeInline, `localhost:8001`],
-        connectSrc: [self, `ws://localhost:8001`],
-      },
-      reportOnly: false,
-    },
-  },
+        return;
+      }
+
+      console.error(error);
+
+      const template500 = fs.readFileSync(path.resolve(__dirname, '../build/index.html'), 'utf-8');
+
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      res.status(500).send(template500);
+
+      return;
+    }
+
+    const htmlMarkup = renderToString(reactApp);
+    const storeJS = JSON.parse(JSON.stringify(contextValue));
+
+    const hotReloadUrl = `http://${req.headers.host?.split(':')[0]}:8001`;
+
+    res.send(
+      fs
+        .readFileSync(path.resolve(__dirname, '../build/public/index.html'), 'utf-8')
+        .replace(`<!-- HTML -->`, htmlMarkup)
+        .replace('<!-- INITIAL_DATA -->', JSON.stringify(escapeAllStrings(storeJS)))
+        .replace('<!-- HOT_RELOAD -->', `<script src="${hotReloadUrl}"></script>`)
+    );
+  });
+
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
+http.createServer(app).listen(8000, () => {
+  const link = `http://localhost:8000`;
+
+  // eslint-disable-next-line no-console
+  console.log(`started on`, link);
 });

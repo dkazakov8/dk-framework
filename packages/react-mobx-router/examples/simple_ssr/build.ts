@@ -3,9 +3,11 @@
 import fs from 'fs';
 import path from 'path';
 
+// @ts-ignore
 import betterSpawn from 'better-spawn';
-import { context, Loader, Plugin } from 'esbuild';
+import { BuildOptions, context, Loader, Plugin } from 'esbuild';
 import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
+import { runManual } from 'dk-reload-server';
 
 export const pluginReplaceDirname = ({
   filter = /.*/,
@@ -34,44 +36,41 @@ export const pluginReplaceDirname = ({
   },
 });
 
+export const createPluginParallel = (callback: () => void) => {
+  const activeProcesses = new Set<string>();
+  let callbackTimeout: ReturnType<typeof setTimeout>;
+
+  return function pluginParallel(params: { name: string }): Plugin {
+    return {
+      name: 'plugin-parallel',
+      setup(build) {
+        build.onStart(() => {
+          clearTimeout(callbackTimeout);
+          activeProcesses.add(params.name);
+        });
+        build.onEnd(() => {
+          activeProcesses.delete(params.name);
+
+          clearTimeout(callbackTimeout);
+          if (activeProcesses.size === 0)
+            callbackTimeout = setTimeout(() => {
+              callback();
+              // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            }, 200);
+        });
+      },
+    };
+  };
+};
+
 async function watch() {
-  const clientEntry = ['src/client.tsx'];
-
-  const ctxClient = await context({
-    entryPoints: clientEntry,
-    bundle: true,
-    format: 'esm',
-    publicPath: '/',
-    outdir: path.resolve(__dirname, 'build'),
-    write: true,
-    metafile: true,
-    splitting: true,
-    platform: 'browser',
-    target: 'es2020',
-    define: {
-      process: JSON.stringify({ env: { NODE_ENV: 'development' } }),
-      'process.env.NODE_ENV': JSON.stringify('development'),
-      PATH_SEP: JSON.stringify(path.sep),
-    },
-    resolveExtensions: ['.js', '.ts', '.tsx'],
-    plugins: [
-      pluginReplaceDirname({ filter: /\.(tsx?)$/ }),
-
-      // https://github.com/craftamap/esbuild-plugin-html
-      htmlPlugin({
-        files: [
-          {
-            entryPoints: clientEntry,
-            filename: 'index.html',
-            scriptLoading: 'module',
-            htmlTemplate: fs.readFileSync(path.resolve('./template.html'), 'utf-8'),
-          },
-        ],
-      }),
-    ],
+  const { sendReloadSignal } = runManual({
+    port: 8001,
+    watchPaths: [path.resolve(__dirname, './build')],
   });
+  const pluginParallel = createPluginParallel(sendReloadSignal);
 
-  const ctxServer = await context({
+  const configServer: BuildOptions = {
     entryPoints: ['src/server.tsx'],
     bundle: true,
     write: true,
@@ -87,8 +86,38 @@ async function watch() {
       PATH_SEP: JSON.stringify(path.sep),
     },
     resolveExtensions: ['.js', '.ts', '.tsx'],
-    plugins: [pluginReplaceDirname({ filter: /\.(tsx?)$/ })],
-  });
+    plugins: [pluginReplaceDirname({ filter: /\.(tsx?)$/ }), pluginParallel({ name: 'server' })],
+  };
+
+  const configClient: BuildOptions = {
+    ...configServer,
+    entryPoints: ['src/client.tsx'],
+    outdir: path.resolve(__dirname, 'build/public'),
+    format: 'esm',
+    publicPath: '/',
+    splitting: true,
+    platform: 'browser',
+    target: 'es2020',
+    packages: undefined,
+    plugins: [
+      pluginReplaceDirname({ filter: /\.(tsx?)$/ }),
+      pluginParallel({ name: 'client' }),
+      // https://github.com/craftamap/esbuild-plugin-html
+      htmlPlugin({
+        files: [
+          {
+            entryPoints: ['src/client.tsx'],
+            filename: 'index.html',
+            scriptLoading: 'module',
+            htmlTemplate: fs.readFileSync(path.resolve('./template.html'), 'utf-8'),
+          },
+        ],
+      }),
+    ],
+  };
+
+  const ctxClient = await context(configClient);
+  const ctxServer = await context(configServer);
 
   await Promise.all([ctxClient.watch(), ctxServer.watch()]);
 
@@ -102,24 +131,7 @@ async function watch() {
   });
   serverProcess.stderr?.on('data', (msg: Buffer) => console.error(msg.toString().trim()));
 
-  const watchProcess = betterSpawn('tsx ./src/watchServer.ts', {
-    stdio: ['pipe', 'pipe', 'pipe'],
-  });
-
-  watchProcess.stdout?.on('data', (msg: Buffer) => {
-    // eslint-disable-next-line no-console
-    console.log(msg.toString().trim());
-  });
-  watchProcess.stderr?.on('data', (msg: Buffer) => console.error(msg.toString().trim()));
-
-  process.on('exit', () => {
-    if (serverProcess) serverProcess.close();
-    if (watchProcess) watchProcess.close();
-
-    void ctxClient?.dispose();
-    void ctxServer?.dispose();
-  });
-
+  process.on('exit', () => serverProcess?.close());
   process.on('SIGINT', () => process.exit(0));
   process.on('SIGTERM', () => process.exit(0));
 }

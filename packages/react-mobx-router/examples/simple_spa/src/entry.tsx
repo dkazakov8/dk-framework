@@ -20,7 +20,7 @@ const App = observer(() => {
           onClick={(event) => {
             event.preventDefault();
 
-            void routerStore.redirectTo({ route: routes.home });
+            void routerStore.redirectTo({ route: 'home' });
           }}
           className={routerStore.currentRoute.name === 'home' ? 'active' : ''}
         >
@@ -30,7 +30,7 @@ const App = observer(() => {
           onClick={(event) => {
             event.preventDefault();
 
-            void routerStore.redirectTo({ route: routes.static });
+            void routerStore.redirectTo({ route: 'static' });
           }}
           className={routerStore.currentRoute.name === 'static' ? 'active' : ''}
         >
@@ -41,7 +41,7 @@ const App = observer(() => {
             event.preventDefault();
 
             void routerStore.redirectTo({
-              route: routes.dynamic,
+              route: 'dynamic',
               params: { foo: 'dynamic-value' },
             });
           }}
@@ -64,7 +64,7 @@ void Promise.resolve()
       getInitialRoute({
         routes,
         pathname: location.pathname,
-        fallback: routes.error404,
+        fallback: 'error404',
       })
     )
   )

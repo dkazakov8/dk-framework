@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 
-import { routes } from '../../routes';
 import { StoreContext } from '../../components/StoreContext';
 
 const Dynamic = observer(() => {
@@ -16,7 +15,7 @@ const Dynamic = observer(() => {
         style={{ marginTop: 20 }}
         onClick={() => {
           void routerStore.redirectTo({
-            route: routes.dynamic,
+            route: 'dynamic',
             params: { foo: String(Math.random()).slice(2) },
           });
         }}

@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 
-import { routes } from '../routes';
-
 import { StoreContext } from './StoreContext';
 import { Router } from './Router';
 
@@ -16,7 +14,7 @@ export const App = observer(() => {
           onClick={(event) => {
             event.preventDefault();
 
-            void routerStore.redirectTo({ route: routes.home });
+            void routerStore.redirectTo({ route: 'home' });
           }}
           className={routerStore.currentRoute.name === 'home' ? 'active' : ''}
         >
@@ -26,7 +24,7 @@ export const App = observer(() => {
           onClick={(event) => {
             event.preventDefault();
 
-            void routerStore.redirectTo({ route: routes.static });
+            void routerStore.redirectTo({ route: 'static' });
           }}
           className={routerStore.currentRoute.name === 'static' ? 'active' : ''}
         >
@@ -37,7 +35,7 @@ export const App = observer(() => {
             event.preventDefault();
 
             void routerStore.redirectTo({
-              route: routes.dynamic,
+              route: 'dynamic',
               params: { foo: 'dynamic-value' },
             });
           }}
