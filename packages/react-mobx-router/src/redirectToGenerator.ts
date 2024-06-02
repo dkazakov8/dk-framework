@@ -88,7 +88,8 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
           name: routeError500.name,
           path: routeError500.path,
           props: routes[routeError500.name].props,
-          params: {},
+          query: {} as any,
+          params: {} as any,
           pageName: routes[routeError500.name].pageName,
         };
       });
@@ -109,6 +110,7 @@ export function redirectToGenerator<TRoutes extends Record<string, TypeRoute>>({
         name: route.name,
         path: route.path,
         props: routes[route.name].props,
+        query: {} as any,
         params: nextParams,
         pageName: routes[route.name].pageName,
       };

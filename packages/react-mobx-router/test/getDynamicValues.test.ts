@@ -20,6 +20,21 @@ describe('getDynamicValues', () => {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     expect(params2).to.deep.equal({ ':static': 'dynamic' });
+
+    const params3 = getDynamicValues({
+      route: routes.dynamicRoute,
+      pathname: '/test/dynamic?q=test',
+    });
+
+    expect(params3).to.deep.equal({ static: 'dynamic' });
+
+    const params4 = getDynamicValues({
+      route: routes.dynamicRoute3,
+      pathname: '/test4/dynamic?q=test',
+    });
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    expect(params4).to.deep.equal({ ':static': 'dynamic' });
   });
 
   it('Should return multi params from pathname', () => {
@@ -29,6 +44,13 @@ describe('getDynamicValues', () => {
     });
 
     expect(params).to.deep.equal({ param: 'dynamic', param2: 'dynamic2' });
+
+    const params2 = getDynamicValues({
+      route: routes.dynamicRouteMultiple,
+      pathname: '/test/dynamic/dynamic2?q=test',
+    });
+
+    expect(params2).to.deep.equal({ param: 'dynamic', param2: 'dynamic2' });
   });
 
   it('Should return empty params', () => {
@@ -39,5 +61,13 @@ describe('getDynamicValues', () => {
 
     // eslint-disable-next-line no-unused-expressions
     expect(params).to.be.empty;
+
+    const params2 = getDynamicValues({
+      route: routes.staticRoute,
+      pathname: '/test/static?q=test',
+    });
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(params2).to.be.empty;
   });
 });

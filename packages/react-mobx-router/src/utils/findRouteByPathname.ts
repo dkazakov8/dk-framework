@@ -1,8 +1,7 @@
 import { TypeRoute } from '../types/TypeRoute';
 
 import { constants } from './constants';
-import { isDynamic } from './isDynamic';
-import { clearDynamic } from './clearDynamic';
+import { isDynamic, clearDynamic } from './dynamic';
 
 function completeStaticMatch(pathname: string, path: string) {
   return (
@@ -25,7 +24,10 @@ export function findRouteByPathname<TRoutes extends Record<string, TypeRoute>>({
 
   let dynamicRouteMatch: TRoutes[keyof TRoutes] | undefined;
 
-  const pathnameArray = pathname.split(constants.pathPartSeparator).filter(Boolean);
+  const pathnameArray = pathname
+    .replace(/\?.+$/, '')
+    .split(constants.pathPartSeparator)
+    .filter(Boolean);
 
   for (const routeName in routes) {
     if (!routes.hasOwnProperty(routeName)) continue;

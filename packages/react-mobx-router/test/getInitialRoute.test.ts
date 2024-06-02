@@ -6,40 +6,48 @@ import { routes } from './routes';
 
 describe('getInitialRoute', () => {
   it('Get correct static route by path', () => {
-    const routeData = getInitialRoute({
-      routes,
-      pathname: '/test/static',
-      fallback: 'error404',
-    });
-
-    expect(routeData).to.deep.eq({ route: 'staticRoute', params: {} });
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/test/static',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'staticRoute', params: {}, query: {} });
   });
 
   it('Get correct dynamic route by path', () => {
-    const routeData = getInitialRoute({
-      routes,
-      pathname: '/test/foo',
-      fallback: 'error404',
-    });
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/test/foo',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'dynamicRoute', params: { static: 'foo' }, query: {} });
 
-    expect(routeData).to.deep.eq({ route: 'dynamicRoute', params: { static: 'foo' } });
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/test/foo?q=test',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'dynamicRoute', params: { static: 'foo' }, query: { q: 'test' } });
   });
 
   it('Fallback', () => {
-    let routeData = getInitialRoute({
-      routes,
-      pathname: '/testX/static',
-      fallback: 'error404',
-    });
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/testX/static',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'error404', params: {}, query: {} });
 
-    expect(routeData).to.deep.eq({ route: 'error404', params: {} });
-
-    routeData = getInitialRoute({
-      routes,
-      pathname: '/testX/foo',
-      fallback: 'error404',
-    });
-
-    expect(routeData).to.deep.eq({ route: 'error404', params: {} });
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/testX/foo',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'error404', params: {}, query: {} });
   });
 });

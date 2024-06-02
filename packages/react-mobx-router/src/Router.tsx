@@ -89,13 +89,16 @@ class VM<TRoutes extends Record<string, TypeRoute>> implements ViewModel {
     const currentRouteName = currentRoute.name;
     const currentRoutePage = currentRoute.pageName;
 
-    if (
-      (this.props.redirectTo as any).state.isExecuting ||
-      loadedComponentName === currentRouteName ||
-      loadedComponentPage === currentRoutePage
-    ) {
-      return;
+    let preventRedirect = false;
+    if ((this.props.redirectTo as any).state.isExecuting) preventRedirect = true;
+    else if (loadedComponentName === currentRouteName) preventRedirect = true;
+    else if (loadedComponentPage != null && currentRouteName != null) {
+      if (loadedComponentPage === currentRoutePage) {
+        preventRedirect = true;
+      }
     }
+
+    if (preventRedirect) return;
 
     runInAction(() => {
       if (!loadedComponentName) {

@@ -13,7 +13,7 @@ export function loadComponentToConfig(params: { route: TypeRoute }): Promise<voi
           route.loader.load;
 
     return loadingFn().then(
-      (module: { default: ComponentClass; store?: any; actions?: any; pageName: string }) => {
+      (module: { default: ComponentClass; store?: any; actions?: any; pageName?: string }) => {
         route.component = module.default;
         route.store = module.store;
         route.actions = module.actions;

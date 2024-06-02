@@ -32,6 +32,7 @@ function checkCurrent(routerStore: InterfaceRouterStore<any>, route: TypeRouteWi
     path: route.path,
     props: route.props,
     params: route.params || {},
+    query: route.query,
     pageName:
       // eslint-disable-next-line no-nested-ternary
       route.path === '/test/static'
@@ -58,15 +59,21 @@ function checkHistoryAndCurrent(
 function cloneWithParams<TRoute extends TypeRoute>(config: {
   route: TRoute;
   params?: Record<keyof TRoute['params'], string>;
+  query?: Record<keyof TRoute['params'], string>;
 }): TypeRouteWithParams {
   if ('params' in config) {
-    return Object.assign(_.cloneDeep(config.route) as any, { params: config.params });
+    return Object.assign(_.cloneDeep(config.route) as any, {
+      params: config.params,
+      query: config.query || {},
+    });
   }
 
-  return _.cloneDeep(config.route) as any;
+  return Object.assign(_.cloneDeep(config.route) as any, {
+    query: config.query || {},
+  });
 }
 
-describe('redirectToGenerator', () => {
+describe.only('redirectToGenerator', () => {
   function test1(mode: 'separate' | 'store') {
     const customRoutes = routes;
 

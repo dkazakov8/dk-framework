@@ -1,8 +1,7 @@
 import { TypeRoute } from '../types/TypeRoute';
 
 import { constants } from './constants';
-import { isDynamic } from './isDynamic';
-import { clearDynamic } from './clearDynamic';
+import { isDynamic, clearDynamic } from './dynamic';
 
 export function getDynamicValues<TRoute extends TypeRoute>(params: {
   route: TRoute;
@@ -10,7 +9,10 @@ export function getDynamicValues<TRoute extends TypeRoute>(params: {
 }): Record<keyof TRoute['params'], string> {
   const { route, pathname } = params;
 
-  const pathnameArray: Array<string> = pathname.split(constants.pathPartSeparator).filter(Boolean);
+  const pathnameArray: Array<string> = pathname
+    .replace(/\?.+$/, '')
+    .split(constants.pathPartSeparator)
+    .filter(Boolean);
   const routePathnameArray: Array<keyof TRoute['params']> = route.path
     .split(constants.pathPartSeparator)
     .filter(Boolean) as any;

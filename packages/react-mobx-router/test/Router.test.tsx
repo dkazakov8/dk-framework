@@ -69,23 +69,35 @@ describe('Router', () => {
 
     const { container } = render(<App />);
 
+    let call_beforeSetPageComponent = 0;
+    let call_beforeUpdatePageComponent = 0;
+
     return Promise.resolve()
       .then(() => redirectTo({ route: 'staticRoute' }))
       .then(() => {
+        call_beforeSetPageComponent += 1;
+
         expect(container.innerHTML).to.eq('Static');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
-        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(1);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
         expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
-          0
+          call_beforeUpdatePageComponent
         );
       })
       .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
       .then(() => {
+        call_beforeSetPageComponent += 1;
+        call_beforeUpdatePageComponent += 1;
+
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
-        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(2);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
         expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
-          1
+          call_beforeUpdatePageComponent
         );
       })
       .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'dsa' } }))
@@ -93,9 +105,11 @@ describe('Router', () => {
         // No rerender if only params changed and route is the same
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
-        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(2);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
         expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
-          1
+          call_beforeUpdatePageComponent
         );
       })
       .then(() => redirectTo({ route: 'dynamicRoute2', params: { static: 'dsa' } }))
@@ -103,9 +117,66 @@ describe('Router', () => {
         // No rerender if only params changed and pageName is the same
         expect(container.innerHTML).to.eq('<div>Dynamic</div>');
         expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
-        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(2);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
         expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
-          1
+          call_beforeUpdatePageComponent
+        );
+      })
+      .then(() => redirectTo({ route: 'noPageName', params: { foo: 'foo' } }))
+      .then(() => {
+        call_beforeSetPageComponent += 1;
+        call_beforeUpdatePageComponent += 1;
+
+        expect(container.innerHTML).to.eq('<div>No page name</div>');
+        expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
+        expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
+          call_beforeUpdatePageComponent
+        );
+      })
+      .then(() => redirectTo({ route: 'noPageName', params: { foo: 'bar' } }))
+      .then(() => {
+        // No rerender if only params changed and no pageName
+        expect(container.innerHTML).to.eq('<div>No page name</div>');
+        expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
+        expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
+          call_beforeUpdatePageComponent
+        );
+      })
+      .then(() => redirectTo({ route: 'noPageName2', params: { foo: 'foo', bar: 'bar' } }))
+      .then(() => {
+        // Rerender if no page name
+        call_beforeSetPageComponent += 1;
+        call_beforeUpdatePageComponent += 1;
+
+        expect(container.innerHTML).to.eq('<div>No page name</div>');
+        expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
+        expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
+          call_beforeUpdatePageComponent
+        );
+      })
+      .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
+      .then(() => {
+        call_beforeSetPageComponent += 1;
+        call_beforeUpdatePageComponent += 1;
+
+        expect(container.innerHTML).to.eq('<div>Dynamic</div>');
+        expect(spy_render.callCount, 'spy_render').to.deep.eq(1);
+        expect(spy_beforeSetPageComponent.callCount, 'spy_beforeSetPageComponent').to.deep.eq(
+          call_beforeSetPageComponent
+        );
+        expect(spy_beforeUpdatePageComponent.callCount, 'spy_beforeUpdatePageComponent').to.deep.eq(
+          call_beforeUpdatePageComponent
         );
       });
   }

@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 
-import { isDynamic } from '../src/utils/isDynamic';
-import { clearDynamic } from '../src/utils/clearDynamic';
-import { isDynamicRoute } from '../src/utils/isDynamicRoute';
+import { isDynamic, isDynamicRoute, clearDynamic } from '../src/utils/dynamic';
 
 import { routes } from './routes';
 

@@ -8,6 +8,10 @@ export const routes = createRouterConfig({
   dynamicRoute: {
     path: '/test/:static',
     params: { static: (value) => value.length > 2 },
+    query: {
+      q: (value) => value.length > 2,
+      s: (value) => value.length > 2,
+    },
     loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
   },
   dynamicRoute2: {
@@ -22,6 +26,16 @@ export const routes = createRouterConfig({
       ':static': (value) => value.length > 2,
     },
     loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
+  },
+  noPageName: {
+    path: '/test/:foo',
+    params: { foo: (value) => value.length > 2 },
+    loader: (() => Promise.resolve(require('./pages/noPageName'))) as any,
+  },
+  noPageName2: {
+    path: '/test/:foo/:bar',
+    params: { foo: (value) => value.length > 2, bar: (value) => value.length > 2 },
+    loader: (() => Promise.resolve(require('./pages/noPageName'))) as any,
   },
   // @ts-ignore
   dynamicRouteNoValidators: {
