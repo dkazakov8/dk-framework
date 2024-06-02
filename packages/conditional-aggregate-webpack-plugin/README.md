@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/dk-conditional-aggregate-webpack-plugin)](https://www.npmjs.com/package/dk-conditional-aggregate-webpack-plugin)
 [![license](https://img.shields.io/npm/l/dk-conditional-aggregate-webpack-plugin)](https://github.com/dkazakov8/dk-framework/blob/master/packages/conditional-aggregate-webpack-plugin/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/conditional-aggregate-webpack-plugin/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

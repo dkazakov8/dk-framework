@@ -9,7 +9,7 @@
     "url": "git+https://github.com/dkazakov8/dk-framework.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&node ../../bundle.js",
     "prepublishOnly": "pnpm run build",
     "test": "nyc mocha --require global-jsdom/register&&pnpm run gen-badge",
     "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"

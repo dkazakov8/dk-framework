@@ -9,7 +9,7 @@
     "url": "git+https://github.com/dkazakov8/dk-framework.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&node ../../bundle.js",
     "test": "nyc mocha&&pnpm run gen-badge",
     "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"
   },
@@ -19,7 +19,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "main": "dist/compareEnvFiles.js",
-  "types": "dist/compareEnvFiles.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "gitHead": "4e864f69d1f82a93f53233cf5669fe13d023d132"
 }

@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/file-generator/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-file-generator)](https://www.npmjs.com/package/dk-file-generator)
 [![license](https://img.shields.io/npm/l/dk-file-generator)](https://github.com/dkazakov8/dk-framework/blob/master/packages/file-generator/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/file-generator/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

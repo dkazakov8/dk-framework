@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/dk-bff-server)](https://www.npmjs.com/package/dk-bff-server)
 [![license](https://img.shields.io/npm/l/dk-bff-server)](https://github.com/dkazakov8/dk-framework/blob/master/packages/bff-server/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/bff-server/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

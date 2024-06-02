@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-mobx-stateful-fn)](https://www.npmjs.com/package/dk-mobx-stateful-fn)
 [![license](https://img.shields.io/npm/l/dk-mobx-stateful-fn)](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/mobx-stateful-fn/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

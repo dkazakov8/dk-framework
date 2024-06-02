@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/webpack-parallel-simple/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-webpack-parallel-simple)](https://www.npmjs.com/package/dk-webpack-parallel-simple)
 [![license](https://img.shields.io/npm/l/dk-webpack-parallel-simple)](https://github.com/dkazakov8/dk-framework/blob/master/packages/webpack-parallel-simple/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/webpack-parallel-simple/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

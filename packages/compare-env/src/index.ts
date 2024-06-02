@@ -1,0 +1,1 @@
+export { compareEnvFiles } from './compareEnvFiles';

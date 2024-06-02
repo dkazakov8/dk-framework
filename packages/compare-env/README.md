@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/compare-env/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-compare-env)](https://www.npmjs.com/package/dk-compare-env)
 [![license](https://img.shields.io/npm/l/dk-compare-env)](https://github.com/dkazakov8/dk-framework/blob/master/packages/compare-env/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/compare-env/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/localize/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-localize)](https://www.npmjs.com/package/dk-localize)
 [![license](https://img.shields.io/npm/l/dk-localize)](https://github.com/dkazakov8/dk-framework/blob/master/packages/localize/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/localize/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

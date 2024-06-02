@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/react-mobx-router/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-react-mobx-router)](https://www.npmjs.com/package/dk-react-mobx-router)
 [![license](https://img.shields.io/npm/l/dk-react-mobx-router)](https://github.com/dkazakov8/dk-framework/blob/master/packages/react-mobx-router/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/react-mobx-router/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

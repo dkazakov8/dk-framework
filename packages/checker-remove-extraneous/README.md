@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/checker-remove-extraneous/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-checker-remove-extraneous)](https://www.npmjs.com/package/dk-checker-remove-extraneous)
 [![license](https://img.shields.io/npm/l/dk-checker-remove-extraneous)](https://github.com/dkazakov8/dk-framework/blob/master/packages/checker-remove-extraneous/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/checker-remove-extraneous/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you

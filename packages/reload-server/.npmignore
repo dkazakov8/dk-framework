@@ -13,6 +13,7 @@ pnpm-lock.yaml
 .nyc_output
 coverage
 cover.svg
+size.svg
 .github
 src
 .mocharc.json

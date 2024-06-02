@@ -3,6 +3,7 @@
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/request/cover.svg)
 [![npm](https://img.shields.io/npm/v/dk-request)](https://www.npmjs.com/package/dk-request)
 [![license](https://img.shields.io/npm/l/dk-request)](https://github.com/dkazakov8/dk-framework/blob/master/packages/request/LICENSE)
+![size](https://github.com/dkazakov8/dk-framework/blob/master/packages/request/size.svg)
 
 > [!WARNING]  
 > It's fine if you use this library from NPM package with a **static versioning** in case you
