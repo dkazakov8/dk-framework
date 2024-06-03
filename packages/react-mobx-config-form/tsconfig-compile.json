@@ -13,6 +13,7 @@
     "skipLibCheck": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "keyofStringsOnly": true
+    "keyofStringsOnly": true,
+    "emitDeclarationOnly": true
   }
 }

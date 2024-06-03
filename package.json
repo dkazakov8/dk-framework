@@ -4,7 +4,7 @@
   "scripts": {
     "upd": "node pruneNodeModules.js&&pnpm i --prefer-offline",
     "pub": "pnpm run test&&lerna version --exact --force-publish --yes&&lerna publish from-git --yes&&pnpm run upd&&git add .&&git commit --amend --no-edit&&git push -f",
-    "build": "bash -c 'rm -rf ./sizeResult.json&&lerna run build $@&&cat ./sizeResult.json' bash",
+    "build": "bash -c 'rm -rf ./sizeResult.json&&lerna run build --concurrency 20 $@&&cat ./sizeResult.json' bash",
     "test": "lerna run test",
     "test-watch": "nx reset&&bash -c 'lerna watch --scope=\"$@\" -- lerna run test --scope=\"$@\"' bash",
     "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
