@@ -56,15 +56,23 @@ function afterBuild(result) {
   const size = bytesForHuman(result.metafile.outputs[pkg.main].bytes);
   const prevSize = getPrevSize();
 
-  saveSizeLog(prevSize, size);
+  setTimeout(() => saveSizeLog(prevSize, size), 1);
 
-  downloader(
-    `https://img.shields.io/badge/Size (minified ${isNode ? 'no deps' : 'with deps'})-${size}-blue`,
-    path.resolve(process.cwd(), './size.svg'),
-    function handleError(err, downloadResult) {
-      if (err) console.error(err);
+  return new Promise((resolve) => {
+    if (size !== prevSize) {
+      downloader(
+        `https://img.shields.io/badge/Size (minified ${isNode ? 'no deps' : 'with deps'})-${size}-blue`,
+        path.resolve(process.cwd(), './size.svg'),
+        function handleError(err, downloadResult) {
+          if (err) console.error(err);
+
+          resolve();
+        }
+      );
+    } else {
+      resolve();
     }
-  );
+  });
 }
 
 const buildConfig = {
