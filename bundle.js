@@ -68,7 +68,7 @@ const buildConfig = {
   metafile: false,
   sourcemap: true,
   target: isNode ? 'node18' : 'es2019',
-  packages: isNode ? 'external' : undefined,
+  packages: 'external',
   tsconfig: `${process.cwd()}/tsconfig-compile.json`,
   external: Object.keys(pkg.peerDependencies || {}),
 };
@@ -83,6 +83,7 @@ if (['react-mobx-router'].includes(folderName)) {
           minify: true,
           metafile: true,
           sourcemap: false,
+          packages: isNode ? 'external' : undefined,
         })
       )
     )
@@ -96,6 +97,7 @@ if (['react-mobx-router'].includes(folderName)) {
         metafile: true,
         sourcemap: false,
         entryPoints: [path.resolve(process.cwd(), pkg.main)],
+        packages: isNode ? 'external' : undefined,
       })
     )
     .then(afterBuild);
