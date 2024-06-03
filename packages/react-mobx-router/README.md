@@ -56,13 +56,13 @@ export const routes = createRouterConfig({
   },
   // this page is necessary
   error404: {
-    path: '/error',
+    path: '/error404',
     props: { errorCode: 404 },
     loader: (() => import('./pages/error')),
   },
   // this page is necessary
   error500: {
-    path: '/error',
+    path: '/error500',
     props: { errorCode: 500 },
     loader: (() => import('./pages/error')),
   },

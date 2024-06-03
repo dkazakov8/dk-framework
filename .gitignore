@@ -55,6 +55,7 @@ npm-debug.*
 *.p12
 *.mobileprovision
 *.orig.*
+sizeResult.json
 
 
 
