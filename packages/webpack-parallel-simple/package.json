@@ -28,7 +28,7 @@
     "webpack": "*"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "main": "dist/index.js",
   "gitHead": "4e864f69d1f82a93f53233cf5669fe13d023d132"

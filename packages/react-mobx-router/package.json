@@ -34,6 +34,10 @@
     "mobx-react-lite": "*",
     "react": "*"
   },
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "gitHead": "4e864f69d1f82a93f53233cf5669fe13d023d132"
