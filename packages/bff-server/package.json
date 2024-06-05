@@ -9,7 +9,7 @@
     "url": "git+https://github.com/dkazakov8/dk-framework.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&node ../../bundle.js&&cp -r ./src/utils/ssl-local ./dist/cjs/ssl-local&&cp -r ./src/utils/ssl-local ./dist/esm/ssl-local",
+    "build": "rm -rf ./dist&&tsc --project tsconfig-compile.json&&node ../../bundle.js",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
