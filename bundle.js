@@ -58,13 +58,13 @@ function afterBuild(result) {
 
   setTimeout(() => saveSizeLog(prevSize, size), 1);
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (size !== prevSize) {
       downloader(
         `https://img.shields.io/badge/Size (minified ${isNode ? 'no deps' : 'with deps'})-${size}-blue`,
         path.resolve(process.cwd(), './size.svg'),
         function handleError(err, downloadResult) {
-          if (err) console.error(err);
+          if (err) reject(err);
 
           resolve();
         }
@@ -78,14 +78,14 @@ function afterBuild(result) {
 const buildConfig = {
   entryPoints: [path.resolve(process.cwd(), 'src')],
   bundle: true,
-  format: 'cjs',
+  format: 'esm',
   outfile: path.resolve(process.cwd(), path.resolve(process.cwd(), pkg.main)),
   write: true,
   minify: false,
   metafile: false,
   sourcemap: true,
   treeShaking: true,
-  target: isNode ? 'node18' : 'es2019',
+  target: isNode ? 'node18' : 'es2022',
   packages: 'external',
   tsconfig: `${process.cwd()}/tsconfig-compile.json`,
   external: Object.keys(pkg.peerDependencies || {}),
@@ -101,6 +101,7 @@ return Promise.resolve()
     esbuild.build(
       Object.assign({}, buildConfig, {
         entryPoints: [path.resolve(process.cwd(), pkg.main)],
+        format: 'cjs',
         write: false,
         minify: true,
         metafile: true,

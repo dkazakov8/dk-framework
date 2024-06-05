@@ -12,7 +12,8 @@ export function getDynamicValues<TRoute extends TypeRoute>(params: {
   const pathnameArray: Array<string> = pathname
     .replace(/\?.+$/, '')
     .split(constants.pathPartSeparator)
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((str) => decodeURIComponent(str));
   const routePathnameArray: Array<keyof TRoute['params']> = route.path
     .split(constants.pathPartSeparator)
     .filter(Boolean) as any;

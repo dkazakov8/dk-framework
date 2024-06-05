@@ -70,4 +70,13 @@ describe('getDynamicValues', () => {
     // eslint-disable-next-line no-unused-expressions
     expect(params2).to.be.empty;
   });
+
+  it('Special symbols', () => {
+    const params = getDynamicValues({
+      route: routes.dynamicRouteMultiple,
+      pathname: '/test/%D1%88%D0%B5%D0%BB%D0%BB%D1%8B/%3Fx%3Dtest',
+    });
+
+    expect(params).to.deep.equal({ param: 'шеллы', param2: '?x=test' });
+  });
 });

@@ -24,6 +24,6 @@ export function replaceDynamicValues<TRouteItem extends TypeRoute | TypeRouteWit
       );
     }
 
-    return value;
+    return encodeURIComponent(value);
   });
 }

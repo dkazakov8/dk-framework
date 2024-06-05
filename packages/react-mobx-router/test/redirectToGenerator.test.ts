@@ -73,7 +73,7 @@ function cloneWithParams<TRoute extends TypeRoute>(config: {
   });
 }
 
-describe.only('redirectToGenerator', () => {
+describe('redirectToGenerator', () => {
   function test1(mode: 'separate' | 'store') {
     const customRoutes = routes;
 

@@ -48,4 +48,13 @@ describe('replaceDynamicValues', () => {
       });
     }).to.throw(`replaceDynamicValues: no param ":param2" passed for route dynamicRoute`);
   });
+
+  it('Special symbols', () => {
+    const pathname = replaceDynamicValues({
+      route: routes.dynamicRoute,
+      params: { static: 'шеллы' },
+    });
+
+    expect(pathname).to.be.eq('/test/%D1%88%D0%B5%D0%BB%D0%BB%D1%8B');
+  });
 });
