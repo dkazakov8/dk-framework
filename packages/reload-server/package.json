@@ -2,7 +2,7 @@
   "name": "dk-reload-server",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.3.6",
+  "version": "3.3.7",
   "description": "Reload browser on files change",
   "repository": {
     "type": "git",
