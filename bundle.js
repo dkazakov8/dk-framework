@@ -78,7 +78,7 @@ function afterBuild(result) {
 const buildConfig = {
   entryPoints: [path.resolve(process.cwd(), 'src')],
   bundle: true,
-  format: 'esm',
+  format: isNode ? 'cjs' : 'esm',
   outfile: path.resolve(process.cwd(), path.resolve(process.cwd(), pkg.main)),
   write: true,
   minify: false,
