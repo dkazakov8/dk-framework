@@ -8,6 +8,36 @@ export type TypeRouteRaw = {
   props?: Record<string, any>;
   query?: Record<string, TypeValidator>;
   params?: Record<string, TypeValidator>;
-  beforeEnter?: (...args: Array<any>) => Promise<any>;
-  beforeLeave?: (nextRoute: any, ...args: Array<any>) => Promise<any> | null;
+  beforeEnter?: (
+    config: {
+      nextUrl: string;
+      nextRoute: any;
+      nextPathname: string;
+      nextQuery?: any;
+      nextSearch?: string;
+
+      currentUrl?: string;
+      currentQuery?: any;
+      currentRoute?: any;
+      currentSearch?: string;
+      currentPathname?: string;
+    },
+    ...args: Array<any>
+  ) => Promise<any>;
+  beforeLeave?: (
+    config: {
+      nextUrl: string;
+      nextRoute: any;
+      nextPathname: string;
+      nextQuery?: any;
+      nextSearch?: string;
+
+      currentUrl?: string;
+      currentQuery?: any;
+      currentRoute?: any;
+      currentSearch?: string;
+      currentPathname?: string;
+    },
+    ...args: Array<any>
+  ) => Promise<any> | null;
 };

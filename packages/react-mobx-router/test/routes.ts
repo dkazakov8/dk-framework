@@ -3,6 +3,9 @@ import { createRouterConfig } from '../src/createRouterConfig';
 export const routes = createRouterConfig({
   staticRoute: {
     path: '/test/static',
+    query: {
+      q: (value) => value.length > 2,
+    },
     loader: (() => Promise.resolve(require('./pages/static'))) as any,
   },
   dynamicRoute: {

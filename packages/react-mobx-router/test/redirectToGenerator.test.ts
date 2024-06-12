@@ -3,6 +3,7 @@
 import _ from 'lodash';
 import { expect } from 'chai';
 import { spy } from 'sinon';
+import queryString from 'query-string';
 
 import { constants } from '../src/utils/constants';
 import { getInitialRoute } from '../src/utils/getInitialRoute';
@@ -17,12 +18,20 @@ import { getData } from './helpers';
 
 function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRouteWithParams>) {
   expect(routerStore.routesHistory).to.deep.eq(
-    history.map((c) =>
-      replaceDynamicValues({
+    history.map((c) => {
+      let pathname = replaceDynamicValues({
         route: c,
         params: c.params,
-      })
-    )
+      });
+
+      if (c.query) {
+        const searchString = queryString.stringify(c.query);
+
+        if (searchString) pathname += `?${searchString}`;
+      }
+
+      return pathname;
+    })
   );
 }
 
@@ -59,7 +68,7 @@ function checkHistoryAndCurrent(
 function cloneWithParams<TRoute extends TypeRoute>(config: {
   route: TRoute;
   params?: Record<keyof TRoute['params'], string>;
-  query?: Record<keyof TRoute['params'], string>;
+  query?: Partial<Record<keyof TRoute['query'], string>>;
 }): TypeRouteWithParams {
   if ('params' in config) {
     return Object.assign(_.cloneDeep(config.route) as any, {
@@ -207,7 +216,7 @@ describe('redirectToGenerator', () => {
       spyOne: {
         path: '/test/static',
         loader: (() => Promise.resolve(require('./pages/static'))) as any,
-        beforeEnter(param: string) {
+        beforeEnter(config, param: string) {
           beforeEnter_spy(param);
 
           return Promise.resolve();
@@ -219,7 +228,7 @@ describe('redirectToGenerator', () => {
           static: (value) => value.length > 2,
         },
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
-        beforeEnter(param: string) {
+        beforeEnter(config, param: string) {
           beforeEnter_spy2(param);
 
           return Promise.resolve();
@@ -349,7 +358,7 @@ describe('redirectToGenerator', () => {
       spyOne: {
         path: '/test/static',
         loader: (() => Promise.resolve(require('./pages/static'))) as any,
-        beforeLeave(route: any, param: string) {
+        beforeLeave(config, param: string) {
           beforeLeave_spy(param);
 
           return Promise.resolve();
@@ -361,7 +370,7 @@ describe('redirectToGenerator', () => {
           static: (value) => value.length > 2,
         },
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
-        beforeLeave(nextRoute: any, param: string) {
+        beforeLeave(config, param: string) {
           beforeLeave_spy2(param);
 
           return Promise.resolve();
@@ -370,25 +379,25 @@ describe('redirectToGenerator', () => {
       preventRedirect: {
         path: '/test/prevent-redirect',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
-        beforeLeave: ((nextRoute: any) => {
-          if (nextRoute.name === 'spyOne') {
+        beforeLeave: (config) => {
+          if (config.nextRoute.name === 'spyOne') {
             const err = Object.assign(new Error(''), { name: constants.errorPrevent });
 
             return Promise.reject(err);
           }
 
           return Promise.resolve();
-        }) as any,
+        },
       },
       buggyCode: {
         path: '/test/buggy-code',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
-        beforeLeave: (() => {
+        beforeLeave: () => {
           // eslint-disable-next-line no-unused-expressions
           a;
 
           return Promise.resolve();
-        }) as any,
+        },
       },
       error500: {
         path: '/error500',
@@ -495,6 +504,254 @@ describe('redirectToGenerator', () => {
       });
   }
 
+  function test8(mode: 'separate' | 'store') {
+    const customRoutes = routes;
+
+    const { redirectTo, routerStore } = getData(mode, customRoutes);
+
+    const history: Array<TypeRouteWithParams> = [];
+
+    return Promise.resolve()
+      .then(() => redirectTo({ route: 'staticRoute', query: { q: 'test' } }))
+      .then(() => {
+        history.push(cloneWithParams({ route: customRoutes.staticRoute, query: { q: 'test' } }));
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() => redirectTo({ route: 'staticRoute', query: { q: 'test' } }))
+      .then(() => {
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() => redirectTo({ route: 'staticRoute', query: { q: 'test2' } }))
+      .then(() => {
+        history.push(cloneWithParams({ route: customRoutes.staticRoute, query: { q: 'test2' } }));
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() => redirectTo({ route: 'dynamicRoute', params: { static: 'asd' } }))
+      .then(() => {
+        history.push(
+          cloneWithParams({ route: customRoutes.dynamicRoute, params: { static: 'asd' } })
+        );
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() =>
+        redirectTo({
+          route: 'dynamicRoute',
+          params: { static: 'asd' },
+          query: { q: 'test' },
+        })
+      )
+      .then(() => {
+        history.push(
+          cloneWithParams({
+            route: customRoutes.dynamicRoute,
+            params: { static: 'asd' },
+            query: { q: 'test' },
+          })
+        );
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() =>
+        redirectTo({
+          route: 'dynamicRoute',
+          params: { static: 'bcd' },
+          query: { s: 'test' },
+        })
+      )
+      .then(() => {
+        history.push(
+          cloneWithParams({
+            route: customRoutes.dynamicRoute,
+            params: { static: 'bcd' },
+            query: { s: 'test' },
+          })
+        );
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() =>
+        redirectTo({
+          route: 'dynamicRoute',
+          params: { static: 'bcd' },
+          // @ts-ignore
+          query: { nonExistent: 'test' },
+        })
+      )
+      .then(() => {
+        history.push(
+          cloneWithParams({
+            route: customRoutes.dynamicRoute,
+            params: { static: 'bcd' },
+          })
+        );
+
+        checkHistoryAndCurrent(routerStore, history);
+      })
+      .then(() =>
+        redirectTo({
+          route: 'dynamicRoute',
+          params: { static: 'bcd' },
+        })
+      )
+      .then(() => {
+        checkHistoryAndCurrent(routerStore, history);
+      });
+  }
+
+  function test9(mode: 'separate' | 'store') {
+    const beforeEnter_spy = spy();
+    const beforeEnter_spy2 = spy();
+
+    const customRoutes = createRouterConfig({
+      spyOne: {
+        path: '/test/static',
+        query: {
+          q: (value) => value.length > 2,
+        },
+        loader: (() => Promise.resolve(require('./pages/static'))) as any,
+        beforeEnter(config, param: string) {
+          beforeEnter_spy(param);
+
+          return Promise.resolve();
+        },
+      },
+      spyTwoDynamic: {
+        path: '/test/:static',
+        params: {
+          static: (value) => value.length > 2,
+        },
+        query: {
+          q: (value) => value.length > 2,
+          s: (value) => value.length > 2,
+        },
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
+        beforeEnter(config, param: string) {
+          beforeEnter_spy2(param);
+
+          return Promise.resolve();
+        },
+      },
+      redirectToSpyOne: {
+        path: '/test/static3',
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
+        query: {
+          q: (value) => value.length > 2,
+        },
+        beforeEnter: (config) => {
+          return Promise.resolve({ route: 'spyOne', query: config.nextQuery });
+        },
+      },
+      buggyCode: {
+        path: '/test/static4',
+        loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
+        beforeEnter: (() => {
+          // eslint-disable-next-line no-unused-expressions
+          a;
+
+          return Promise.resolve();
+        }) as any,
+      },
+      error500: {
+        path: '/error500',
+        props: { errorNumber: 500 },
+        loader: (() => Promise.resolve(require('./pages/error'))) as any,
+      },
+    });
+
+    const { redirectTo, routerStore } = getData(mode, customRoutes, ['']);
+
+    const history: Array<TypeRouteWithParams> = [];
+    let countSpy1 = 0;
+    let countSpy2 = 0;
+
+    return (
+      Promise.resolve()
+        .then(() => redirectTo({ route: 'spyOne', query: { q: 'foo' } }))
+        .then(() => {
+          countSpy1 += 1;
+
+          expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
+
+          history.push(cloneWithParams({ route: customRoutes.spyOne, query: { q: 'foo' } }));
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() => redirectTo({ route: 'spyOne' }))
+        .then(() => {
+          expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
+
+          history.push(cloneWithParams({ route: customRoutes.spyOne }));
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() =>
+          redirectTo({ route: 'spyTwoDynamic', params: { static: 'asd' }, query: { q: 'foo' } })
+        )
+        .then(() => {
+          countSpy2 += 1;
+
+          expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
+          expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
+
+          history.push(
+            cloneWithParams({
+              route: customRoutes.spyTwoDynamic,
+              params: { static: 'asd' },
+              query: { q: 'foo' },
+            })
+          );
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() =>
+          redirectTo({ route: 'spyTwoDynamic', params: { static: 'xyz' }, query: { q: 'foo' } })
+        )
+        .then(() => {
+          countSpy2 += 1;
+
+          expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
+          expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
+
+          history.push(
+            cloneWithParams({
+              route: customRoutes.spyTwoDynamic,
+              params: { static: 'xyz' },
+              query: { q: 'foo' },
+            })
+          );
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        // @ts-ignore
+        .then(() => redirectTo({ route: 'redirectToSpyOne', query: { q: 'foo', non: 'bar' } }))
+        .catch((error) => {
+          // SSR should handle redirects manually and not push to history or change current
+          expect(error.name).to.deep.eq(constants.errorRedirect);
+          expect(error.message).to.deep.eq(`${customRoutes.spyOne.path}?q=foo`);
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+        .then(() =>
+          // @ts-ignore
+          redirectTo({ route: 'redirectToSpyOne', query: { q: 'foo', non: 'bar' }, asClient: true })
+        )
+        .then(() => {
+          countSpy1 += 1;
+
+          // Front handles redirects automatically and calls lifecycle
+          expect(beforeEnter_spy.callCount, 'beforeEnter_spy').to.deep.eq(countSpy1);
+          expect(beforeEnter_spy2.callCount, 'beforeEnter_spy2').to.deep.eq(countSpy2);
+
+          history.push(cloneWithParams({ route: customRoutes.spyOne, query: { q: 'foo' } }));
+
+          checkHistoryAndCurrent(routerStore, history);
+        })
+    );
+  }
+
   it('Creates', () => test1('separate').then(() => test1('store')));
   it('Sets initial route', () => test2('separate').then(() => test2('store')));
   it('Sets initial route not found', () => test3('separate').then(() => test3('store')));
@@ -502,4 +759,6 @@ describe('redirectToGenerator', () => {
   it('Several redirects', () => test5('separate').then(() => test5('store')));
   it('Before enter', () => test6('separate').then(() => test6('store')));
   it('Before leave', () => test7('separate').then(() => test7('store')));
+  it('Query', () => test8('separate').then(() => test8('store')));
+  it('Query Before enter', () => test9('separate').then(() => test9('store')));
 });

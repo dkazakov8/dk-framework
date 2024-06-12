@@ -10,7 +10,7 @@ export type TypeRedirectToParams<
       ? {
           route: TRouteName;
           params: Record<keyof TRoutes[TRouteName]['params'], string>;
-          query?: Record<keyof TRoutes[TRouteName]['query'], string>;
+          query?: Partial<Record<keyof TRoutes[TRouteName]['query'], string>>;
           asClient?: boolean;
           noHistoryPush?: boolean;
         }
@@ -23,7 +23,7 @@ export type TypeRedirectToParams<
     : TRoutes[TRouteName]['query'] extends Record<string, TypeValidator>
       ? {
           route: TRouteName;
-          query?: Record<keyof TRoutes[TRouteName]['query'], string>;
+          query?: Partial<Record<keyof TRoutes[TRouteName]['query'], string>>;
           asClient?: boolean;
           noHistoryPush?: boolean;
         }
