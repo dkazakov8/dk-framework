@@ -16,7 +16,7 @@ coverage
 cover.svg
 size.svg
 .github
-src
+/src
 .mocharc.json
 tsconfig.json
 tsconfig-compile.json

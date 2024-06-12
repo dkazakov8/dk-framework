@@ -68,7 +68,7 @@ function afterBuild(result) {
         `https://img.shields.io/badge/Size (minified ${isNode ? 'no deps' : 'with deps'})-${size}-blue`,
         path.resolve(process.cwd(), './size.svg'),
         function handleError(err, downloadResult) {
-          if (err) reject(err);
+          if (err) console.error(err);
 
           resolve();
         }
