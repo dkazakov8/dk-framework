@@ -2,7 +2,7 @@
   "name": "dk-mobx-use-store",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Library for connecting MobX View Models to your React components",
   "repository": {
     "type": "git",
