@@ -244,7 +244,7 @@ importers:
   packages/react-mobx-globals:
     dependencies:
       dk-mobx-stateful-fn:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../mobx-stateful-fn
     devDependencies:
       '@types/express':
@@ -254,10 +254,10 @@ importers:
         specifier: 18.2.76
         version: registry.npmjs.org/@types/react@18.2.76
       dk-localize:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../localize
       dk-request:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../request
       mobx:
         specifier: 6.12.3
@@ -275,10 +275,10 @@ importers:
         specifier: 18.2.76
         version: registry.npmjs.org/@types/react@18.2.76
       dk-react-mobx-globals:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../react-mobx-globals
       dk-react-mobx-router:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../react-mobx-router
       mobx:
         specifier: 6.12.3
@@ -296,7 +296,7 @@ importers:
   packages/react-mobx-router:
     dependencies:
       dk-mobx-use-store:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../mobx-use-store
       history:
         specifier: 5.3.0
@@ -309,7 +309,7 @@ importers:
         specifier: 5.13.9
         version: registry.npmjs.org/@types/loadable__component@5.13.9
       dk-mobx-stateful-fn:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../mobx-stateful-fn
       mobx:
         specifier: 6.12.3
@@ -343,7 +343,7 @@ importers:
         specifier: 1.6.8
         version: registry.npmjs.org/axios@1.6.8
       dk-checker-remove-extraneous:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../checker-remove-extraneous
     devDependencies:
       lodash:
@@ -383,7 +383,7 @@ importers:
         specifier: 5.0.1
         version: registry.npmjs.org/css-minimizer-webpack-plugin@5.0.1(esbuild@0.21.4)(webpack@5.88.0)
       dk-conditional-aggregate-webpack-plugin:
-        specifier: 3.4.1
+        specifier: 3.4.2
         version: link:../conditional-aggregate-webpack-plugin
       file-loader:
         specifier: 6.2.0
