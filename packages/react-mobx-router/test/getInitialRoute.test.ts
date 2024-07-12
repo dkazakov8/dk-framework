@@ -13,6 +13,14 @@ describe('getInitialRoute', () => {
         fallback: 'error404',
       })
     ).to.deep.eq({ route: 'staticRoute', params: {}, query: {} });
+
+    expect(
+      getInitialRoute({
+        routes,
+        pathname: '/test/static?q=test&bar=non',
+        fallback: 'error404',
+      })
+    ).to.deep.eq({ route: 'staticRoute', params: {}, query: { q: 'test' } });
   });
 
   it('Get correct dynamic route by path', () => {
