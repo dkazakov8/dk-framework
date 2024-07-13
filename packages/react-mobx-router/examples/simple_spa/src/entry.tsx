@@ -49,6 +49,31 @@ const App = observer(() => {
         >
           Dynamic
         </a>
+        <a
+          onClick={(event) => {
+            event.preventDefault();
+
+            void routerStore.redirectTo({
+              route: 'query',
+              query: { foo: 'value' },
+            });
+          }}
+          className={routerStore.currentRoute.name === 'query' ? 'active' : ''}
+        >
+          Query
+        </a>
+        <a
+          onClick={(event) => {
+            event.preventDefault();
+
+            void routerStore.redirectTo({
+              route: 'preventRedirect',
+            });
+          }}
+          className={routerStore.currentRoute.name === 'preventRedirect' ? 'active' : ''}
+        >
+          Prevent redirect
+        </a>
         <a href={'/not-existing-path'}>Not existing</a>
       </div>
       <div className={'pageContent'}>

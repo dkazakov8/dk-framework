@@ -103,6 +103,7 @@ async function watch() {
       pluginReplaceDirname({ filter: /\.(tsx?)$/ }),
       pluginParallel({ name: 'client' }),
       // https://github.com/craftamap/esbuild-plugin-html
+      // @ts-ignore
       htmlPlugin({
         files: [
           {
