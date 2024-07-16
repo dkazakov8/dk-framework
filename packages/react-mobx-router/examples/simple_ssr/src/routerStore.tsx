@@ -1,6 +1,6 @@
-import { InterfaceRouterStore, redirectToGenerator } from 'dk-react-mobx-router';
 import { addState } from 'dk-mobx-stateful-fn';
 import { makeAutoObservable } from 'mobx';
+import { InterfaceRouterStore, redirectToGenerator } from 'dk-react-mobx-router';
 
 import { routes } from './routes';
 

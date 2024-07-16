@@ -4,10 +4,10 @@ import path from 'path';
 import http from 'http';
 import fs from 'fs';
 
-import { getInitialRoute } from 'dk-react-mobx-router';
 import { renderToString } from 'react-dom/server';
 import express from 'express';
 import serveStatic from 'serve-static';
+import { getInitialRoute } from 'dk-react-mobx-router';
 
 import { RouterStore } from './routerStore';
 import { StoreContext } from './components/StoreContext';

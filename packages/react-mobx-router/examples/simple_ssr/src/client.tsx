@@ -1,6 +1,6 @@
-import { loadComponentToConfig } from 'dk-react-mobx-router';
 import { hydrateRoot } from 'react-dom/client';
 import { restoreState } from 'dk-mobx-restore-state';
+import { loadComponentToConfig } from 'dk-react-mobx-router';
 
 import './style.css';
 import { routes } from './routes';

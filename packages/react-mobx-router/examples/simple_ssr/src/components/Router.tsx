@@ -1,6 +1,6 @@
-import { Router as RouterMobx } from 'dk-react-mobx-router';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
+import { Router as RouterMobx } from 'dk-react-mobx-router';
 
 import { routes } from '../routes';
 

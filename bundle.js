@@ -83,10 +83,7 @@ const buildConfig = {
   entryPoints: [path.resolve(process.cwd(), 'src')],
   bundle: true,
   format: 'esm',
-  outfile: path.resolve(
-    process.cwd(),
-    path.resolve(process.cwd(), pkg.exports?.import || pkg.main)
-  ),
+  outfile: path.resolve(process.cwd(), pkg.exports?.import || pkg.main),
   write: true,
   minify: false,
   metafile: false,
@@ -107,7 +104,8 @@ return Promise.resolve()
       esbuild.build({
         ...buildConfig,
         format: 'cjs',
-        outfile: path.resolve(process.cwd(), path.resolve(process.cwd(), pkg.exports.require)),
+        target: 'node18',
+        outfile: path.resolve(process.cwd(), pkg.exports.require),
       }),
     ]);
   })
