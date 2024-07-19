@@ -417,7 +417,8 @@ described in the `query` config will be present.
 
 `((config, ...args) => Promise<TypeRedirectToParams | void>) optional`
 
-`config` argument is not perfectly TS-typed to simplify the code, types may be added later
+`config` argument is not perfectly TS-typed to avoid a circular dependency, so use the console to
+check its contents
 
 ```typescript
 {
@@ -475,7 +476,8 @@ redirectTo = redirectToGenerator({
 
 `((config, ...args) => Promise<void> | Error<{ name: 'PREVENT_REDIRECT'} >) optional`
 
-`config` argument is not perfectly TS-typed to simplify the code, types may be added later
+`config` argument is not perfectly TS-typed to avoid a circular dependency, so use the console to
+check its contents
 
 ```typescript
 {
