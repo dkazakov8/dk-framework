@@ -121,23 +121,19 @@ export const routerStore = new RouterStore();
 
 ```typescript
 import { redirectToGenerator } from 'dk-react-mobx-router';
-import { addState, TypeFnState } from 'dk-mobx-stateful-fn';
+import { addState } from 'dk-mobx-stateful-fn';
 
 import { routes } from 'routes';
 import { routerStore } from 'routerStore';
 
-const redirectToWithoutState = redirectToGenerator({
+export const redirectTo = addState(redirectToGenerator({
   routes,
   routerStore,
   routeError500: routes.error500,
-});
-
-export const redirectTo = addState(redirectToWithoutState, 'redirectTo') as 
-  typeof redirectToWithoutState & TypeFnState;
+}), 'redirectTo');
 ```
 
-Or may be a part of `RouterStore`. Be aware that this way `redirectTo.state` is not TS-typed -
-look at 'Why dk-mobx-stateful-fn dependency' section for a solution if you need types for the state.
+Or may be a part of `RouterStore`.
 
 ```typescript
 import { addState } from 'dk-mobx-stateful-fn';
@@ -145,18 +141,16 @@ import { addState } from 'dk-mobx-stateful-fn';
 export class RouterStore implements TInterfaceRouterStore {
   constructor() {
     makeAutoObservable(this, { redirectTo: false });
-    
-    this.redirectTo = addState(this.redirectTo, 'redirectTo');
   }
 
   routesHistory: TInterfaceRouterStore['routesHistory'] = [];
   currentRoute: TInterfaceRouterStore['currentRoute'] = {} as any;
   
-  redirectTo = redirectToGenerator({
+  redirectTo = addState(redirectToGenerator({
     routes,
     routerStore: this,
     routeError500: routes.error500,
-  });
+  }), 'redirectTo');
 }
 ```
 
@@ -1005,8 +999,7 @@ export class RouterStore implements TInterfaceRouterStore {
 }
 ```
 
-It is a bit tricky to construct `TypeCustomRedirectTo`, but it's helpful in some cases. For example,
-this way `redirectTo.state` will be TS-typed.
+It is a bit tricky to construct `TypeCustomRedirectTo`, but it's helpful in some cases.
 
 Usually the `Router`'s lifecycle, like `beforeSetPageComponent`, should be sufficient for most cases.
 

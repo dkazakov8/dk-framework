@@ -8,8 +8,8 @@
   "dependencies": {
     "mobx": "6.12.3",
     "mobx-react-lite": "4.0.7",
-    "dk-react-mobx-router": "3.4.2",
-    "dk-mobx-stateful-fn": "3.4.2",
+    "dk-react-mobx-router": "3.4.4",
+    "dk-mobx-stateful-fn": "3.4.4",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
