@@ -113,7 +113,7 @@ return Promise.resolve()
     esbuild.build({
       ...buildConfig,
       entryPoints: [path.resolve(process.cwd(), pkg.exports?.import || pkg.main)],
-      format: 'cjs',
+      format: isNode ? 'cjs' : 'esm',
       write: false,
       minify: true,
       metafile: true,

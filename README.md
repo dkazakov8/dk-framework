@@ -21,6 +21,7 @@ Mobx:
 - [dk-mobx-restore-state](https://github.com/dkazakov8/dk-framework/tree/master/packages/mobx-restore-state) - Library for safe merging of MobX observables
 - [dk-mobx-stateful-fn](https://github.com/dkazakov8/dk-framework/tree/master/packages/mobx-stateful-fn) - Library for adding MobX observable state to async functions
 - [dk-mobx-use-store](https://github.com/dkazakov8/dk-framework/tree/master/packages/mobx-use-store) - Library for connecting MobX View Models to your React components
+- [dk-react-mobx-router](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-router) - Config-based routing for React + MobX applications
 
 Node.js:
 - [dk-compare-env](https://github.com/dkazakov8/dk-framework/tree/master/packages/compare-env) - Comparison utility for .env files
@@ -52,7 +53,6 @@ Read the source code and find some useful parts for you projects
 
 Actually I use them in my projects for many years, but haven't managed to write docs.
 
-- [dk-react-mobx-router](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-router)
 - [dk-react-mobx-config-form](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-config-form)
 - [dk-react-react-mobx-globals](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-globals)
 - [dk-react-react-mobx-globals-logger](https://github.com/dkazakov8/dk-framework/tree/master/packages/react-mobx-globals-logger)
