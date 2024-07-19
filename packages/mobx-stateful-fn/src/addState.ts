@@ -89,8 +89,7 @@ export function addState<TApiFn extends TypeFnAsync, TName extends string>(
       } catch (error: any) {
         return afterExecutionError(error);
       }
-    } as unknown as ((...args: Parameters<TApiFn>) => ReturnType<TApiFn>) &
-      TypeFnState & { name: TName }),
+    } as unknown as TApiFn & TypeFnState & { name: TName }),
     {
       state: {
         value: observable({
