@@ -1,0 +1,34 @@
+{
+  "name": "dk-react-mobx-router-example-simple",
+  "author": "Dmitry Kazakov",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsx build.ts"
+  },
+  "dependencies": {
+    "mobx": "6.12.3",
+    "mobx-react-lite": "4.0.7",
+    "dk-react-mobx-router": "3.4.4",
+    "dk-mobx-stateful-fn": "3.4.4",
+    "dk-mobx-restore-state": "3.4.4",
+    "dk-bff-server": "3.4.4",
+    "dk-react-mobx-globals": "3.4.4",
+    "dk-localize": "3.4.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "body-parser": "1.20.2",
+    "compression": "1.7.4",
+    "express": "4.19.2",
+    "helmet": "7.1.0",
+    "nocache": "4.0.0",
+    "serve-static": "1.15.0"
+  },
+  "devDependencies": {
+    "dk-reload-server": "3.4.4",
+    "better-spawn": "1.0.4",
+    "node-dev": "7.4.3",
+    "tsx": "4.7.3",
+    "esbuild": "0.23.0",
+    "@craftamap/esbuild-plugin-html": "0.6.1"
+  }
+}

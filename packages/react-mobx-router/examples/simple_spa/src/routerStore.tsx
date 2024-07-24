@@ -4,8 +4,6 @@ import { makeAutoObservable } from 'mobx';
 
 import { routes } from './routes';
 
-import './style.css';
-
 type TInterfaceRouterStore = InterfaceRouterStore<typeof routes>;
 
 class RouterStore implements TInterfaceRouterStore {
@@ -27,14 +25,3 @@ class RouterStore implements TInterfaceRouterStore {
 }
 
 export const routerStore = new RouterStore();
-
-const redirectTo = addState(
-  redirectToGenerator({
-    routes,
-    routerStore,
-    routeError500: routes.error500,
-  }),
-  'redirectTo'
-);
-
-void redirectTo({ route: 'dynamic', params: { foo: '' } });

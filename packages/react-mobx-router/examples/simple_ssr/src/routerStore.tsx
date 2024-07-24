@@ -4,8 +4,6 @@ import { InterfaceRouterStore, redirectToGenerator } from 'dk-react-mobx-router'
 
 import { routes } from './routes';
 
-import './style.css';
-
 type TInterfaceRouterStore = InterfaceRouterStore<typeof routes>;
 
 export class RouterStore implements TInterfaceRouterStore {

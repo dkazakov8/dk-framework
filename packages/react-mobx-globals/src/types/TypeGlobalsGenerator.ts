@@ -17,7 +17,7 @@ export type TypeGlobalsGenerator<
   TModularStores extends Record<string, TypeStoreItem>,
   TActions extends Record<string, Record<string, TypeActionAny>>,
   TModularActions extends Record<string, Record<string, Record<string, TypeActionAny>>>,
-  TGetLn extends typeof getLn
+  TGetLn extends typeof getLn,
 > = {
   req?: Request;
   res?: Response;

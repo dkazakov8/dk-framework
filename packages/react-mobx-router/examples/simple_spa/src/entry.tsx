@@ -88,7 +88,7 @@ void Promise.resolve()
     routerStore.redirectTo(
       getInitialRoute({
         routes,
-        pathname: location.pathname,
+        pathname: location.pathname + location.search,
         fallback: 'error404',
       })
     )
