@@ -4,9 +4,8 @@ import { errorCodes, errorsNames, createMeasure, measuresServer } from '../../ut
 import { TypeMiddleware } from '../../types';
 
 export const handlePageRoutes: TypeMiddleware = (app, params) => {
-  const template = fs.readFileSync(params.templatePath, 'utf-8');
-
   app.get('*', (req, res) => {
+    const template = fs.readFileSync(params.templatePath, 'utf-8');
     const reqExtended: typeof req & { measure: ReturnType<typeof createMeasure> } = req as any;
 
     /**
