@@ -46,7 +46,10 @@ const app = express()
 
       console.error(error);
 
-      const template500 = fs.readFileSync(path.resolve(__dirname, '../build/index.html'), 'utf-8');
+      const template500 = fs.readFileSync(
+        path.resolve(__dirname, '../build/template.html'),
+        'utf-8'
+      );
 
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       res.status(500).send(template500);
@@ -61,7 +64,7 @@ const app = express()
 
     res.send(
       fs
-        .readFileSync(path.resolve(__dirname, '../build/public/index.html'), 'utf-8')
+        .readFileSync(path.resolve(__dirname, '../build/public/template.html'), 'utf-8')
         .replace(`<!-- HTML -->`, htmlMarkup)
         .replace('<!-- INITIAL_DATA -->', JSON.stringify(escapeAllStrings(storeJS)))
         .replace('<!-- HOT_RELOAD -->', `<script src="${hotReloadUrl}"></script>`)

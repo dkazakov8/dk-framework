@@ -108,7 +108,7 @@ async function watch() {
         files: [
           {
             entryPoints: ['src/client.tsx'],
-            filename: 'index.html',
+            filename: 'template.html',
             scriptLoading: 'module',
             htmlTemplate: fs.readFileSync(path.resolve('./template.html'), 'utf-8'),
           },
