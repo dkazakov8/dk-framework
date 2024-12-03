@@ -2,7 +2,7 @@
   "name": "dk-react-mobx-config-form",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.8",
+  "version": "3.4.9",
   "description": "Library for forms",
   "repository": {
     "type": "git",
