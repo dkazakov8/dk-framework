@@ -63,6 +63,7 @@ export const handleFileRoutes: TypeMiddleware = (app, params) => {
       setHeaders: (res) => {
         res.header('vary', 'Accept-Encoding');
       },
+      index: false,
     })
   );
 
