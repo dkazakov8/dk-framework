@@ -100,10 +100,15 @@ export class Compiler {
    */
 
   public static compile(filePaths: Array<string>, compilerOptions?: ts.CompilerOptions) {
-    const createProgramOptions: ts.CompilerOptions = Object.assign({}, compilerOptions, {
+    const op = Object.assign({}, compilerOptions, {
       moduleResolution: ts.ModuleResolutionKind.NodeJs,
     });
 
+    const createProgramOptions = ts.parseJsonConfigFileContent
+      ? ts.parseJsonConfigFileContent(op, ts.sys, './')
+      : op;
+
+    // @ts-ignore
     const program = ts.createProgram({ rootNames: filePaths, options: createProgramOptions });
     const checker = program.getTypeChecker();
 
