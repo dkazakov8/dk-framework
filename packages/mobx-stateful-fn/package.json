@@ -2,7 +2,7 @@
   "name": "dk-mobx-stateful-fn",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.11",
+  "version": "3.4.12",
   "description": "Library for adding MobX observable state to async functions",
   "repository": {
     "type": "git",

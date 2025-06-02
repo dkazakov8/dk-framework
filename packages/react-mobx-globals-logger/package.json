@@ -2,7 +2,7 @@
   "name": "dk-react-mobx-globals-logger",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.11",
+  "version": "3.4.12",
   "description": "Layered architecture for React+MobX",
   "repository": {
     "type": "git",
@@ -19,8 +19,8 @@
   },
   "devDependencies": {
     "@types/react": "18.2.76",
-    "dk-react-mobx-globals": "3.4.11",
-    "dk-react-mobx-router": "3.4.11",
+    "dk-react-mobx-globals": "3.4.12",
+    "dk-react-mobx-router": "3.4.12",
     "mobx": "6.12.3",
     "mobx-react": "9.1.1",
     "react": "18.2.0",
