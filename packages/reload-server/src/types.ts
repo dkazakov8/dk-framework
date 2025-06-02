@@ -5,6 +5,10 @@ export type TypeServerParamsManual = {
   watchPaths: Array<string>;
 
   https?: boolean;
+  httpsKeys?: {
+    key: string;
+    cert: string;
+  };
 };
 
 export type TypeServerParams = TypeServerParamsManual & {

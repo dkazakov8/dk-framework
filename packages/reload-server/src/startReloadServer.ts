@@ -57,7 +57,7 @@ export function startReloadServer(params: TypeServerParamsManual) {
   };
 
   const server = params.https
-    ? https.createServer(sslOptions, requestListener)
+    ? https.createServer(params.httpsKeys || sslOptions, requestListener)
     : http.createServer(requestListener);
 
   return new ws.Server({ server: server.listen(params.port) });
