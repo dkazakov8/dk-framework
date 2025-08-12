@@ -1,15 +1,15 @@
 import { getLn } from 'dk-localize';
 import { Request, Response } from 'express';
 
-import { TypeApiItem } from './TypeApiItem';
 import { TypeActionAny } from './TypeActionAny';
-import { TypeStoreItem } from './TypeStoreItem';
-import { TypeApiGenerator } from './TypeApiGenerator';
-import { TypeSkipFirstArg } from './TypeSkipFirstArg';
-import { TypeActionWrapped } from './TypeActionWrapped';
-import { TypeStoreGenerator } from './TypeStoreGenerator';
 import { TypeActionsGenerator } from './TypeActionsGenerator';
 import { TypeActionsGeneratorModular } from './TypeActionsGeneratorModular';
+import { TypeActionWrapped } from './TypeActionWrapped';
+import { TypeApiGenerator } from './TypeApiGenerator';
+import { TypeApiItem } from './TypeApiItem';
+import { TypeSkipFirstArg } from './TypeSkipFirstArg';
+import { TypeStoreGenerator } from './TypeStoreGenerator';
+import { TypeStoreItem } from './TypeStoreItem';
 
 export type TypeGlobalsGenerator<
   TApi extends TypeApiItem,

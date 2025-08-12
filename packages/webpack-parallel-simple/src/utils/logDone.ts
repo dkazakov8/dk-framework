@@ -1,5 +1,5 @@
-import webpack from 'webpack';
 import chalk from 'chalk';
+import webpack from 'webpack';
 
 import { LOG_PREFIX } from './constants';
 

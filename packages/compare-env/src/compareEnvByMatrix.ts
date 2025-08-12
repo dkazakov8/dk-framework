@@ -1,6 +1,6 @@
-import { TypeComparisonMatrix, TypeEnvConfig } from './types';
 import { arrayDifference } from './arrayDifference';
 import { errors } from './errors';
+import { TypeComparisonMatrix, TypeEnvConfig } from './types';
 
 export function compareEnvByMatrix({
   envConfigs,

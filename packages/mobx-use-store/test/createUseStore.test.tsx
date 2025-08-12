@@ -2,19 +2,19 @@
 @typescript-eslint/naming-convention, react/jsx-no-literals, @typescript-eslint/no-empty-function,
 no-useless-constructor */
 
-import React, { ContextType, useContext } from 'react';
+import { render, renderHook } from '@testing-library/react/pure';
 import { expect } from 'chai';
-import { renderHook, render } from '@testing-library/react/pure';
 import {
-  autorun,
-  isObservable,
-  IReactionDisposer,
-  makeAutoObservable,
   _getAdministration,
+  autorun,
+  IReactionDisposer,
+  isObservable,
+  makeAutoObservable,
 } from 'mobx';
-import { spy } from 'sinon';
-import { renderToString } from 'react-dom/server';
 import { observer } from 'mobx-react-lite';
+import React, { ContextType, useContext } from 'react';
+import { renderToString } from 'react-dom/server';
+import { spy } from 'sinon';
 
 import { createUseStore } from '../src/createUseStore';
 import { ViewModelConstructor } from '../src/types/ViewModelConstructor';
@@ -27,6 +27,7 @@ describe('createUseStore', () => {
     1,
     { someParam: 'value' },
     [1],
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: false
     function someFunction() {},
   ];
 

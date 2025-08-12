@@ -1,6 +1,6 @@
 import { errors } from './errors';
-import { createError } from './utils/createError';
 import { TypeRequestParams } from './types/TypeRequestParams';
+import { createError } from './utils/createError';
 
 export function validateRequest({
   apiName,

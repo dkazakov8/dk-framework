@@ -1,6 +1,6 @@
-import webpack from 'webpack';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
+import webpack from 'webpack';
 
 import { TypeGlobal } from './types';
 

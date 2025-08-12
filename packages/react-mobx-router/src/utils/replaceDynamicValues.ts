@@ -1,9 +1,8 @@
+import { TypeCurrentRoute } from '../types/TypeCurrentRoute';
 import { TypeRoute } from '../types/TypeRoute';
 import { TypeRouteWithParams } from '../types/TypeRouteWithParams';
-import { TypeCurrentRoute } from '../types/TypeCurrentRoute';
-
 import { constants } from './constants';
-import { isDynamic, clearDynamic } from './dynamic';
+import { clearDynamic, isDynamic } from './dynamic';
 
 const re = new RegExp(`[^${constants.pathPartSeparator}]+`, 'g');
 

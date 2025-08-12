@@ -1,13 +1,13 @@
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
-import fsExtra from 'fs-extra';
 import { expect } from 'chai';
+import fsExtra from 'fs-extra';
 
-import { getFilteredChildren } from '../src/utils/getFilteredChildren';
-import { getSubFoldersOrFiles } from '../src/plugins/reexport-modular/getSubFoldersOrFiles';
-import { generateReexportModular } from '../src/plugins/reexport-modular';
 import { defaultHeaderTemplate, fileEncoding } from '../src/const';
+import { generateReexportModular } from '../src/plugins/reexport-modular';
+import { getSubFoldersOrFiles } from '../src/plugins/reexport-modular/getSubFoldersOrFiles';
+import { getFilteredChildren } from '../src/utils/getFilteredChildren';
 
 describe('get sub folders or files', () => {
   const folder = path.resolve(__dirname, 'source/reexportModularFolder');

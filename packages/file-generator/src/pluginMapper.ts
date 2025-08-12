@@ -1,8 +1,8 @@
-import { TypeGeneratorPlugin, TypePluginName } from './types';
-import * as pluginTheme from './plugins/theme';
 import * as pluginReexport from './plugins/reexport';
-import * as pluginValidators from './plugins/validators';
 import * as pluginReexportModular from './plugins/reexport-modular';
+import * as pluginTheme from './plugins/theme';
+import * as pluginValidators from './plugins/validators';
+import { TypeGeneratorPlugin, TypePluginName } from './types';
 
 export const pluginMapper: Record<TypePluginName, TypeGeneratorPlugin<any>> = {
   [pluginTheme.pluginName]: pluginTheme.generateTheme,

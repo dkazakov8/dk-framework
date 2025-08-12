@@ -2,7 +2,7 @@ import { TypeStoreItem } from './TypeStoreItem';
 
 export type TypeStoreGenerator<
   TStaticStores extends TypeStoreItem,
-  TModularStores extends Record<string, TypeStoreItem>
+  TModularStores extends Record<string, TypeStoreItem>,
 > = {
   [TStoreFileName in keyof TStaticStores]: InstanceType<TStaticStores[TStoreFileName]>;
 } & {

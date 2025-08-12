@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import { findRouteByPathname } from '../src/utils/findRouteByPathname';
-
 import { routes } from './routes';
 
 describe('findRouteByPathname', () => {

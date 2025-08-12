@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
-import { TypePluginName } from './types';
 import { logsPrefix } from './const';
+import { TypePluginName } from './types';
 import { getTimeDelta } from './utils/getTimeDelta';
 
 export function withMeasure({

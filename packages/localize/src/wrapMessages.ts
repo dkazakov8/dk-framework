@@ -14,7 +14,7 @@ export function wrapMessages<T>(dirname: string, obj: T): Record<keyof T, TypeMe
   const messages: Record<keyof T, TypeMessage> = {} as any;
   const dirnameNormalized = dirname.toLowerCase().replace(/\\/g, '/');
 
-  // eslint-disable-next-line guard-for-in
+  // biome-ignore lint/suspicious/useGuardForIn: false
   for (const key in obj) {
     // @ts-ignore
     messages[key] = {

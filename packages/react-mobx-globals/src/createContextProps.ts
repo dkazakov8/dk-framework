@@ -1,12 +1,12 @@
-import { TypeRequestParams } from 'dk-request';
 import { addState } from 'dk-mobx-stateful-fn';
+import { TypeRequestParams } from 'dk-request';
 
-import { TypeGlobalsAny } from './types/TypeGlobalsAny';
-import { TypeCreateContextParams } from './types/TypeCreateContextParams';
+import { setGlobalActions } from './globals/setGlobalActions';
 import { setGlobalApi } from './globals/setGlobalApi';
 import { setGlobalStores } from './globals/setGlobalStores';
-import { setGlobalActions } from './globals/setGlobalActions';
 import { TypeActionGenerator } from './types/TypeActionGenerator';
+import { TypeCreateContextParams } from './types/TypeCreateContextParams';
+import { TypeGlobalsAny } from './types/TypeGlobalsAny';
 
 export function createContextProps<TGlobals extends TypeGlobalsAny>({
   req,

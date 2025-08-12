@@ -1,7 +1,7 @@
 import ws from 'ws';
 
-import { TypeServerParamsManual } from './types';
 import { startReloadServer } from './startReloadServer';
+import { TypeServerParamsManual } from './types';
 
 export function runManual(params: TypeServerParamsManual) {
   const wsServer = startReloadServer(params);

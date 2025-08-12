@@ -1,5 +1,5 @@
 import { TypeMiddleware } from '../../types';
-import { errorCodes, errorsNames, createError } from '../../utils';
+import { createError, errorCodes, errorsNames } from '../../utils';
 
 export const handleMissingRoutes: TypeMiddleware = (app) => {
   app.use('*', (req, res) => {

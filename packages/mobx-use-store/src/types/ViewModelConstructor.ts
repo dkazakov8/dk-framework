@@ -1,7 +1,7 @@
 import { IReactionDisposer } from 'mobx';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions,@typescript-eslint/naming-convention
-export interface ViewModelConstructor<TContext extends any> {
+export interface ViewModelConstructor<TContext> {
   systemFileName?: string;
   props?: Record<string, any>;
   context: TContext;

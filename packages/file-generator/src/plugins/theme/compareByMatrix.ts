@@ -1,7 +1,6 @@
 import { errors } from '../../errors';
 import { arrayDifference } from '../../utils/arrayDifference';
 import { TypeComparisonMatrix } from '../../utils/types';
-
 import { TypeThemeConfig } from './types';
 
 export function compareByMatrix({

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { makeAutoObservable } from 'mobx';
 import { addState } from 'dk-mobx-stateful-fn';
+import { makeAutoObservable } from 'mobx';
 
+import { TypeRoute } from '../src';
 import { redirectToGenerator } from '../src/redirectToGenerator';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
-import { TypeRoute } from '../src';
-
 import { routes } from './routes';
 
 function createSeparateFunction<TRoutes extends Record<string, TypeRoute>>(

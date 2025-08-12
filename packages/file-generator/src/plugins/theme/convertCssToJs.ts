@@ -1,9 +1,8 @@
 import { generateComparisonMatrix } from '../../utils/generateComparisonMatrix';
-
-import { TypeThemes, TypeThemeName } from './types';
-import { generateConfigs } from './generateConfigs';
 import { compareByMatrix } from './compareByMatrix';
+import { generateConfigs } from './generateConfigs';
 import { splitCssToThemeStrings } from './splitCssToThemeStrings';
+import { TypeThemeName, TypeThemes } from './types';
 
 export function convertCssToJs(template: string): TypeThemes {
   const themes = splitCssToThemeStrings({ template });

@@ -1,6 +1,5 @@
-import { TypeRoute } from '../types/TypeRoute';
 import { TypeRedirectToParams } from '../types/TypeRedirectToParams';
-
+import { TypeRoute } from '../types/TypeRoute';
 import { findRouteByPathname } from './findRouteByPathname';
 import { getDynamicValues } from './getDynamicValues';
 import { getQueryValues } from './getQueryValues';

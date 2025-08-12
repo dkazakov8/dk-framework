@@ -1,12 +1,13 @@
-import { hydrateRoot } from 'react-dom/client';
 import { restoreState } from 'dk-mobx-restore-state';
 import { loadComponentToConfig } from 'dk-react-mobx-router';
+import { hydrateRoot } from 'react-dom/client';
 
 import './style.css';
-import { routes } from './routes';
-import { RouterStore } from './routerStore';
+
 import { App } from './components/App';
 import { StoreContext } from './components/StoreContext';
+import { RouterStore } from './routerStore';
+import { routes } from './routes';
 
 const contextValue = { routerStore: new RouterStore() };
 const initialData = window.INITIAL_DATA;

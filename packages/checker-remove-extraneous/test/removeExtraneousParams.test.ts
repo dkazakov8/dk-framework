@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention
+
+import { expect } from 'chai';
 import _ from 'lodash';
 import * as t from 'ts-interface-checker';
-import { expect } from 'chai';
 
 import { removeExtraneousParams } from '../src';
 

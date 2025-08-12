@@ -1,4 +1,4 @@
-import { TypeEnvConfig, TypeComparisonMatrix } from './types';
+import { TypeComparisonMatrix, TypeEnvConfig } from './types';
 
 export function generateComparisonMatrix({
   envConfigs,

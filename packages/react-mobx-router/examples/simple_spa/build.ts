@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-syntax, no-console */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
-import { context, Loader, Plugin } from 'esbuild';
 import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
+import { context, Loader, Plugin } from 'esbuild';
 
 export const pluginReplaceDirname = ({
   filter = /.*/,

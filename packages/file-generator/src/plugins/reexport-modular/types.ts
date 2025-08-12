@@ -1,5 +1,4 @@
 import { TypeFilePath, TypeFolderPath } from '../../types';
-
 import { pluginName } from './generateReexportModular';
 
 export type TypePluginNameReexportModular = typeof pluginName;

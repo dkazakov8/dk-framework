@@ -1,19 +1,19 @@
 /* eslint-disable no-restricted-syntax */
 
-import path from 'path';
-import http from 'http';
-import fs from 'fs';
+import fs from 'node:fs';
+import http from 'node:http';
+import path from 'node:path';
 
-import { renderToString } from 'react-dom/server';
-import express from 'express';
-import serveStatic from 'serve-static';
 import { getInitialRoute } from 'dk-react-mobx-router';
+import express from 'express';
+import { renderToString } from 'react-dom/server';
+import serveStatic from 'serve-static';
 
-import { GlobalContext } from './components/GlobalContext';
 import { App } from './components/App';
+import { GlobalContext } from './components/GlobalContext';
+import { createGlobals } from './createGlobals';
 import { routes } from './routes';
 import { escapeAllStrings } from './utils/escapeAllStrings';
-import { createGlobals } from './createGlobals';
 
 const app = express()
   .disable('x-powered-by')

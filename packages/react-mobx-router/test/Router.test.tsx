@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import 'global-jsdom/register';
-import { expect } from 'chai';
-import { spy } from 'sinon';
-import React from 'react';
+
 import { render } from '@testing-library/react/pure';
+import { expect } from 'chai';
 import { observer } from 'mobx-react-lite';
+import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { spy } from 'sinon';
 
 import { Router } from '../src/Router';
-
-import { routes } from './routes';
 import { getData } from './helpers';
+import { routes } from './routes';
 
 describe('Router', () => {
   function test1(mode: 'separate' | 'store') {

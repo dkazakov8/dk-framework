@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-syntax, no-console */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
+import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
 // @ts-ignore
 import betterSpawn from 'better-spawn';
-import { BuildOptions, context, Loader, Plugin } from 'esbuild';
-import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
 import { runManual } from 'dk-reload-server';
+import { BuildOptions, context, Loader, Plugin } from 'esbuild';
 
 export const pluginReplaceDirname = ({
   filter = /.*/,

@@ -1,6 +1,6 @@
+import { TypeMiddleware } from '../../types';
 import { createMeasure } from '../../utils/createMeasure';
 import { measuresServer } from '../../utils/measuresServer';
-import { TypeMiddleware } from '../../types';
 
 export const handleMeasure: TypeMiddleware = (app) => {
   app.use((req, res, next) => {

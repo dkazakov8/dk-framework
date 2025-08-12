@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
-
 import { routes } from './routes';
 
 describe('replaceDynamicValues', () => {

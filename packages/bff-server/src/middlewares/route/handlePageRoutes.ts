@@ -1,7 +1,7 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
-import { errorCodes, errorsNames, createMeasure, measuresServer } from '../../utils';
 import { TypeMiddleware } from '../../types';
+import { createMeasure, errorCodes, errorsNames, measuresServer } from '../../utils';
 
 export const handlePageRoutes: TypeMiddleware = (app, params) => {
   app.get('*', (req, res) => {

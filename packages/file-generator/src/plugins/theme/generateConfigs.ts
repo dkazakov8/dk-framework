@@ -1,5 +1,4 @@
 import { errors } from '../../errors';
-
 import { TypeThemeConfig, TypeThemeStrings } from './types';
 
 const themeNameRegex = /\.([\w-]+)([\s]+)?{/;

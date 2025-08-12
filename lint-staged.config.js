@@ -6,8 +6,7 @@
  *
  */
 
-const { lintStagedConfig } = require('./packages/eslint-config');
-
-delete lintStagedConfig['*.scss'];
-
-module.exports = lintStagedConfig;
+// biome-ignore lint/style/noCommonJs: false
+module.exports = {
+  '(*.js|*.ts|*.tsx|*.mjs)': ['pnpm run format:js'],
+};

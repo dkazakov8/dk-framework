@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-literals */
+
+import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import { Component } from 'react';
-import { observable, runInAction } from 'mobx';
 
 import { TypeActionLog } from './TypeActionLog';
 

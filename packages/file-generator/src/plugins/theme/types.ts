@@ -1,5 +1,4 @@
 import { TypeFilePath } from '../../types';
-
 import { pluginName } from './generateTheme';
 
 export type TypePluginNameTheme = typeof pluginName;

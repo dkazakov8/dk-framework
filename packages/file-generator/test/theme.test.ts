@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { errors } from '../src/errors';
 import { fileEncoding } from '../src/const';
+import { errors } from '../src/errors';
 import { generateTheme } from '../src/plugins/theme';
+import { compareByMatrix } from '../src/plugins/theme/compareByMatrix';
 import { convertCssToJs } from '../src/plugins/theme/convertCssToJs';
 import { generateConfigs } from '../src/plugins/theme/generateConfigs';
-import { compareByMatrix } from '../src/plugins/theme/compareByMatrix';
 import { splitCssToThemeStrings } from '../src/plugins/theme/splitCssToThemeStrings';
 import { generateComparisonMatrix } from '../src/utils/generateComparisonMatrix';
 

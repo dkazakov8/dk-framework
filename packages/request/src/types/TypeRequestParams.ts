@@ -1,9 +1,9 @@
-import { Checker } from 'ts-interface-checker';
-import { TypeLogger } from 'dk-checker-remove-extraneous';
 import { AxiosResponse } from 'axios';
+import { TypeLogger } from 'dk-checker-remove-extraneous';
+import { Checker } from 'ts-interface-checker';
 
-import { TypeUrl } from './TypeUrl';
 import { TypeHeaders } from './TypeHeaders';
+import { TypeUrl } from './TypeUrl';
 
 export type TypeResponse = any;
 

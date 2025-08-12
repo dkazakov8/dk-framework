@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention
-import _ from 'lodash';
+
 import { expect } from 'chai';
+import _ from 'lodash';
 import { isObservable, makeAutoObservable, observable } from 'mobx';
 
 import { restoreState } from '../src/restoreState';
@@ -207,7 +208,7 @@ describe('restoreState', function test() {
 
     check(_.merge(getTargetClassWithUndefined(), source), source);
     checkError(_.merge(getTargetClassNotDefined(), source), source);
-    checkError(_.merge(getTargetClassWithInitializer(), source), source);
+    check(_.merge(getTargetClassWithInitializer(), source), source);
   });
 
   it('class: success with lodash.mergeWith', () => {
@@ -240,10 +241,7 @@ describe('restoreState', function test() {
     const source = getSourceObject();
 
     checkErrorNoDeepMergeAndNoObservable(Object.assign(getTargetClassNotDefined(), source), source);
-    checkErrorNoDeepMergeAndNoObservable(
-      Object.assign(getTargetClassWithInitializer(), source),
-      source
-    );
+    checkErrorNoDeepMerge(Object.assign(getTargetClassWithInitializer(), source), source);
     checkErrorNoDeepMerge(Object.assign(getTargetClassWithUndefined(), source), source);
   });
 

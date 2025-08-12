@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import { getQueryValues } from '../src/utils/getQueryValues';
-
 import { routes } from './routes';
 
 describe('getQueryValues', () => {

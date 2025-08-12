@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
 import { addState } from '../src/addState';
-
 import { ACTION_TIMEOUT } from './constants';
 
 function decorateWithState(ctx: any, fn: any) {
@@ -76,6 +75,7 @@ export class ClassFunctions {
 
     throw err;
 
+    // biome-ignore lint/correctness/noUnreachable: false
     return Promise.reject(err);
   }
 }

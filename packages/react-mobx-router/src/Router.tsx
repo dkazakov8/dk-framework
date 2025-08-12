@@ -1,15 +1,15 @@
 /* eslint-disable react/no-set-state, @typescript-eslint/naming-convention */
 
-import React, { ContextType, createContext, ReactElement } from 'react';
-import { autorun, IReactionDisposer, makeAutoObservable, runInAction } from 'mobx';
 import { createUseStore, ViewModelConstructor } from 'dk-mobx-use-store';
+import { autorun, IReactionDisposer, makeAutoObservable, runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import React, { ContextType, createContext, ReactElement } from 'react';
 
-import { history } from './utils/history';
+import { redirectToGenerator } from './redirectToGenerator';
+import { InterfaceRouterStore } from './types/InterfaceRouterStore';
 import { TypeRoute } from './types/TypeRoute';
 import { getInitialRoute } from './utils/getInitialRoute';
-import { InterfaceRouterStore } from './types/InterfaceRouterStore';
-import { redirectToGenerator } from './redirectToGenerator';
+import { history } from './utils/history';
 
 const StoreContext = createContext(undefined);
 

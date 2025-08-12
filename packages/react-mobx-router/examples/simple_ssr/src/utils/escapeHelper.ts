@@ -8,7 +8,7 @@ export function escapeHelper(
 
   if (Object.prototype.toString.call(item) === '[object Object]') {
     for (const key in item) {
-      if (item.hasOwnProperty(key)) item[key] = escapeHelper(item[key], fn);
+      if (Object.hasOwn(item, key)) item[key] = escapeHelper(item[key], fn);
     }
   }
 

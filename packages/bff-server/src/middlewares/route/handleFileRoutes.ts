@@ -1,10 +1,10 @@
-import url from 'url';
+import url from 'node:url';
 
-import serveStatic from 'serve-static';
 import express from 'express';
+import serveStatic from 'serve-static';
 
 import { TypeMiddleware } from '../../types';
-import { errorCodes, compressions, getAcceptedCompression } from '../../utils';
+import { compressions, errorCodes, getAcceptedCompression } from '../../utils';
 
 function setContentTypeAndEncoding(params: {
   encoding: (typeof compressions)[number]['encoding'];

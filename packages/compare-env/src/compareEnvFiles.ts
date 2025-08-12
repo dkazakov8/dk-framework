@@ -1,9 +1,9 @@
-import { errors } from './errors';
-import { compareEnvByMatrix } from './compareEnvByMatrix';
 import { checkFilesExistence } from './checkFilesExistence';
-import { generateConfigFromEnv } from './generateConfigFromEnv';
+import { compareEnvByMatrix } from './compareEnvByMatrix';
 import { compareParsed } from './compareParsed';
+import { errors } from './errors';
 import { generateComparisonMatrix } from './generateComparisonMatrix';
+import { generateConfigFromEnv } from './generateConfigFromEnv';
 
 export function compareEnvFiles({
   paths,

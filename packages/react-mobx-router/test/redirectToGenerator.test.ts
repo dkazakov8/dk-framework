@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import _ from 'lodash';
 import { expect } from 'chai';
-import { spy } from 'sinon';
+import _ from 'lodash';
 import queryString from 'query-string';
+import { spy } from 'sinon';
 
-import { constants } from '../src/utils/constants';
-import { getInitialRoute } from '../src/utils/getInitialRoute';
 import { createRouterConfig } from '../src/createRouterConfig';
-import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
 import { InterfaceRouterStore } from '../src/types/InterfaceRouterStore';
 import { TypeRoute } from '../src/types/TypeRoute';
 import { TypeRouteWithParams } from '../src/types/TypeRouteWithParams';
-
-import { routes } from './routes';
+import { constants } from '../src/utils/constants';
+import { getInitialRoute } from '../src/utils/getInitialRoute';
+import { replaceDynamicValues } from '../src/utils/replaceDynamicValues';
 import { getData } from './helpers';
+import { routes } from './routes';
 
 function checkHistory(routerStore: InterfaceRouterStore<any>, history: Array<TypeRouteWithParams>) {
   expect(routerStore.routesHistory).to.deep.eq(
@@ -245,7 +244,7 @@ describe('redirectToGenerator', () => {
         path: '/test/static4',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
-          // eslint-disable-next-line no-unused-expressions
+          // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 
           return Promise.resolve();
@@ -393,7 +392,7 @@ describe('redirectToGenerator', () => {
         path: '/test/buggy-code',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeLeave: () => {
-          // eslint-disable-next-line no-unused-expressions
+          // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 
           return Promise.resolve();
@@ -648,7 +647,7 @@ describe('redirectToGenerator', () => {
         path: '/test/static4',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
-          // eslint-disable-next-line no-unused-expressions
+          // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 
           return Promise.resolve();

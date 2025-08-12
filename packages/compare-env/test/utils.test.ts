@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import path from 'path';
+import path from 'node:path';
 
 import { expect } from 'chai';
 
-import { errors } from '../src/errors';
 import { arrayDifference } from '../src/arrayDifference';
-import { compareEnvByMatrix } from '../src/compareEnvByMatrix';
 import { checkFilesExistence } from '../src/checkFilesExistence';
-import { generateConfigFromEnv } from '../src/generateConfigFromEnv';
+import { compareEnvByMatrix } from '../src/compareEnvByMatrix';
 import { compareParsed } from '../src/compareParsed';
+import { errors } from '../src/errors';
 import { generateComparisonMatrix } from '../src/generateComparisonMatrix';
+import { generateConfigFromEnv } from '../src/generateConfigFromEnv';
 
 describe('difference between arrays', () => {
   it('has items', () => {

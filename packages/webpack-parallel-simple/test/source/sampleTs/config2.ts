@@ -1,6 +1,7 @@
 // Fix ERR_OSSL_EVP_UNSUPPORTED
-import path from 'path';
-import crypto from 'crypto';
+
+import crypto from 'node:crypto';
+import path from 'node:path';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const crypto_orig_createHash = crypto.createHash;

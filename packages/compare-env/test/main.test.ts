@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import path from 'path';
+import path from 'node:path';
 
 import { expect } from 'chai';
 
-import { errors } from '../src/errors';
 import { compareEnvFiles } from '../src/compareEnvFiles';
+import { errors } from '../src/errors';
 
 describe('overall comparison', () => {
   it('successful', () => {

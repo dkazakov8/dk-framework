@@ -1,7 +1,6 @@
 import { CompilerOptions } from 'typescript';
 
 import { TypeFilePath, TypeFolderPath } from '../../types';
-
 import { pluginName } from './generateValidators';
 
 export type TypePluginNameValidators = typeof pluginName;

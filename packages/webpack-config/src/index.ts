@@ -1,3 +1,3 @@
-export { TypeDevtool } from './types';
 export { createClientConfig } from './createClientConfig';
 export { createServerConfig } from './createServerConfig';
+export { TypeDevtool } from './types';

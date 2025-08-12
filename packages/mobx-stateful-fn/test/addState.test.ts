@@ -1,14 +1,13 @@
 import { expect } from 'chai';
-import { spy } from 'sinon';
 import { autorun, observable } from 'mobx';
+import { spy } from 'sinon';
 
 import { addState } from '../src/addState';
 import { TypeFnState } from '../src/types/TypeFnState';
-
+import { ClassFunctions } from './classFunctions';
 import { ACTION_TIMEOUT, TIMEOUT_SYNC } from './constants';
 import { functions } from './functions';
 import { functionsAnonymous } from './functionsAnonymous';
-import { ClassFunctions } from './classFunctions';
 
 function createStatefulFunctions(names: Array<keyof typeof functions>) {
   return [
@@ -120,7 +119,7 @@ describe('addState', () => {
     const fn = functionsAnonymous[0][1];
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fnStateful = addState(fn, fn.name);
+    const _fnStateful = addState(fn, fn.name);
 
     expect(
       spyLog.calledWith(

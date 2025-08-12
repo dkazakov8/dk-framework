@@ -1,15 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import chalk from 'chalk';
 
-import { saveFile } from '../../utils/saveFile';
-import { defaultHeaderTemplate, logsPrefix } from '../../const';
-import { getFilteredChildren } from '../../utils/getFilteredChildren';
-import { checkFilesExistence } from '../../utils/checkFilesExistence';
-import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
 import { Compiler } from '../../../ts-interface-builder';
-
+import { defaultHeaderTemplate, logsPrefix } from '../../const';
+import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
+import { checkFilesExistence } from '../../utils/checkFilesExistence';
+import { getFilteredChildren } from '../../utils/getFilteredChildren';
+import { saveFile } from '../../utils/saveFile';
 import { TypeProcessParamsValidators } from './types';
 
 export const pluginName = 'validators';

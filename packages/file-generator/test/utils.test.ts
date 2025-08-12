@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
-import fsExtra from 'fs-extra';
 import { expect } from 'chai';
+import fsExtra from 'fs-extra';
 
-import { errors } from '../src/errors';
 import { fileEncoding } from '../src/const';
-import { saveFile } from '../src/utils/saveFile';
+import { errors } from '../src/errors';
 import { arrayDifference } from '../src/utils/arrayDifference';
 import { checkFilesExistence } from '../src/utils/checkFilesExistence';
-import { getFilteredChildren } from '../src/utils/getFilteredChildren';
 import { generateComparisonMatrix } from '../src/utils/generateComparisonMatrix';
+import { getFilteredChildren } from '../src/utils/getFilteredChildren';
+import { saveFile } from '../src/utils/saveFile';
 
 describe('difference between arrays', () => {
   it('has items', () => {

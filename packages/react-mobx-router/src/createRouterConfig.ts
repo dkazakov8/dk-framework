@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react';
 
-import { addNames } from './utils/addNames';
 import { TypeRouteRaw } from './types/TypeRouteRaw';
+import { addNames } from './utils/addNames';
 
 type TypeRouteItemFinalGeneric<TConfig extends { [Key in keyof TConfig]: TypeRouteRaw }> = {
   [Key in keyof TConfig]: TConfig[Key] & {

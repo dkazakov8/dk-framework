@@ -1,13 +1,12 @@
-import path from 'path';
+import path from 'node:path';
 
 import chalk from 'chalk';
 
-import { saveFile } from '../../utils/saveFile';
 import { defaultHeaderTemplate, logsPrefix } from '../../const';
-import { getFilteredChildren } from '../../utils/getFilteredChildren';
 import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
 import { checkFilesExistence } from '../../utils/checkFilesExistence';
-
+import { getFilteredChildren } from '../../utils/getFilteredChildren';
+import { saveFile } from '../../utils/saveFile';
 import { getSubFoldersOrFiles } from './getSubFoldersOrFiles';
 import { TypeProcessParamsReexportModular } from './types';
 

@@ -1,4 +1,4 @@
-import { TypeRule, TypeLoader } from '../types';
+import { TypeLoader, TypeRule } from '../types';
 
 /**
  * @docs: https://github.com/webpack-contrib/css-loader

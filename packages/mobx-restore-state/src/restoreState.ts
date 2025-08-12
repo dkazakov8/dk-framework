@@ -1,4 +1,4 @@
-import { runInAction, observable } from 'mobx';
+import { observable, runInAction } from 'mobx';
 
 export function restoreState({
   logs,
@@ -15,7 +15,7 @@ export function restoreState({
 }) {
   function merge() {
     for (const key in source) {
-      if (!source.hasOwnProperty(key)) continue;
+      if (!Object.hasOwn(source, key)) continue;
 
       const sourceItem = source[key];
       const targetItem = target[key];

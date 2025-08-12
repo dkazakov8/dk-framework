@@ -3,7 +3,7 @@
  *
  */
 
-import { TypeRule, TypeLoader } from '../types';
+import { TypeLoader, TypeRule } from '../types';
 
 /**
  * @docs: https://v4.webpack.js.org/loaders/raw-loader/

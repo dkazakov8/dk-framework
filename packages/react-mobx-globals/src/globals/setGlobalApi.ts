@@ -1,5 +1,5 @@
-import { TypeGlobalsAny } from '../types/TypeGlobalsAny';
 import { TypeCreateContextParams } from '../types/TypeCreateContextParams';
+import { TypeGlobalsAny } from '../types/TypeGlobalsAny';
 
 export function setGlobalApi(
   globals: TypeGlobalsAny,
@@ -11,7 +11,7 @@ export function setGlobalApi(
     apiValidators: TypeCreateContextParams['apiValidators'];
   }
 ) {
-  // eslint-disable-next-line guard-for-in
+  // biome-ignore lint/suspicious/useGuardForIn: false
   for (const apiName in api) {
     const { url, headers, omitResponseValidation, method, disableCredentials } = api[apiName];
 

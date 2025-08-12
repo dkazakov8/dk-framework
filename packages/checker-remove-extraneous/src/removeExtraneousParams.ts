@@ -6,7 +6,7 @@ import { getRemovablePaths } from './getRemovablePaths';
 import { TypeLogger } from './types';
 
 function flattenValidations(params: Array<IErrorDetail>): Array<IErrorDetail> {
-  return params.map((item) => (item.nested ? flattenValidations(item.nested) : item)).flat();
+  return params.flatMap((item) => (item.nested ? flattenValidations(item.nested) : item));
 }
 
 export function removeExtraneousParams(params: {

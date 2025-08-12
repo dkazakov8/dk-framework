@@ -1,6 +1,6 @@
-import { TypeEnvConfig } from './types';
-import { errors } from './errors';
 import { arrayDifference } from './arrayDifference';
+import { errors } from './errors';
+import { TypeEnvConfig } from './types';
 
 export function compareParsed({
   envConfigs,

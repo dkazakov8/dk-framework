@@ -1,15 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import chalk from 'chalk';
 
-import { saveFile } from '../../utils/saveFile';
-import { checkFilesExistence } from '../../utils/checkFilesExistence';
 import { fileEncoding, logsPrefix } from '../../const';
 import { TypeGeneratorPlugin, TypeModifiedFiles } from '../../types';
-
-import { TypeProcessParamsTheme } from './types';
+import { checkFilesExistence } from '../../utils/checkFilesExistence';
+import { saveFile } from '../../utils/saveFile';
 import { convertCssToJs } from './convertCssToJs';
+import { TypeProcessParamsTheme } from './types';
 
 export const pluginName = 'theme';
 

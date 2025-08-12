@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Context, useContext, useEffect, useRef, useState } from 'react';
 import { observable, runInAction } from 'mobx';
+import { Context, useContext, useEffect, useRef, useState } from 'react';
 
 import { ViewModelConstructor } from './types/ViewModelConstructor';
 
-export function createUseStore<TContext extends any>(
+export function createUseStore<TContext>(
   ctx: Context<TContext>,
   options?: {
     beforeMount?: (context: TContext, vm?: any) => void;

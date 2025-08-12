@@ -3,8 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { createRoot } from 'react-dom/client';
 
 import './style.css';
-import { routes } from './routes';
+
 import { routerStore } from './routerStore';
+import { routes } from './routes';
 
 export const Router = observer(() => {
   return (

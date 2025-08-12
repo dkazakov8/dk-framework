@@ -1,6 +1,5 @@
 import { TypeRoute } from '../types/TypeRoute';
 import { TypeValidator } from '../types/TypeValidator';
-
 import { constants } from './constants';
 
 export function isDynamic(param: string): boolean {

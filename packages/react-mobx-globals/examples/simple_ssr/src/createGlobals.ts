@@ -1,8 +1,8 @@
 import { createContextProps } from 'dk-react-mobx-globals';
 
-import { RouterStore } from './stores/routerStore';
-import { TypeGlobals } from './models/TypeGlobals';
 import { redirectTo } from './actions/routing/redirectTo';
+import { TypeGlobals } from './models/TypeGlobals';
+import { RouterStore } from './stores/routerStore';
 
 export function createGlobals() {
   const globals = createContextProps<TypeGlobals>({

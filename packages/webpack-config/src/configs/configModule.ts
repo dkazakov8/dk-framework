@@ -5,16 +5,16 @@
 
 import webpack from 'webpack';
 
-import { TypeConfig } from '../types';
-import { ruleSass } from '../rules/ruleSass';
 import { ruleAudio } from '../rules/ruleAudio';
-import { ruleSwc } from '../rules/ruleSwc';
-import { ruleXml } from '../rules/ruleXml';
 import { ruleFonts } from '../rules/ruleFonts';
-import { ruleVideo } from '../rules/ruleVideo';
 import { ruleImages } from '../rules/ruleImages';
-import { ruleSvgInline } from '../rules/ruleSvgInline';
+import { ruleSass } from '../rules/ruleSass';
 import { ruleSassGlobal } from '../rules/ruleSassGlobal';
+import { ruleSvgInline } from '../rules/ruleSvgInline';
+import { ruleSwc } from '../rules/ruleSwc';
+import { ruleVideo } from '../rules/ruleVideo';
+import { ruleXml } from '../rules/ruleXml';
+import { TypeConfig } from '../types';
 
 export const configModule: TypeConfig<webpack.Configuration['module']> = {
   rules: [

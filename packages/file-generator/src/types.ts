@@ -1,10 +1,10 @@
-import { TypeProcessParamsTheme, TypePluginNameTheme } from './plugins/theme/types';
-import { TypeProcessParamsReexport, TypePluginNameReexport } from './plugins/reexport/types';
-import { TypeProcessParamsValidators, TypePluginNameValidators } from './plugins/validators/types';
+import { TypePluginNameReexport, TypeProcessParamsReexport } from './plugins/reexport/types';
 import {
-  TypeProcessParamsReexportModular,
   TypePluginNameReexportModular,
+  TypeProcessParamsReexportModular,
 } from './plugins/reexport-modular/types';
+import { TypePluginNameTheme, TypeProcessParamsTheme } from './plugins/theme/types';
+import { TypePluginNameValidators, TypeProcessParamsValidators } from './plugins/validators/types';
 
 export type TypeFilePath = string;
 

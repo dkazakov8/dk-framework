@@ -3,23 +3,23 @@
  *
  */
 
-import { TypeConfig } from '../types';
-import { excludeFalsy } from '../utils/excludeFalsy';
-import { pluginHtml } from '../plugins/pluginHtml';
-import { pluginBanner } from '../plugins/pluginBanner';
-import { pluginIgnore } from '../plugins/pluginIgnore';
-import { pluginDefine } from '../plugins/pluginDefine';
-import { pluginPreload } from '../plugins/pluginPreload';
 // import { pluginWorkbox } from '../plugins/pluginWorkbox';
 import { pluginAnalyzer } from '../plugins/pluginAnalyzer';
+import { pluginBanner } from '../plugins/pluginBanner';
+import { pluginCircularDependency } from '../plugins/pluginCircularDependency';
+import { pluginCompressionBrotli } from '../plugins/pluginCompressionBrotli';
+import { pluginCompressionGzip } from '../plugins/pluginCompressionGzip';
+import { pluginConditionalAggregate } from '../plugins/pluginConditionalAggregate';
+import { pluginDefine } from '../plugins/pluginDefine';
+import { pluginHtml } from '../plugins/pluginHtml';
+import { pluginIgnore } from '../plugins/pluginIgnore';
+import { pluginImageMinimize } from '../plugins/pluginImageMinimize';
 import { pluginLoadable } from '../plugins/pluginLoadable';
 import { pluginLodashModule } from '../plugins/pluginLodashModule';
-import { pluginImageMinimize } from '../plugins/pluginImageMinimize';
+import { pluginPreload } from '../plugins/pluginPreload';
 import { pluginRetryChunkLoad } from '../plugins/pluginRetryChunkLoad';
-import { pluginCompressionGzip } from '../plugins/pluginCompressionGzip';
-import { pluginCompressionBrotli } from '../plugins/pluginCompressionBrotli';
-import { pluginCircularDependency } from '../plugins/pluginCircularDependency';
-import { pluginConditionalAggregate } from '../plugins/pluginConditionalAggregate';
+import { TypeConfig } from '../types';
+import { excludeFalsy } from '../utils/excludeFalsy';
 
 export const configPlugins: TypeConfig<any> = [
   pluginHtml,

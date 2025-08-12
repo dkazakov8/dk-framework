@@ -7,10 +7,10 @@
     "build": "bash -c 'rm -rf ./sizeResult.json&&lerna run build --concurrency 20 $@&&cat ./sizeResult.json' bash",
     "test": "lerna run test",
     "test-watch": "nx reset&&bash -c 'lerna watch --scope=\"$@\" -- lerna run test --scope=\"$@\"' bash",
-    "analyze:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" ./",
     "analyze:style": "stylelint --ignore-path .formatignore \"**/*.scss\"",
-    "format:js": "eslint --ignore-path ./.formatignore --ext \".js,.ts,.tsx\" --fix",
     "format:style": "stylelint --ignore-path .formatignore --fix",
+    "analyze:js": "biome check --no-errors-on-unmatched .",
+    "format:js": "biome check --no-errors-on-unmatched --write",
     "check-types": "tsc --project tsconfig.json",
     "update-deps": "npm-check-updates -ws -u -i"
   },
@@ -37,7 +37,8 @@
     "mocha": "10.4.0",
     "nyc": "15.1.0",
     "npm-check-updates": "16.10.12",
-    "typescript": "5.4.4"
+    "typescript": "5.4.4",
+    "@biomejs/biome": "2.1.4"
   },
-  "packageManager": "pnpm@8.6.3"
+  "packageManager": "pnpm@10.9.0"
 }

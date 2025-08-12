@@ -2,9 +2,9 @@
 
 import { expect } from 'chai';
 
-import { isPlainObject } from '../src/utils/isPlainObject';
 import { replaceDynamic } from '../src/plugins/replaceDynamic';
 import { replacePlurals } from '../src/plugins/replacePlurals';
+import { isPlainObject } from '../src/utils/isPlainObject';
 
 describe('replace dynamic params', () => {
   it('dynamic params are replaced', () => {
@@ -141,8 +141,8 @@ describe('isPlainObject', () => {
     }
 
     expect(!isPlainObject(/foo/)).to.equal(true);
-    // eslint-disable-next-line func-names,@typescript-eslint/no-empty-function
-    expect(!isPlainObject(function () {})).to.equal(true);
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: false
+    expect(!isPlainObject(() => {})).to.equal(true);
     expect(!isPlainObject(1)).to.equal(true);
     expect(!isPlainObject(['foo', 'bar'])).to.equal(true);
     expect(!isPlainObject([])).to.equal(true);

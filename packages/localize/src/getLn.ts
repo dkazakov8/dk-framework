@@ -1,8 +1,8 @@
 import { errors } from './errors';
-import { isPlainObject } from './utils/isPlainObject';
 import { replaceDynamic } from './plugins/replaceDynamic';
 import { replacePlurals } from './plugins/replacePlurals';
 import { TypeMessage, TypePlugin, TypeTranslations, TypeValues } from './types';
+import { isPlainObject } from './utils/isPlainObject';
 
 const plugins: Array<TypePlugin> = [replaceDynamic, replacePlurals];
 

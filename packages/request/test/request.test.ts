@@ -1,8 +1,8 @@
-import * as t from 'ts-interface-checker';
 import { expect } from 'chai';
 import nock from 'nock';
+import * as t from 'ts-interface-checker';
 
-import { request, errors } from '../src';
+import { errors, request } from '../src';
 
 const SUCCESS_HTTP_CODE = 200;
 

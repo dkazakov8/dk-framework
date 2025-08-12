@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-import { TypeRule, TypeLoader } from '../types';
+import { TypeLoader, TypeRule } from '../types';
 
 /**
  * @docs: https://github.com/webpack-contrib/css-loader

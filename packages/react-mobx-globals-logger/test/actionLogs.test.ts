@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { makeAutoObservable, runInAction } from 'mobx';
 import { createContextProps } from 'dk-react-mobx-globals';
 import { createRouterConfig, findRouteByPathname } from 'dk-react-mobx-router';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 import { getActionsLogs } from '../src/getActionsLogs';
 import { TypeActionLog } from '../src/TypeActionLog';

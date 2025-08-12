@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention*/
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
@@ -84,9 +84,9 @@ export const TypeTask = t.iface([], {
 });`,
   'TypeTaskAny.ts': `import * as t from "ts-interface-checker";
 
-export * from './TypeTaskStow';
-
 export * from './TypeTaskReceiving';
+
+export * from './TypeTaskStow';
 
 export const TypeTaskAny = t.union("TypeTaskStow", "TypeTaskReceiving");`,
   'TypeTaskReceiving.ts': `import * as t from "ts-interface-checker";

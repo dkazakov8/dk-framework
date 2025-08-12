@@ -1,8 +1,8 @@
-import { runInAction, action, observable } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 
-import { getCurrentTime } from './utils/getCurrentTime';
-import { TypeFnState } from './types/TypeFnState';
 import { TypeFnAsync } from './types/TypeFnAsync';
+import { TypeFnState } from './types/TypeFnState';
+import { getCurrentTime } from './utils/getCurrentTime';
 
 export function addState<TApiFn extends TypeFnAsync, TName extends string>(
   fn: TApiFn,

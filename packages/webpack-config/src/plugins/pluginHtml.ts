@@ -3,7 +3,7 @@
  *
  */
 
-import path from 'path';
+import path from 'node:path';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import HtmlWebpackPlugin from 'html-webpack-plugin';

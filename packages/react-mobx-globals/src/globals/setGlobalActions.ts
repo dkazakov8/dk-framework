@@ -1,5 +1,5 @@
-import { TypeGlobalsAny } from '../types/TypeGlobalsAny';
 import { TypeCreateContextParams } from '../types/TypeCreateContextParams';
+import { TypeGlobalsAny } from '../types/TypeGlobalsAny';
 
 export function setGlobalActions(
   globals: TypeGlobalsAny,

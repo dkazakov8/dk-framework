@@ -1,7 +1,7 @@
 import { sendRequest } from './sendRequest';
+import { TypeRequestParams } from './types/TypeRequestParams';
 import { validateRequest } from './validateRequest';
 import { validateResponse } from './validateResponse';
-import { TypeRequestParams } from './types/TypeRequestParams';
 
 export function request(params: TypeRequestParams) {
   return Promise.resolve()

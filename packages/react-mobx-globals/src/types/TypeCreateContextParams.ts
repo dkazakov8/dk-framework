@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
 import { request } from 'dk-request';
+import { Request, Response } from 'express';
 import { ICheckerSuite } from 'ts-interface-checker';
 
 import { TypeActionAny } from './TypeActionAny';
 
 type TypeAddParameters<
   TFunction extends (...args: any) => any,
-  TParameters extends [...args: any]
+  TParameters extends [...args: any],
 > = (...args: [...Parameters<TFunction>, ...TParameters]) => ReturnType<TFunction>;
 
 export type TypeCreateContextParams = {

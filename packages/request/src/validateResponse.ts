@@ -1,8 +1,8 @@
 import { removeExtraneousParams } from 'dk-checker-remove-extraneous';
 
 import { errors } from './errors';
-import { createError } from './utils/createError';
 import { TypeRequestParams, TypeResponse } from './types/TypeRequestParams';
+import { createError } from './utils/createError';
 
 export function validateResponse(
   {

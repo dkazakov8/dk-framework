@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 
-import { StoreContext } from './StoreContext';
 import { Router } from './Router';
+import { StoreContext } from './StoreContext';
 
 export const App = observer(() => {
   const { routerStore } = useContext(StoreContext);

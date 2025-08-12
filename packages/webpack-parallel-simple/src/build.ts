@@ -1,12 +1,12 @@
 import chalk from 'chalk';
 import webpack from 'webpack';
 
+import { FIRST_FINISHED, LOG_PREFIX } from './utils/constants';
+import { getAppName } from './utils/getAppName';
 import { logDone } from './utils/logDone';
 import { logError } from './utils/logError';
-import { getAppName } from './utils/getAppName';
 import { logStatsErrors } from './utils/logStatsErrors';
 import { logStatsWarnings } from './utils/logStatsWarnings';
-import { LOG_PREFIX, FIRST_FINISHED } from './utils/constants';
 
 export function build({ config }: { config: webpack.Configuration }) {
   const MSG_APP = chalk.yellow(getAppName(config));

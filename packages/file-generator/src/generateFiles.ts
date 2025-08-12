@@ -1,11 +1,11 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 
-import { TypeGenerateFilesParams } from './types';
-import { logsPrefix } from './const';
 import { applyModifications } from './applyModifications';
+import { logsPrefix } from './const';
+import { TypeGenerateFilesParams } from './types';
 import { getTimeDelta } from './utils/getTimeDelta';
 
 export function generateFiles(params: TypeGenerateFilesParams) {

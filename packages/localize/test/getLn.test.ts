@@ -2,8 +2,8 @@
 
 import { expect } from 'chai';
 
-import { getLn } from '../src/getLn';
 import { errors } from '../src/errors';
+import { getLn } from '../src/getLn';
 
 describe('get localization', () => {
   it('throws when no message name', () => {

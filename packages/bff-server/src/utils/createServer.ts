@@ -1,10 +1,9 @@
-import http from 'http';
-import https from 'https';
+import http from 'node:http';
+import https from 'node:https';
 
 import express from 'express';
 
-import { TypeRunServerParams, TypeMiddleware } from '../types';
-
+import { TypeMiddleware, TypeRunServerParams } from '../types';
 import { sslOptions } from './sslOptions';
 
 const SSL_PORT = 443;

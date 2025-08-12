@@ -1,6 +1,6 @@
 // Fix ERR_OSSL_EVP_UNSUPPORTED
-const path = require('path');
-const crypto = require('crypto');
+const path = require('node:path');
+const crypto = require('node:crypto');
 const crypto_orig_createHash = crypto.createHash;
 crypto.createHash = (algorithm) =>
   crypto_orig_createHash(algorithm === 'md4' ? 'sha256' : algorithm);

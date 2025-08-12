@@ -1,10 +1,10 @@
 import { getLn } from 'dk-localize';
+import { TypeFnState } from 'dk-mobx-stateful-fn';
 import { TypeGlobalsGenerator } from 'dk-react-mobx-globals';
 import { TypeRedirectToParams } from 'dk-react-mobx-router';
-import { TypeFnState } from 'dk-mobx-stateful-fn';
 
-import { RouterStore } from '../stores/routerStore';
 import { routes } from '../routes';
+import { RouterStore } from '../stores/routerStore';
 // import * as modularStores from 'modularStores';
 // import globalActions from 'actions';
 // import * as modularActions from 'modularActions';

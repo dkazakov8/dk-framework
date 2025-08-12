@@ -1,7 +1,6 @@
 import { TypeRoute } from '../types/TypeRoute';
-
 import { constants } from './constants';
-import { isDynamic, clearDynamic } from './dynamic';
+import { clearDynamic, isDynamic } from './dynamic';
 
 export function getDynamicValues<TRoute extends TypeRoute>(params: {
   route: TRoute;

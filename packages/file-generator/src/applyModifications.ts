@@ -1,6 +1,6 @@
+import { pluginMapper } from './pluginMapper';
 import { TypeGenerateFilesParams, TypeModifiedFiles } from './types';
 import { withMeasure } from './withMeasure';
-import { pluginMapper } from './pluginMapper';
 
 export function applyModifications(params: TypeGenerateFilesParams) {
   const { configs, timeLogs, changedFiles, fileModificationLogs } = params;

@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import { TypeFolderPath } from '../../types';
 import { saveFile } from '../../utils/saveFile';

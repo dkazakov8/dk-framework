@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import { getInitialRoute } from '../src/utils/getInitialRoute';
-
 import { routes } from './routes';
 
 describe('getInitialRoute', () => {

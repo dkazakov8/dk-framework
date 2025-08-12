@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
-import fsExtra from 'fs-extra';
 import { expect } from 'chai';
+import fsExtra from 'fs-extra';
 
 import { run, TypeConfig } from '../dist';
 

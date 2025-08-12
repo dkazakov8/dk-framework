@@ -6,7 +6,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "module": "commonjs",
-    "target": "ES2015",
+    "target": "ES2022",
     "ignoreDeprecations": "5.0",
     "strict": true,
     "noEmit": true,

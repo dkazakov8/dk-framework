@@ -1,7 +1,6 @@
 import queryString from 'query-string';
 
 import { TypeRoute } from '../types/TypeRoute';
-
 import { getTypedEntries } from './getTypedEntries';
 
 export function getQueryValues<TRoute extends TypeRoute>(params: {

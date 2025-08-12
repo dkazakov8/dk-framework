@@ -3,15 +3,15 @@
 import { runInAction } from 'mobx';
 import queryString from 'query-string';
 
-import { TypeRoute } from './types/TypeRoute';
 import { InterfaceRouterStore } from './types/InterfaceRouterStore';
 import { TypeRedirectToParams } from './types/TypeRedirectToParams';
-import { history } from './utils/history';
+import { TypeRoute } from './types/TypeRoute';
 import { constants } from './utils/constants';
-import { getQueryValues } from './utils/getQueryValues';
 import { getDynamicValues } from './utils/getDynamicValues';
-import { replaceDynamicValues } from './utils/replaceDynamicValues';
+import { getQueryValues } from './utils/getQueryValues';
+import { history } from './utils/history';
 import { loadComponentToConfig } from './utils/loadComponentToConfig';
+import { replaceDynamicValues } from './utils/replaceDynamicValues';
 
 type TypeParamsGenerator<TRoutes extends Record<string, TypeRoute>> = {
   routes: TRoutes;

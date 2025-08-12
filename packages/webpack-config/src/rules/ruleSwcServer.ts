@@ -1,4 +1,4 @@
-import { TypeRule, TypeLoader } from '../types';
+import { TypeLoader, TypeRule } from '../types';
 
 /**
  * @docs: https://swc.rs/docs/usage/swc-loader

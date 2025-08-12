@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { FormEvent, ReactNode, Component } from 'react';
 import { runInAction } from 'mobx';
+import { Component, FormEvent, ReactNode } from 'react';
 
-import { getTypedKeys } from './utils/getTypedKeys';
 import { TypeGenerateFormTypes, TypeInitialData } from './types';
+import { getTypedKeys } from './utils/getTypedKeys';
 
 type TypeChildrenProps<TFormConfig extends TypeGenerateFormTypes<any, any>['TypeFormConfig']> = {
   inputs: Record<keyof TFormConfig['inputs'], ReactNode>;
