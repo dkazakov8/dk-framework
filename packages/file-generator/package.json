@@ -2,7 +2,7 @@
   "name": "dk-file-generator",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.13",
+  "version": "3.5.0",
   "description": "Creates helper files",
   "repository": {
     "type": "git",
@@ -18,8 +18,8 @@
     "include": "src"
   },
   "dependencies": {
-    "colorette": "2.0.20",
     "chokidar": "3.6.0",
+    "colorette": "2.0.20",
     "fs-extra": "11.2.0"
   },
   "devDependencies": {

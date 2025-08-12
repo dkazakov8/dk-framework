@@ -2,7 +2,7 @@
   "name": "dk-request",
   "author": "Dmitry Kazakov",
   "license": "MIT",
-  "version": "3.4.13",
+  "version": "3.5.0",
   "description": "Request utility with validations based on Axios & ts-interface-checker",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "axios": "1.6.8",
-    "dk-checker-remove-extraneous": "3.4.13"
+    "dk-checker-remove-extraneous": "3.5.0"
   },
   "devDependencies": {
     "lodash": "4.17.21",
