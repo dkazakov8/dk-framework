@@ -14,7 +14,6 @@
     "skipLibCheck": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "keyofStringsOnly": true,
     "experimentalDecorators": true
   }
 }

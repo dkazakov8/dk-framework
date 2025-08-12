@@ -16,7 +16,7 @@ export function getQueryValues<TRoute extends TypeRoute>(params: {
   const query: Record<keyof TRoute['query'], string> = queryString.parse(qs) as any;
 
   getTypedEntries(query).forEach(([key, value]) => {
-    const validator = route.query![key];
+    const validator = route.query![key as any];
 
     if (typeof validator !== 'function' || !validator(value)) {
       delete query[key];

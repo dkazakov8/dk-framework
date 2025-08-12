@@ -132,8 +132,7 @@ describe('createUseStore', () => {
 
       expect(result.current.vm.autorunDisposers.length, 'autorunDisposers').to.deep.eq(1);
       expect(
-        // eslint-disable-next-line no-underscore-dangle
-        _getAdministration(result.current.vm.autorunDisposers[0]).isDisposed_,
+        _getAdministration(result.current.vm.autorunDisposers[0]).observing_.length === 0,
         'autorunDisposers'
       ).to.deep.eq(false);
       expect(spy_autorun.callCount, 'spy_autorun').to.deep.eq(1);
@@ -143,8 +142,7 @@ describe('createUseStore', () => {
 
       expect(result.current.vm.autorunDisposers.length, 'autorunDisposers').to.deep.eq(1);
       expect(
-        // eslint-disable-next-line no-underscore-dangle
-        _getAdministration(result.current.vm.autorunDisposers[0]).isDisposed_,
+        _getAdministration(result.current.vm.autorunDisposers[0]).observing_.length === 0,
         'autorunDisposers'
       ).to.deep.eq(false);
       expect(spy_autorun.callCount, 'spy_autorun').to.deep.eq(2);
@@ -155,7 +153,7 @@ describe('createUseStore', () => {
       expect(result.current.vm.autorunDisposers.length, 'autorunDisposers').to.deep.eq(1);
       expect(
         // eslint-disable-next-line no-underscore-dangle
-        _getAdministration(result.current.vm.autorunDisposers[0]).isDisposed_,
+        _getAdministration(result.current.vm.autorunDisposers[0]).observing_.length === 0,
         'autorunDisposers'
       ).to.deep.eq(true);
       expect(spy_autorun.callCount, 'spy_autorun').to.deep.eq(2);

@@ -244,6 +244,7 @@ describe('redirectToGenerator', () => {
         path: '/test/static4',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
+          // @ts-ignore
           // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 
@@ -392,6 +393,7 @@ describe('redirectToGenerator', () => {
         path: '/test/buggy-code',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeLeave: () => {
+          // @ts-ignore
           // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 
@@ -647,6 +649,7 @@ describe('redirectToGenerator', () => {
         path: '/test/static4',
         loader: (() => Promise.resolve(require('./pages/dynamic'))) as any,
         beforeEnter: (() => {
+          // @ts-ignore
           // biome-ignore lint/correctness/noUndeclaredVariables: false
           a;
 

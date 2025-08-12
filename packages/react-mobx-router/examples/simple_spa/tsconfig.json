@@ -21,7 +21,6 @@
     "declarationMap": false,
     "isolatedModules": false,
     "esModuleInterop": true,
-    "keyofStringsOnly": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "experimentalDecorators": true,

@@ -18,13 +18,13 @@
     "include": "src"
   },
   "devDependencies": {
-    "@types/react": "18.2.76",
+    "@types/react": "19.1.10",
     "dk-react-mobx-globals": "3.4.13",
     "dk-react-mobx-router": "3.4.13",
-    "mobx": "6.12.3",
-    "mobx-react": "9.1.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "mobx": "6.13.7",
+    "mobx-react": "9.2.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   },
   "peerDependencies": {
     "dk-react-mobx-globals": "*",

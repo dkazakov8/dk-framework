@@ -14,7 +14,7 @@
     "gen-badge": "istanbul-cobertura-badger -e 85 -g 70 -r ./.nyc_output/cobertura-coverage.xml -d . -b cover"
   },
   "dependencies": {
-    "dotenv": "16.4.5"
+    "dotenv": "17.2.1"
   },
   "engines": {
     "node": ">=18.0.0"

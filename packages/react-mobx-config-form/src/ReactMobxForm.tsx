@@ -58,7 +58,7 @@ export class ReactMobxForm<
     const childrenProps: TypeChildrenProps<TFormConfig> = {
       inputs: getTypedKeys(formConfig.inputs).reduce(
         (acc, name: keyof TFormConfig['inputs']) => {
-          const inputConfig = formConfig.inputs[name];
+          const inputConfig = formConfig.inputs[name as any];
           const Comp = componentsMapper[inputConfig.type];
 
           acc[name] = (
