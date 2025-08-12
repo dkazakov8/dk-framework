@@ -6,187 +6,227 @@ import path from 'node:path';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
+import { BaseGenerator } from '../src/BaseGenerator';
 import { fileEncoding } from '../src/const';
 import { errors } from '../src/errors';
-import { arrayDifference } from '../src/utils/arrayDifference';
-import { checkFilesExistence } from '../src/utils/checkFilesExistence';
-import { generateComparisonMatrix } from '../src/utils/generateComparisonMatrix';
-import { getFilteredChildren } from '../src/utils/getFilteredChildren';
-import { saveFile } from '../src/utils/saveFile';
+import { TypeModifiedFiles } from '../src/types';
 
-describe('difference between arrays', () => {
-  it('has items', () => {
-    const diff = arrayDifference(['a', 'b'], ['b', 'c', 'a']);
+class TestBaseGenerator extends BaseGenerator {
+  generate(): TypeModifiedFiles {
+    return [];
+  }
+}
 
-    expect(diff).to.deep.equal(['c']);
+describe('BaseGenerator', () => {
+  let baseGenerator: TestBaseGenerator;
+
+  beforeEach(() => {
+    baseGenerator = new TestBaseGenerator();
   });
 
-  it('does not has items', () => {
-    const diff = arrayDifference(['a', 'b'], ['b', 'a']);
+  describe('arrayDifference', () => {
+    it('has items', () => {
+      const diff = baseGenerator.arrayDifference(['a', 'b'], ['b', 'c', 'a']);
 
-    expect(diff).to.deep.equal([]);
+      expect(diff).to.deep.equal(['c']);
+    });
+
+    it('does not has items', () => {
+      const diff = baseGenerator.arrayDifference(['a', 'b'], ['b', 'a']);
+
+      expect(diff).to.deep.equal([]);
+    });
+
+    it('does not has items on empty', () => {
+      const diff = baseGenerator.arrayDifference([], []);
+
+      expect(diff).to.deep.equal([]);
+    });
   });
 
-  it('does not has items on empty', () => {
-    const diff = arrayDifference([], []);
+  describe('generateComparisonMatrix', () => {
+    const arrItem = {};
 
-    expect(diff).to.deep.equal([]);
-  });
-});
+    it('from no elements', () => {
+      expect(baseGenerator.generateComparisonMatrix([])).to.deep.equal([]);
+    });
 
-describe('generate comparison matrix', () => {
-  const arrItem = {};
+    it('from one element', () => {
+      expect(baseGenerator.generateComparisonMatrix([arrItem])).to.deep.equal([[0, 0]]);
+    });
 
-  it('from no elements', () => {
-    expect(generateComparisonMatrix([])).to.deep.equal([]);
-  });
+    it('from two elements', () => {
+      expect(baseGenerator.generateComparisonMatrix([arrItem, arrItem])).to.deep.equal([[0, 1]]);
+    });
 
-  it('from one element', () => {
-    expect(generateComparisonMatrix([arrItem])).to.deep.equal([[0, 0]]);
-  });
+    it('from three elements', () => {
+      expect(baseGenerator.generateComparisonMatrix([arrItem, arrItem, arrItem])).to.deep.equal([
+        [0, 1],
+        [0, 2],
+        [1, 2],
+      ]);
+    });
 
-  it('from two elements', () => {
-    expect(generateComparisonMatrix([arrItem, arrItem])).to.deep.equal([[0, 1]]);
-  });
+    it('from four elements', () => {
+      expect(
+        baseGenerator.generateComparisonMatrix([arrItem, arrItem, arrItem, arrItem])
+      ).to.deep.equal([
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [1, 2],
+        [1, 3],
+        [2, 3],
+      ]);
+    });
 
-  it('from three elements', () => {
-    expect(generateComparisonMatrix([arrItem, arrItem, arrItem])).to.deep.equal([
-      [0, 1],
-      [0, 2],
-      [1, 2],
-    ]);
-  });
-
-  it('from four elements', () => {
-    expect(generateComparisonMatrix([arrItem, arrItem, arrItem, arrItem])).to.deep.equal([
-      [0, 1],
-      [0, 2],
-      [0, 3],
-      [1, 2],
-      [1, 3],
-      [2, 3],
-    ]);
-  });
-
-  it('from five elements', () => {
-    expect(generateComparisonMatrix([arrItem, arrItem, arrItem, arrItem, arrItem])).to.deep.equal([
-      [0, 1],
-      [0, 2],
-      [0, 3],
-      [0, 4],
-      [1, 2],
-      [1, 3],
-      [1, 4],
-      [2, 3],
-      [2, 4],
-      [3, 4],
-    ]);
-  });
-});
-
-describe('existence of files', () => {
-  it('exists', () => {
-    const existingPath = path.resolve(__dirname, 'source/someFile.txt');
-
-    expect(() => checkFilesExistence({ paths: [existingPath] })).to.not.throw();
+    it('from five elements', () => {
+      expect(
+        baseGenerator.generateComparisonMatrix([arrItem, arrItem, arrItem, arrItem, arrItem])
+      ).to.deep.equal([
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4],
+        [1, 2],
+        [1, 3],
+        [1, 4],
+        [2, 3],
+        [2, 4],
+        [3, 4],
+      ]);
+    });
   });
 
-  it('does not exist', () => {
-    const existingPath = path.resolve(__dirname, 'source/someFile.txt');
-    const notExistingPath = path.resolve(__dirname, 'someFile.ts');
+  describe('checkFilesExistence', () => {
+    it('exists', () => {
+      const existingPath = path.resolve(__dirname, 'source/someFile.txt');
 
-    expect(() => checkFilesExistence({ paths: [existingPath, notExistingPath] })).to.throw(
-      `${errors.FILE_DOES_NOT_EXIST}: ${notExistingPath}`
-    );
-  });
-});
+      expect(() => baseGenerator.checkFilesExistence({ paths: [existingPath] })).to.not.throw();
+    });
 
-describe('file saving', () => {
-  afterEach(() => {
-    fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
-  });
+    it('does not exist', () => {
+      const existingPath = path.resolve(__dirname, 'source/someFile.txt');
+      const notExistingPath = path.resolve(__dirname, 'someFile.ts');
 
-  it('create new file', () => {
-    const existingPath = path.resolve(__dirname, 'source/someFile.txt');
-    const targetPath = path.resolve(__dirname, 'tmp/someFile.txt');
-
-    const content = fs.readFileSync(existingPath, fileEncoding);
-
-    const firstTry = saveFile({ content, filePath: targetPath });
-
-    expect(firstTry).to.equal(true);
-
-    const secondTry = saveFile({ content, filePath: targetPath });
-
-    expect(secondTry).to.equal(false);
-
-    const newContent = fs.readFileSync(targetPath, fileEncoding);
-
-    expect(newContent).to.equal(content);
+      expect(() =>
+        baseGenerator.checkFilesExistence({ paths: [existingPath, notExistingPath] })
+      ).to.throw(`${errors.FILE_DOES_NOT_EXIST}: ${notExistingPath}`);
+    });
   });
 
-  it('create new file deep folder', () => {
-    const existingPath = path.resolve(__dirname, 'source/someFile.txt');
-    const targetPath = path.resolve(__dirname, 'tmp/folder/another/someFile.txt');
+  describe('saveFile', () => {
+    afterEach(() => {
+      fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
+    });
 
-    const content = fs.readFileSync(existingPath, fileEncoding);
+    it('create new file', () => {
+      const existingPath = path.resolve(__dirname, 'source/someFile.txt');
+      const targetPath = path.resolve(__dirname, 'tmp/someFile.txt');
 
-    const firstTry = saveFile({ content, filePath: targetPath });
+      const content = fs.readFileSync(existingPath, fileEncoding);
 
-    expect(firstTry).to.equal(true);
+      const firstTry = baseGenerator.saveFile({ content, filePath: targetPath });
 
-    const secondTry = saveFile({ content, filePath: targetPath });
+      expect(firstTry).to.equal(true);
 
-    expect(secondTry).to.equal(false);
+      const secondTry = baseGenerator.saveFile({ content, filePath: targetPath });
 
-    const newContent = fs.readFileSync(targetPath, fileEncoding);
+      expect(secondTry).to.equal(false);
 
-    expect(newContent).to.equal(content);
+      const newContent = fs.readFileSync(targetPath, fileEncoding);
+
+      expect(newContent).to.equal(content);
+    });
+
+    it('create new file deep folder', () => {
+      const existingPath = path.resolve(__dirname, 'source/someFile.txt');
+      const targetPath = path.resolve(__dirname, 'tmp/folder/another/someFile.txt');
+
+      const content = fs.readFileSync(existingPath, fileEncoding);
+
+      const firstTry = baseGenerator.saveFile({ content, filePath: targetPath });
+
+      expect(firstTry).to.equal(true);
+
+      const secondTry = baseGenerator.saveFile({ content, filePath: targetPath });
+
+      expect(secondTry).to.equal(false);
+
+      const newContent = fs.readFileSync(targetPath, fileEncoding);
+
+      expect(newContent).to.equal(content);
+    });
   });
-});
 
-describe('get folder children files', () => {
-  const folder = path.resolve(__dirname, 'source/reexportFolder');
+  describe('getFilteredChildren', () => {
+    const folder = path.resolve(__dirname, 'source/reexportFolder');
 
-  it('without filters (only package.json omitted)', () => {
-    const fileNames = getFilteredChildren({ folder, reexportFileName: '' }).names;
-
-    expect(fileNames).to.deep.equal(['a.ts', 'b.ts', 'someFile.txt', 'theme.scss']);
-  });
-
-  it('with reexport file filter', () => {
-    const fileNames = getFilteredChildren({ folder, reexportFileName: 'a.ts' }).names;
-
-    expect(fileNames).to.deep.equal(['b.ts', 'someFile.txt', 'theme.scss']);
-  });
-
-  it('with include file filter', () => {
-    expect(
-      getFilteredChildren({ folder, reexportFileName: '', include: /\.ts$/ }).names
-    ).to.deep.equal(['a.ts', 'b.ts']);
-
-    expect(
-      getFilteredChildren({
+    it('without filters (only package.json omitted)', () => {
+      const fileNames = baseGenerator.getFilteredChildren({
         folder,
         reexportFileName: '',
-        include: /\.(?!scss).*$/,
-      }).names
-    ).to.deep.equal(['a.ts', 'b.ts', 'someFile.txt']);
+      }).names;
 
-    expect(
-      getFilteredChildren({
+      expect(fileNames).to.deep.equal(['a.ts', 'b.ts', 'someFile.txt', 'theme.scss']);
+    });
+
+    it('with reexport file filter', () => {
+      const fileNames = baseGenerator.getFilteredChildren({
         folder,
         reexportFileName: 'a.ts',
-        include: /^((?!theme).)*$/,
-      }).names
-    ).to.deep.equal(['b.ts', 'someFile.txt']);
+      }).names;
 
-    expect(
-      getFilteredChildren({
-        folder,
-        reexportFileName: '',
-        include: /^((?!file).)*$/i,
-      }).names
-    ).to.deep.equal(['a.ts', 'b.ts', 'theme.scss']);
+      expect(fileNames).to.deep.equal(['b.ts', 'someFile.txt', 'theme.scss']);
+    });
+
+    it('with include file filter', () => {
+      expect(
+        baseGenerator.getFilteredChildren({ folder, reexportFileName: '', include: /\.ts$/ }).names
+      ).to.deep.equal(['a.ts', 'b.ts']);
+
+      expect(
+        baseGenerator.getFilteredChildren({
+          folder,
+          reexportFileName: '',
+          include: /\.(?!scss).*$/,
+        }).names
+      ).to.deep.equal(['a.ts', 'b.ts', 'someFile.txt']);
+
+      expect(
+        baseGenerator.getFilteredChildren({
+          folder,
+          reexportFileName: 'a.ts',
+          include: /^((?!theme).)*$/,
+        }).names
+      ).to.deep.equal(['b.ts', 'someFile.txt']);
+
+      expect(
+        baseGenerator.getFilteredChildren({
+          folder,
+          reexportFileName: '',
+          include: /^((?!file).)*$/i,
+        }).names
+      ).to.deep.equal(['a.ts', 'b.ts', 'theme.scss']);
+    });
+  });
+
+  describe('getTimeDelta', () => {
+    it('calculates time difference correctly', () => {
+      const date1 = 1000;
+      const date2 = 2500;
+
+      const result = baseGenerator.getTimeDelta(date1, date2);
+
+      expect(result).to.equal('1.500');
+    });
+
+    it('handles zero difference', () => {
+      const date = 1000;
+
+      const result = baseGenerator.getTimeDelta(date, date);
+
+      expect(result).to.equal('0.000');
+    });
   });
 });

@@ -7,9 +7,8 @@ import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 import { createCheckers } from 'ts-interface-checker';
 
-import { defaultHeaderTemplate, fileEncoding } from '../src/const';
-import { generateValidators } from '../src/plugins/validators';
-import { getFilteredChildren } from '../src/utils/getFilteredChildren';
+import { fileEncoding } from '../src/const';
+import { ValidatorsGenerator } from '../src/plugins/validators';
 
 const resultContent: Record<string, string> = {
   'getUser.ts': `import * as t from "ts-interface-checker";
@@ -105,8 +104,12 @@ export const TypeTaskStow = t.intersection("TypeTask", t.iface([], {
 }));`,
 };
 
-describe('generate validators', () => {
+describe('ValidatorsGenerator', () => {
+  let generator: ValidatorsGenerator;
+
   beforeEach(() => {
+    generator = new ValidatorsGenerator({ config: [] });
+
     fsExtra.copySync(
       path.resolve(__dirname, 'source/validators'),
       path.resolve(__dirname, 'tmp/validators')
@@ -125,7 +128,7 @@ describe('generate validators', () => {
   const targetFolderModelsTasks = path.resolve(__dirname, 'tmp/models/tasks');
 
   function checkResultFiles({
-    headerTemplate = defaultHeaderTemplate,
+    headerTemplate = '',
     files = {
       root: ['getUser.ts', 'getUserExtended.ts'],
       models: ['tasks', 'TypeRole.ts', 'TypeTaskStatus.ts', 'TypeUser.ts', 'TypeUserExtended.ts'],
@@ -144,7 +147,7 @@ describe('generate validators', () => {
      *
      */
 
-    const filesApi = getFilteredChildren({ folder: targetFolder });
+    const filesApi = generator.getFilteredChildren({ folder: targetFolder });
 
     expect(filesApi.names).to.deep.equal(files.root);
 
@@ -160,7 +163,7 @@ describe('generate validators', () => {
      *
      */
 
-    const filesModels = getFilteredChildren({ folder: targetFolderModels });
+    const filesModels = generator.getFilteredChildren({ folder: targetFolderModels });
 
     expect(filesModels.names).to.deep.equal(files.models);
 
@@ -178,7 +181,7 @@ describe('generate validators', () => {
      *
      */
 
-    const filesModelsTasks = getFilteredChildren({ folder: targetFolderModelsTasks });
+    const filesModelsTasks = generator.getFilteredChildren({ folder: targetFolderModelsTasks });
 
     expect(filesModelsTasks.names).to.deep.equal(files.tasks);
 
@@ -193,9 +196,11 @@ describe('generate validators', () => {
   it('creates validators', () => {
     const headerTemplate = '// some-comment\n\n';
 
-    generateValidators({
+    generator = new ValidatorsGenerator({
       config: [{ folder, targetFolder, headerTemplate }],
     });
+
+    generator.generate({});
 
     checkResultFiles({ headerTemplate });
 
@@ -204,7 +209,7 @@ describe('generate validators', () => {
      *
      */
 
-    const filesApi = getFilteredChildren({ folder: targetFolder });
+    const filesApi = generator.getFilteredChildren({ folder: targetFolder });
 
     filesApi.paths.forEach((filePath) => {
       expect(() => createCheckers(require(filePath).default)).to.not.throw();
@@ -212,7 +217,8 @@ describe('generate validators', () => {
   });
 
   it('creates validators when model changed', () => {
-    generateValidators({ config: [{ folder, targetFolder }] });
+    generator = new ValidatorsGenerator({ config: [{ folder, targetFolder }] });
+    generator.generate({});
 
     checkResultFiles({});
 
@@ -232,7 +238,8 @@ describe('generate validators', () => {
       fileEncoding
     );
 
-    generateValidators({ config: [{ folder, targetFolder }] });
+    generator = new ValidatorsGenerator({ config: [{ folder, targetFolder }] });
+    generator.generate({});
 
     /**
      * Check regenerated validator
@@ -245,20 +252,20 @@ describe('generate validators', () => {
     );
 
     expect(userContent).to.equal(
-      defaultHeaderTemplate +
-        resultContent['TypeUser.ts'].replace(`"email": "string",`, `"email": "number",`)
+      resultContent['TypeUser.ts'].replace(`"email": "string",`, `"email": "number",`)
     );
   });
 
   it('removes not existing validators', () => {
-    generateValidators({ config: [{ folder, targetFolder }] });
+    generator = new ValidatorsGenerator({ config: [{ folder, targetFolder }] });
+    generator.generate({});
 
     checkResultFiles({});
 
-    generateValidators({
+    generator = new ValidatorsGenerator({
       config: [{ folder: path.resolve(__dirname, 'source/validators2/api'), targetFolder }],
-      logs: true,
     });
+    generator.generate({ logs: true });
 
     checkResultFiles({
       files: {
@@ -270,28 +277,28 @@ describe('generate validators', () => {
   });
 
   it('creates validators when included in changedFiles', () => {
-    generateValidators({
+    generator = new ValidatorsGenerator({
       config: [{ folder, targetFolder }],
-      changedFiles: [path.resolve(folder, 'getUser.ts')],
     });
+    generator.generate({ changedFiles: [path.resolve(folder, 'getUser.ts')] });
 
     checkResultFiles({});
   });
 
   it('creates validators when included in changedFiles (triggerFolder)', () => {
-    generateValidators({
+    generator = new ValidatorsGenerator({
       config: [{ folder, targetFolder, triggerFolder }],
-      changedFiles: [path.resolve(triggerFolder, 'TypeRole.ts')],
     });
+    generator.generate({ changedFiles: [path.resolve(triggerFolder, 'TypeRole.ts')] });
 
     checkResultFiles({});
   });
 
   it('no validators when not included in changedFiles', () => {
-    generateValidators({
+    generator = new ValidatorsGenerator({
       config: [{ folder, targetFolder }],
-      changedFiles: [],
     });
+    generator.generate({ changedFiles: [] });
 
     expect(fs.existsSync(targetFolder)).to.equal(false);
   });

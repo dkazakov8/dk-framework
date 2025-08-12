@@ -4,8 +4,9 @@ import path from 'node:path';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { defaultHeaderTemplate, fileEncoding } from '../src/const';
-import { generateFiles } from '../src/generateFiles';
+import { fileEncoding } from '../src/const';
+import { FileGenerator } from '../src/generateFiles';
+import { ReexportGenerator } from '../src/plugins/reexport';
 
 describe('generate files', () => {
   const folderPath = path.resolve(__dirname, 'tmp/reexportFolder');
@@ -19,13 +20,11 @@ describe('generate files', () => {
   });
 
   it('creates package, reexport and includes fileContentTemplate', () => {
-    generateFiles({
-      timeLogs: true,
+    new FileGenerator({
       timeLogsOverall: true,
       fileModificationLogs: true,
-      configs: [
-        {
-          plugin: 'reexport',
+      plugins: [
+        new ReexportGenerator({
           config: [
             {
               folder: folderPath,
@@ -33,9 +32,9 @@ describe('generate files', () => {
               fileNameTemplate: ({ folderName }) => `_${folderName}.ts`,
             },
           ],
-        },
+        }),
       ],
-    });
+    }).generate();
 
     const packageFilePath = path.resolve(folderPath, 'package.json');
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
@@ -46,6 +45,6 @@ describe('generate files', () => {
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(defaultHeaderTemplate);
+    expect(reexportContent).to.equal('');
   });
 });

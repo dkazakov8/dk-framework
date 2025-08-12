@@ -1,1 +1,1 @@
-export { generateTheme, pluginName } from './generateTheme';
+export { ThemeGenerator } from './ThemeGenerator';

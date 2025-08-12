@@ -1,53 +1,109 @@
 import fs from 'node:fs';
 
-import chalk from 'chalk';
 import chokidar from 'chokidar';
+import { blue, gray, yellow } from 'colorette';
 
-import { applyModifications } from './applyModifications';
 import { logsPrefix } from './const';
-import { TypeGenerateFilesParams } from './types';
-import { getTimeDelta } from './utils/getTimeDelta';
+import { TypeGenerateFilesParams, TypeModifiedFiles } from './types';
 
-export function generateFiles(params: TypeGenerateFilesParams) {
-  const startTime = Date.now();
+function getTimeDelta(date1: number, date2: number) {
+  const TIMING_PRECISION = 3;
+  const MS_IN_SECOND = 1000;
 
-  applyModifications(params);
-
-  const endTime = getTimeDelta(startTime, Date.now());
-
-  if (params.timeLogsOverall) {
-    // eslint-disable-next-line no-console
-    console.log(`${logsPrefix} finished in ${chalk.yellow(endTime)} seconds`);
-  }
-
-  if (params.watch) generateFilesOnChange(params);
+  return ((date2 - date1) / MS_IN_SECOND).toFixed(TIMING_PRECISION);
 }
 
-const watchLogsPrefix = `${logsPrefix} ${chalk.yellow('[watch]')}`;
+export class FileGenerator {
+  private watchLogsPrefix = `${logsPrefix} ${yellow('[watch]')}`;
+  private changedFilesLogsData: Array<{
+    type: 'add' | 'change' | 'unlink';
+    filePath: string;
+    mtime?: fs.Stats['mtimeMs'];
+  }> = [];
+  private watchDebounceTimeout?: NodeJS.Timeout;
+  private watcher?: chokidar.FSWatcher;
+  private isGenerating = false;
 
-export function generateFilesOnChange(options: TypeGenerateFilesParams) {
-  const { paths, onStart, onFinish, aggregationTimeout, changedFilesLogs } = options.watch!;
+  constructor(private params: TypeGenerateFilesParams) {}
 
-  let changedFilesLogsData: Array<{ type: string; filePath: string; mtime?: fs.Stats['mtimeMs'] }> =
-    [];
-  let watchDebounceTimeout: NodeJS.Timeout;
-  let watcher = chokidar.watch(paths, { ignoreInitial: true });
+  generate(): void {
+    const startTime = Date.now();
 
-  let isGenerating = false;
+    this.applyModifications();
 
-  function addWatchers() {
-    watcher
-      .on('add', fileChanged('add'))
-      .on('change', fileChanged('change'))
-      .on('unlink', fileChanged('unlink'));
+    this.logOverall(getTimeDelta(startTime, Date.now()));
+
+    this.setupWatcher();
   }
 
-  function fileChanged(type: string) {
-    return (filePath: string, stats?: fs.Stats) => {
-      if (isGenerating) {
-        // eslint-disable-next-line no-console
+  private logChangedFiles() {
+    if (!this.params.watch?.changedFilesLogs) return;
+
+    const formattedLogs = this.changedFilesLogsData
+      .map((params) => {
+        const shortFilePath = params.filePath.replace(process.cwd(), '');
+
+        return `${blue(`[${params.type}]`)} ${
+          params.mtime ? gray(`[${params.mtime}] `) : ''
+        }${shortFilePath}`;
+      })
+      .join('\n');
+
+    console.log(`${this.watchLogsPrefix} triggered by\n${formattedLogs}`);
+  }
+
+  private logOverall(endTime: string) {
+    if (!this.params.timeLogsOverall) return;
+
+    console.log(`${logsPrefix} finished in ${yellow(endTime)} seconds`);
+  }
+
+  private applyModifications(
+    changedFiles?: TypeGenerateFilesParams['changedFiles']
+  ): TypeModifiedFiles {
+    const { plugins, fileModificationLogs } = this.params;
+
+    let modifiedFiles: TypeModifiedFiles = [];
+
+    plugins.forEach((plugin) => {
+      modifiedFiles = modifiedFiles.concat(
+        plugin.generate({ changedFiles, logs: fileModificationLogs })
+      );
+    });
+
+    if (modifiedFiles.length) {
+      this.applyModifications(
+        modifiedFiles.filter((value, index) => modifiedFiles.indexOf(value) === index)
+      );
+    }
+
+    return modifiedFiles;
+  }
+
+  private setupWatcher(): void {
+    if (!this.params.watch) return;
+
+    this.changedFilesLogsData = [];
+    this.watcher = chokidar.watch(this.params.watch.paths, { ignoreInitial: true });
+    this.isGenerating = false;
+
+    this.addWatchers();
+  }
+
+  private addWatchers(): void {
+    if (!this.watcher) return;
+
+    this.watcher
+      .on('add', this.fileChanged('add'))
+      .on('change', this.fileChanged('change'))
+      .on('unlink', this.fileChanged('unlink'));
+  }
+
+  private fileChanged(type: 'add' | 'change' | 'unlink') {
+    return (filePath: string, stats?: fs.Stats): void => {
+      if (this.isGenerating) {
         console.log(
-          `${watchLogsPrefix} change in ${filePath.replace(
+          `${this.watchLogsPrefix} change in ${filePath.replace(
             process.cwd(),
             ''
           )} discarded because generation is in progress`
@@ -56,47 +112,32 @@ export function generateFilesOnChange(options: TypeGenerateFilesParams) {
         return;
       }
 
-      changedFilesLogsData.push({ type, filePath, mtime: stats?.mtimeMs });
+      this.changedFilesLogsData.push({ type, filePath, mtime: stats?.mtimeMs });
 
-      clearTimeout(watchDebounceTimeout);
-      watchDebounceTimeout = setTimeout(() => {
-        isGenerating = true;
+      clearTimeout(this.watchDebounceTimeout);
 
-        let changedFiles = changedFilesLogsData.map((params) => params.filePath);
-        changedFiles = changedFiles.filter((value, index) => changedFiles.indexOf(value) === index);
+      this.watchDebounceTimeout = setTimeout(() => {
+        this.isGenerating = true;
+        this.logChangedFiles();
 
-        if (changedFilesLogs) {
-          const formattedLogs = changedFilesLogsData
-            .map((params) => {
-              const shortFilePath = params.filePath.replace(process.cwd(), '');
+        void this.watcher?.close().then(() => {
+          this.params.watch?.onStart?.();
 
-              return `${chalk.blue(`[${params.type}]`)} ${
-                params.mtime ? chalk.grey(`[${params.mtime}] `) : ''
-              }${shortFilePath}`;
-            })
-            .join('\n');
+          const startTime = Date.now();
 
-          // eslint-disable-next-line no-console
-          console.log(`${watchLogsPrefix} triggered by\n${formattedLogs}`);
-        }
+          this.applyModifications(
+            this.changedFilesLogsData
+              .map((params) => params.filePath)
+              .filter((value, index, arr) => arr.indexOf(value) === index)
+          );
 
-        void watcher.close().then(() => {
-          onStart?.();
+          this.logOverall(getTimeDelta(startTime, Date.now()));
 
-          generateFiles({ ...options, changedFiles, watch: undefined });
+          this.params.watch?.onFinish?.();
 
-          onFinish?.();
-
-          changedFilesLogsData = [];
-
-          watcher = chokidar.watch(paths, { ignoreInitial: true });
-          addWatchers();
-
-          isGenerating = false;
+          this.setupWatcher();
         });
-      }, aggregationTimeout || 0);
+      }, this.params.watch?.aggregationTimeout || 0);
     };
   }
-
-  addWatchers();
 }

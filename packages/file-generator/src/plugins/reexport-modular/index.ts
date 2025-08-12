@@ -1,1 +1,1 @@
-export { generateReexportModular, pluginName } from './generateReexportModular';
+export { ReexportModularGenerator } from './ReexportModularGenerator';

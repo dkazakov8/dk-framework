@@ -1,10 +1,4 @@
-import { TypePluginNameReexport, TypeProcessParamsReexport } from './plugins/reexport/types';
-import {
-  TypePluginNameReexportModular,
-  TypeProcessParamsReexportModular,
-} from './plugins/reexport-modular/types';
-import { TypePluginNameTheme, TypeProcessParamsTheme } from './plugins/theme/types';
-import { TypePluginNameValidators, TypeProcessParamsValidators } from './plugins/validators/types';
+import { BaseGenerator } from './BaseGenerator';
 
 export type TypeFilePath = string;
 
@@ -12,27 +6,23 @@ export type TypeFolderPath = string;
 
 export type TypeModifiedFiles = Array<string>;
 
-export type TypeGeneratorPlugin<TParams> = (params: TParams) => TypeModifiedFiles;
+export type TypePluginConstructorParams<TConfig> = {
+  config: Array<TConfig>;
+} & Partial<TConfig>;
 
-export type TypeGeneratorPluginData =
-  | { plugin: TypePluginNameTheme; config: TypeProcessParamsTheme['config'] }
-  | { plugin: TypePluginNameReexport; config: TypeProcessParamsReexport['config'] }
-  | { plugin: TypePluginNameValidators; config: TypeProcessParamsValidators['config'] }
-  | { plugin: TypePluginNameReexportModular; config: TypeProcessParamsReexportModular['config'] };
+export type TypeCommon = {
+  logs?: boolean;
+  changedFiles?: Array<TypeFilePath>;
+};
 
 export type TypeGenerateFilesParams = {
-  configs: Array<TypeGeneratorPluginData>;
+  plugins: Array<BaseGenerator>;
 
-  timeLogs?: boolean;
   changedFiles?: Array<string>;
   timeLogsOverall?: boolean;
   fileModificationLogs?: boolean;
 
   watch?: {
-    /**
-     * Watch this paths
-     *
-     */
     paths: Array<string>;
 
     onStart?: () => void;
@@ -42,7 +32,7 @@ export type TypeGenerateFilesParams = {
     /**
      * Aggregate file changes during this time (ms).
      * Use when you got some IDE reformatting (prettier, stylelint, eslint),
-     * so watcher will be called only once with final file version.
+     * so watcher will be called only once with the final file version.
      *
      * You can measure your IDE reformatting speed by omitting this param and calculating
      * time difference between the same file changes.
@@ -51,5 +41,3 @@ export type TypeGenerateFilesParams = {
     aggregationTimeout?: number;
   };
 };
-
-export type TypePluginName = TypeGenerateFilesParams['configs'][number]['plugin'];

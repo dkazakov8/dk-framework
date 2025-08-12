@@ -4,11 +4,16 @@ import path from 'node:path';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { defaultHeaderTemplate, fileEncoding } from '../src/const';
-import { generateReexport } from '../src/plugins/reexport';
-import { createPackageFile } from '../src/plugins/reexport/createPackageFile';
+import { fileEncoding } from '../src/const';
+import { ReexportGenerator } from '../src/plugins/reexport';
 
 describe('create package.json', () => {
+  let generator: ReexportGenerator;
+
+  beforeEach(() => {
+    generator = new ReexportGenerator({ config: [] });
+  });
+
   afterEach(() => {
     fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
   });
@@ -18,14 +23,14 @@ describe('create package.json', () => {
     const packageFilePath = path.resolve(__dirname, 'tmp/package.json');
     const reexportFilePath = path.resolve(__dirname, 'tmp/_tmp.ts');
 
-    const firstTry = createPackageFile({
+    const firstTry = generator.createPackageFile({
       folder,
       reexportFileName: path.parse(reexportFilePath).base,
     });
 
     expect(firstTry).to.equal(true);
 
-    const secondTry = createPackageFile({
+    const secondTry = generator.createPackageFile({
       folder,
       reexportFileName: path.parse(reexportFilePath).base,
     });
@@ -43,6 +48,12 @@ describe('create package.json', () => {
 });
 
 describe('generate reexpoort', () => {
+  let generator: ReexportGenerator;
+
+  beforeEach(() => {
+    generator = new ReexportGenerator({ config: [] });
+  });
+
   const folderPath = path.resolve(__dirname, 'tmp/reexportFolder');
 
   beforeEach(() => {
@@ -54,7 +65,7 @@ describe('generate reexpoort', () => {
   });
 
   it('creates package, reexport and includes fileContentTemplate', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -63,8 +74,9 @@ describe('generate reexpoort', () => {
           fileNameTemplate: ({ folderName }) => `_${folderName}.ts`,
         },
       ],
-      logs: true,
     });
+
+    generator.generate({ logs: true });
 
     const packageFilePath = path.resolve(folderPath, 'package.json');
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
@@ -80,7 +92,7 @@ describe('generate reexpoort', () => {
   });
 
   it('creates reexport with relevant imports', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -90,11 +102,13 @@ describe('generate reexpoort', () => {
       ],
     });
 
+    generator.generate({});
+
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
+    expect(reexportContent).to.equal(`import * from './a';
 import * from './b';
 import * from './someFile';
 import * from './theme';
@@ -102,7 +116,7 @@ import * from './theme';
   });
 
   it('creates reexport with relevant imports and exports', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -115,11 +129,13 @@ import * from './theme';
       ],
     });
 
+    generator.generate({});
+
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * as a from './a';
+    expect(reexportContent).to.equal(`import * as a from './a';
 import * as b from './b';
 import * as someFile from './someFile';
 import * as theme from './theme';
@@ -129,7 +145,7 @@ export default { a, b, someFile, theme }
   });
 
   it('creates reexport with filtered imports', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -140,17 +156,19 @@ export default { a, b, someFile, theme }
       ],
     });
 
+    generator.generate({});
+
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
+    expect(reexportContent).to.equal(`import * from './a';
 import * from './b';
 `);
   });
 
   it('reexport when included in changedFiles', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -159,20 +177,21 @@ import * from './b';
           includeChildrenMask: /\.ts$/,
         },
       ],
-      changedFiles: [folderPath],
     });
+
+    generator.generate({ changedFiles: [folderPath] });
 
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');
 
     const reexportContent = fs.readFileSync(reexportFilePath, fileEncoding);
 
-    expect(reexportContent).to.equal(`${defaultHeaderTemplate}import * from './a';
+    expect(reexportContent).to.equal(`import * from './a';
 import * from './b';
 `);
   });
 
   it('no reexport when not included in changedFiles', () => {
-    generateReexport({
+    generator = new ReexportGenerator({
       config: [
         {
           folder: folderPath,
@@ -181,8 +200,9 @@ import * from './b';
           includeChildrenMask: /\.ts$/,
         },
       ],
-      changedFiles: [],
     });
+
+    generator.generate({ changedFiles: [] });
 
     const packageFilePath = path.resolve(folderPath, 'package.json');
     const reexportFilePath = path.resolve(folderPath, '_reexportFolder.ts');

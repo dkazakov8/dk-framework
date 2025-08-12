@@ -1,1 +1,1 @@
-export { generateValidators, pluginName } from './generateValidators';
+export { ValidatorsGenerator } from './ValidatorsGenerator';

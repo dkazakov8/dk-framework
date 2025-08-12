@@ -4,18 +4,25 @@ import path from 'node:path';
 import { expect } from 'chai';
 import fsExtra from 'fs-extra';
 
-import { defaultHeaderTemplate, fileEncoding } from '../src/const';
-import { generateReexportModular } from '../src/plugins/reexport-modular';
-import { getSubFoldersOrFiles } from '../src/plugins/reexport-modular/getSubFoldersOrFiles';
-import { getFilteredChildren } from '../src/utils/getFilteredChildren';
+import { fileEncoding } from '../src/const';
+import { ReexportModularGenerator } from '../src/plugins/reexport-modular';
 
 describe('get sub folders or files', () => {
+  let generator: ReexportModularGenerator;
+
+  beforeEach(() => {
+    generator = new ReexportModularGenerator({ config: [] });
+  });
+
   const folder = path.resolve(__dirname, 'source/reexportModularFolder');
 
   it('successfully with folder', () => {
-    const childrenPaths = getFilteredChildren({ folder }).paths;
+    const childrenPaths = generator.getFilteredChildren({ folder }).paths;
 
-    const result = getSubFoldersOrFiles({ childrenPaths, childFileOrFolderName: 'someFolder' });
+    const result = generator.getSubFoldersOrFiles({
+      childrenPaths,
+      childFileOrFolderName: 'someFolder',
+    });
 
     expect(result).to.deep.equal([
       {
@@ -26,9 +33,12 @@ describe('get sub folders or files', () => {
   });
 
   it('successfully with file', () => {
-    const childrenPaths = getFilteredChildren({ folder }).paths;
+    const childrenPaths = generator.getFilteredChildren({ folder }).paths;
 
-    const result = getSubFoldersOrFiles({ childrenPaths, childFileOrFolderName: 'someFile.ts' });
+    const result = generator.getSubFoldersOrFiles({
+      childrenPaths,
+      childFileOrFolderName: 'someFile.ts',
+    });
 
     expect(result).to.deep.equal([
       {
@@ -40,15 +50,21 @@ describe('get sub folders or files', () => {
 });
 
 describe('reexport modular', () => {
+  let generator: ReexportModularGenerator;
+
   const folder = path.resolve(__dirname, 'source/reexportModularFolder');
   const targetFile = path.resolve(__dirname, 'tmp/modularFile.ts');
+
+  beforeEach(() => {
+    generator = new ReexportModularGenerator({ config: [] });
+  });
 
   afterEach(() => {
     fsExtra.emptydirSync(path.resolve(__dirname, 'tmp'));
   });
 
   it('creates reexport', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -59,11 +75,11 @@ describe('reexport modular', () => {
           headerTemplate: '// some-comment',
         },
       ],
-      logs: true,
     });
 
-    const reexportExists = fs.existsSync(targetFile);
+    generator.generate({ logs: true });
 
+    const reexportExists = fs.existsSync(targetFile);
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportExists).to.equal(true);
@@ -71,7 +87,7 @@ describe('reexport modular', () => {
   });
 
   it('creates reexport with relevant imports (folder)', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -88,6 +104,8 @@ describe('reexport modular', () => {
       ],
     });
 
+    generator.generate({});
+
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportContent).to.equal(`// some-comment
@@ -99,7 +117,7 @@ export default { pages: { pageOne } };
   });
 
   it('creates reexport with relevant imports (file)', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -116,6 +134,8 @@ export default { pages: { pageOne } };
       ],
     });
 
+    generator.generate({});
+
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportContent).to.equal(`// some-comment
@@ -127,7 +147,7 @@ export default { pages: { pageTwo } };
   });
 
   it('reexport when included in changedFiles', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -137,19 +157,19 @@ export default { pages: { pageTwo } };
           importTemplate: () => '',
         },
       ],
-      changedFiles: [folder],
     });
 
-    const reexportExists = fs.existsSync(targetFile);
+    generator.generate({ changedFiles: [folder] });
 
+    const reexportExists = fs.existsSync(targetFile);
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportExists).to.equal(true);
-    expect(reexportContent).to.equal(defaultHeaderTemplate);
+    expect(reexportContent).to.equal('');
   });
 
   it('reexport when not included in changedFiles', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -159,8 +179,9 @@ export default { pages: { pageTwo } };
           importTemplate: () => '',
         },
       ],
-      changedFiles: [],
     });
+
+    generator.generate({ changedFiles: [] });
 
     const reexportExists = fs.existsSync(targetFile);
 
@@ -168,7 +189,7 @@ export default { pages: { pageTwo } };
   });
 
   it('reexport with filtered imports', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -186,6 +207,8 @@ export default { pages: { pageTwo } };
       ],
     });
 
+    generator.generate({});
+
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
     expect(reexportContent).to.equal(`// some-comment
@@ -197,7 +220,7 @@ export default { pages: { pageOne } };
   });
 
   it('reexport with filtered imports2', () => {
-    generateReexportModular({
+    generator = new ReexportModularGenerator({
       config: [
         {
           folder,
@@ -214,9 +237,11 @@ export default { pages: { pageOne } };
       ],
     });
 
+    generator.generate({});
+
     const reexportContent = fs.readFileSync(targetFile, fileEncoding);
 
-    expect(reexportContent).to.equal(`${defaultHeaderTemplate}
+    expect(reexportContent).to.equal(`
 export default { pages: {  } };
 `);
   });
