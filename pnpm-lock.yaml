@@ -196,8 +196,8 @@ importers:
   packages/react-mobx-globals:
     dependencies:
       dk-mobx-stateful-fn:
-        specifier: 3.4.13
-        version: 3.4.13(mobx@6.13.7)
+        specifier: 3.5.0
+        version: 3.5.0(mobx@6.13.7)
     devDependencies:
       '@types/express':
         specifier: 5.0.3
@@ -206,11 +206,11 @@ importers:
         specifier: 19.1.10
         version: 19.1.10
       dk-localize:
-        specifier: 3.4.13
-        version: 3.4.13
+        specifier: 3.5.0
+        version: 3.5.0
       dk-request:
-        specifier: 3.4.13
-        version: 3.4.13(lodash@4.17.21)(ts-interface-checker@1.0.2)
+        specifier: 3.5.0
+        version: 3.5.0(lodash@4.17.21)(ts-interface-checker@1.0.2)
       mobx:
         specifier: 6.13.7
         version: 6.13.7
@@ -227,11 +227,11 @@ importers:
         specifier: 19.1.10
         version: 19.1.10
       dk-react-mobx-globals:
-        specifier: 3.4.13
-        version: 3.4.13(dk-localize@3.4.13)(dk-request@3.4.13(lodash@4.17.21)(ts-interface-checker@1.0.2))(mobx@6.13.7)(react@19.1.1)
+        specifier: 3.5.0
+        version: 3.5.0(dk-localize@3.5.0)(dk-request@3.5.0(lodash@4.17.21)(ts-interface-checker@1.0.2))(mobx@6.13.7)(react@19.1.1)
       dk-react-mobx-router:
-        specifier: 3.4.13
-        version: 3.4.13(mobx-react-lite@4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(mobx@6.13.7)(react@19.1.1)
+        specifier: 3.5.0
+        version: 3.5.0(mobx-react-lite@4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(mobx@6.13.7)(react@19.1.1)
       mobx:
         specifier: 6.13.7
         version: 6.13.7
@@ -248,8 +248,8 @@ importers:
   packages/react-mobx-router:
     dependencies:
       dk-mobx-use-store:
-        specifier: 3.4.13
-        version: 3.4.13(mobx@6.13.7)(react@19.1.1)
+        specifier: 3.5.0
+        version: 3.5.0(mobx@6.13.7)(react@19.1.1)
       history:
         specifier: 5.3.0
         version: 5.3.0
@@ -261,8 +261,8 @@ importers:
         specifier: 5.13.10
         version: 5.13.10
       dk-mobx-stateful-fn:
-        specifier: 3.4.13
-        version: 3.4.13(mobx@6.13.7)
+        specifier: 3.5.0
+        version: 3.5.0(mobx@6.13.7)
       mobx:
         specifier: 6.13.7
         version: 6.13.7
@@ -295,8 +295,8 @@ importers:
         specifier: 1.6.8
         version: 1.6.8
       dk-checker-remove-extraneous:
-        specifier: 3.4.13
-        version: 3.4.13(lodash@4.17.21)
+        specifier: 3.5.0
+        version: 3.5.0(lodash@4.17.21)
     devDependencies:
       lodash:
         specifier: 4.17.21
@@ -1724,10 +1724,6 @@ packages:
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==, tarball: https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz}
 
-  decode-uri-component@0.2.2:
-    resolution: {integrity: sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==, tarball: https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-0.2.2.tgz}
-    engines: {node: '>=0.10'}
-
   decode-uri-component@0.4.1:
     resolution: {integrity: sha512-+8VxcR21HhTy8nOt6jf20w0c9CADrw1O8d+VZ/YzzCt4bJ3uBjw+D1q2osAB8RnpwwaeYBxy0HyKQxD5JBMuuQ==, tarball: https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-0.4.1.tgz}
     engines: {node: '>=14.16'}
@@ -1788,42 +1784,42 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==, tarball: https://registry.npmjs.org/dir-glob/-/dir-glob-3.0.1.tgz}
     engines: {node: '>=8'}
 
-  dk-checker-remove-extraneous@3.4.13:
-    resolution: {integrity: sha512-OedGBu5lytVjB4eHMJKLjdbw26A0/kdEXCRjviBWBjRIzQnQxuH++7T7cbv/kPBkxNg87inCDV6KeRpKlktwJw==, tarball: https://registry.npmjs.org/dk-checker-remove-extraneous/-/dk-checker-remove-extraneous-3.4.13.tgz}
+  dk-checker-remove-extraneous@3.5.0:
+    resolution: {integrity: sha512-9mgZTnsogPVjCrsb5fC2KzOsDX7YE6VP7lomse3SChaVPaaH4+a50TZ0kUjM4/UyFH9Rmh+drjNN2EvVvOkALw==, tarball: https://registry.npmjs.org/dk-checker-remove-extraneous/-/dk-checker-remove-extraneous-3.5.0.tgz}
     peerDependencies:
       lodash: '*'
 
-  dk-localize@3.4.13:
-    resolution: {integrity: sha512-82j3H58kTaC+eiB9NnEBAO62vPgAiAOO8qtifW+gC2mgw4vR7JzKd/UO0SCHcHzT5mmGR9yQLaajHIr6AV2eHw==, tarball: https://registry.npmjs.org/dk-localize/-/dk-localize-3.4.13.tgz}
+  dk-localize@3.5.0:
+    resolution: {integrity: sha512-OdsguWu6/Na/+ekTjal4b/1qjrpPQksSHy9pl/e5hAZdrneeXe/+u8kiPAau6+Q38veGd5GgBCvwLRhlxZJMLA==, tarball: https://registry.npmjs.org/dk-localize/-/dk-localize-3.5.0.tgz}
 
-  dk-mobx-stateful-fn@3.4.13:
-    resolution: {integrity: sha512-XP9rk8WllUfjzgX0ut0kd98N1U8lzyCtsnL/fAZtbEbVQxSfsnClseQuFe8ZCCKT7IkivIJY9Qkh0RWwVXbAWA==, tarball: https://registry.npmjs.org/dk-mobx-stateful-fn/-/dk-mobx-stateful-fn-3.4.13.tgz}
+  dk-mobx-stateful-fn@3.5.0:
+    resolution: {integrity: sha512-M8f77d2D2KoL8MjiW/VQZIRXr51opHCCkX6OAursmWaKDmY40ZuaHLCdXlsB4MTOuiT6AFp3QxuiCvLV6r7Zyw==, tarball: https://registry.npmjs.org/dk-mobx-stateful-fn/-/dk-mobx-stateful-fn-3.5.0.tgz}
     peerDependencies:
       mobx: '*'
 
-  dk-mobx-use-store@3.4.13:
-    resolution: {integrity: sha512-w8es0SYJpKyYjy8zeLMrYYpUISE3Rs0eE+TmsoCjdGOCZJqXaSKnV8ad3P6+0QrU8izHvtvvMds1RSHlPTa1zQ==, tarball: https://registry.npmjs.org/dk-mobx-use-store/-/dk-mobx-use-store-3.4.13.tgz}
+  dk-mobx-use-store@3.5.0:
+    resolution: {integrity: sha512-6MGYmmEu6FRnVxMpP/VXqWIZkvpxUDWn9Lb8oIrOsRA8Jm+eNfEZvqaQ/nHNqjve+kN9UOu/c8mWJPKRCG+FhA==, tarball: https://registry.npmjs.org/dk-mobx-use-store/-/dk-mobx-use-store-3.5.0.tgz}
     peerDependencies:
       mobx: '*'
       react: '*'
 
-  dk-react-mobx-globals@3.4.13:
-    resolution: {integrity: sha512-yldG9ripAvoXN0i4gbUc+xodr7bgyeWRZch74N4rU1Qkm3utANOHh4tZe65+1WxRkGt8KTZMKTCx+J03Gqe2IQ==, tarball: https://registry.npmjs.org/dk-react-mobx-globals/-/dk-react-mobx-globals-3.4.13.tgz}
+  dk-react-mobx-globals@3.5.0:
+    resolution: {integrity: sha512-vztlMlky0hAQaNDckMqVsTpp7FrCu0aTpaDQ4ERsOjDUg26IhrPndbVfv1Gefb5No21FQvj4/2j9/L7kFh8vog==, tarball: https://registry.npmjs.org/dk-react-mobx-globals/-/dk-react-mobx-globals-3.5.0.tgz}
     peerDependencies:
       dk-localize: '*'
       dk-request: '*'
       mobx: '*'
       react: '*'
 
-  dk-react-mobx-router@3.4.13:
-    resolution: {integrity: sha512-i8NntNYMqnIBPsmkYve4B+X3ucrpdac8vhmDfeZ1ZvEo/INvpkqcHWSWuPpbZvoNKH9qbX+AxNhF2LlNet4S2w==, tarball: https://registry.npmjs.org/dk-react-mobx-router/-/dk-react-mobx-router-3.4.13.tgz}
+  dk-react-mobx-router@3.5.0:
+    resolution: {integrity: sha512-xUqIj7xGTKwHtQj28tLN36Br+cpG6K4PhPguWD6YONfF9NOz1fygPHdYutQ5P0EL5BF83c4SZtRynbShU/XpgA==, tarball: https://registry.npmjs.org/dk-react-mobx-router/-/dk-react-mobx-router-3.5.0.tgz}
     peerDependencies:
       mobx: '*'
       mobx-react-lite: '*'
       react: '*'
 
-  dk-request@3.4.13:
-    resolution: {integrity: sha512-kw8BTAej2bHQA1S8gGKkcwduzaFOcJ4HKnIc+BhpxerX3Df0D0PyMUTf+CNbFGfTxejF73nK8ZC3Iy869nSi1w==, tarball: https://registry.npmjs.org/dk-request/-/dk-request-3.4.13.tgz}
+  dk-request@3.5.0:
+    resolution: {integrity: sha512-RV6j3MLNNYOuKz81QRIDhT7EGZAav/+kUGEkZldfFvedRba7zDYFEWsmg/8W76rFVdnjCDwRWx+cmDW0fudRNg==, tarball: https://registry.npmjs.org/dk-request/-/dk-request-3.5.0.tgz}
     peerDependencies:
       ts-interface-checker: '*'
 
@@ -2031,10 +2027,6 @@ packages:
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==, tarball: https://registry.npmjs.org/fill-range/-/fill-range-7.1.1.tgz}
     engines: {node: '>=8'}
-
-  filter-obj@1.1.0:
-    resolution: {integrity: sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ==, tarball: https://registry.npmjs.org/filter-obj/-/filter-obj-1.1.0.tgz}
-    engines: {node: '>=0.10.0'}
 
   filter-obj@5.1.0:
     resolution: {integrity: sha512-qWeTREPoT7I0bifpPUXtxkZJ1XJzxWtfoWWkdVGqa+eCr3SHW/Ocp89o8vLvbUuQnadybJpjOKu4V+RwO6sGng==, tarball: https://registry.npmjs.org/filter-obj/-/filter-obj-5.1.0.tgz}
@@ -3384,10 +3376,6 @@ packages:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==, tarball: https://registry.npmjs.org/qs/-/qs-6.11.0.tgz}
     engines: {node: '>=0.6'}
 
-  query-string@7.1.3:
-    resolution: {integrity: sha512-hh2WYhq4fi8+b+/2Kg9CEge4fDPvHS534aOOvOZeQ3+Vf2mCFsaFBYj0i+iXcAq6I9Vzp5fjMFBlONvayDC1qg==, tarball: https://registry.npmjs.org/query-string/-/query-string-7.1.3.tgz}
-    engines: {node: '>=6'}
-
   query-string@9.2.2:
     resolution: {integrity: sha512-pDSIZJ9sFuOp6VnD+5IkakSVf+rICAuuU88Hcsr6AKL0QtxSIfVuKiVP2oahFI7tk3CRSexwV+Ya6MOoTxzg9g==, tarball: https://registry.npmjs.org/query-string/-/query-string-9.2.2.tgz}
     engines: {node: '>=18'}
@@ -3717,10 +3705,6 @@ packages:
   spdx-license-ids@3.0.22:
     resolution: {integrity: sha512-4PRT4nh1EImPbt2jASOKHX7PB7I+e4IWNLvkKFDxNhJlfjbYlleYQh285Z/3mPTHSAK/AvdMmw5BNNuYH8ShgQ==, tarball: https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.22.tgz}
 
-  split-on-first@1.1.0:
-    resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==, tarball: https://registry.npmjs.org/split-on-first/-/split-on-first-1.1.0.tgz}
-    engines: {node: '>=6'}
-
   split-on-first@3.0.0:
     resolution: {integrity: sha512-qxQJTx2ryR0Dw0ITYyekNQWpz6f8dGd7vffGNflQQ3Iqj9NJ6qiZ7ELpZsJ/QBhIVAiDfXdag3+Gp8RvWa62AA==, tarball: https://registry.npmjs.org/split-on-first/-/split-on-first-3.0.0.tgz}
     engines: {node: '>=12'}
@@ -3745,10 +3729,6 @@ packages:
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==, tarball: https://registry.npmjs.org/statuses/-/statuses-2.0.1.tgz}
     engines: {node: '>= 0.8'}
-
-  strict-uri-encode@2.0.0:
-    resolution: {integrity: sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==, tarball: https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz}
-    engines: {node: '>=4'}
 
   string-argv@0.3.2:
     resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==, tarball: https://registry.npmjs.org/string-argv/-/string-argv-0.3.2.tgz}
@@ -5770,8 +5750,6 @@ snapshots:
 
   decimal.js@10.6.0: {}
 
-  decode-uri-component@0.2.2: {}
-
   decode-uri-component@0.4.1: {}
 
   dedent@0.7.0: {}
@@ -5810,42 +5788,42 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
-  dk-checker-remove-extraneous@3.4.13(lodash@4.17.21):
+  dk-checker-remove-extraneous@3.5.0(lodash@4.17.21):
     dependencies:
       lodash: 4.17.21
 
-  dk-localize@3.4.13: {}
+  dk-localize@3.5.0: {}
 
-  dk-mobx-stateful-fn@3.4.13(mobx@6.13.7):
+  dk-mobx-stateful-fn@3.5.0(mobx@6.13.7):
     dependencies:
       mobx: 6.13.7
 
-  dk-mobx-use-store@3.4.13(mobx@6.13.7)(react@19.1.1):
+  dk-mobx-use-store@3.5.0(mobx@6.13.7)(react@19.1.1):
     dependencies:
-      mobx: 6.13.7
-      react: 19.1.1
-
-  dk-react-mobx-globals@3.4.13(dk-localize@3.4.13)(dk-request@3.4.13(lodash@4.17.21)(ts-interface-checker@1.0.2))(mobx@6.13.7)(react@19.1.1):
-    dependencies:
-      dk-localize: 3.4.13
-      dk-mobx-stateful-fn: 3.4.13(mobx@6.13.7)
-      dk-request: 3.4.13(lodash@4.17.21)(ts-interface-checker@1.0.2)
       mobx: 6.13.7
       react: 19.1.1
 
-  dk-react-mobx-router@3.4.13(mobx-react-lite@4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(mobx@6.13.7)(react@19.1.1):
+  dk-react-mobx-globals@3.5.0(dk-localize@3.5.0)(dk-request@3.5.0(lodash@4.17.21)(ts-interface-checker@1.0.2))(mobx@6.13.7)(react@19.1.1):
     dependencies:
-      dk-mobx-use-store: 3.4.13(mobx@6.13.7)(react@19.1.1)
+      dk-localize: 3.5.0
+      dk-mobx-stateful-fn: 3.5.0(mobx@6.13.7)
+      dk-request: 3.5.0(lodash@4.17.21)(ts-interface-checker@1.0.2)
+      mobx: 6.13.7
+      react: 19.1.1
+
+  dk-react-mobx-router@3.5.0(mobx-react-lite@4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(mobx@6.13.7)(react@19.1.1):
+    dependencies:
+      dk-mobx-use-store: 3.5.0(mobx@6.13.7)(react@19.1.1)
       history: 5.3.0
       mobx: 6.13.7
       mobx-react-lite: 4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      query-string: 7.1.3
+      query-string: 9.2.2
       react: 19.1.1
 
-  dk-request@3.4.13(lodash@4.17.21)(ts-interface-checker@1.0.2):
+  dk-request@3.5.0(lodash@4.17.21)(ts-interface-checker@1.0.2):
     dependencies:
       axios: 1.6.8
-      dk-checker-remove-extraneous: 3.4.13(lodash@4.17.21)
+      dk-checker-remove-extraneous: 3.5.0(lodash@4.17.21)
       ts-interface-checker: 1.0.2
     transitivePeerDependencies:
       - debug
@@ -6079,8 +6057,6 @@ snapshots:
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
-
-  filter-obj@1.1.0: {}
 
   filter-obj@5.1.0: {}
 
@@ -7674,13 +7650,6 @@ snapshots:
     dependencies:
       side-channel: 1.1.0
 
-  query-string@7.1.3:
-    dependencies:
-      decode-uri-component: 0.2.2
-      filter-obj: 1.1.0
-      split-on-first: 1.1.0
-      strict-uri-encode: 2.0.0
-
   query-string@9.2.2:
     dependencies:
       decode-uri-component: 0.4.1
@@ -8058,8 +8027,6 @@ snapshots:
 
   spdx-license-ids@3.0.22: {}
 
-  split-on-first@1.1.0: {}
-
   split-on-first@3.0.0: {}
 
   split2@3.2.2:
@@ -8081,8 +8048,6 @@ snapshots:
       minipass: 3.3.6
 
   statuses@2.0.1: {}
-
-  strict-uri-encode@2.0.0: {}
 
   string-argv@0.3.2: {}
 
