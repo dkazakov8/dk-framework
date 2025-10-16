@@ -1,4 +1,4 @@
-import { WatchOptions } from 'chokidar';
+import { ChokidarOptions } from 'chokidar';
 
 export type TypeServerParamsManual = {
   port: number;
@@ -14,6 +14,6 @@ export type TypeServerParamsManual = {
 export type TypeServerParams = TypeServerParamsManual & {
   aggregationTimeout: number;
 
-  ignored?: WatchOptions['ignored'];
+  ignored?: ChokidarOptions['ignored'];
   changedFilesLogs?: boolean;
 };

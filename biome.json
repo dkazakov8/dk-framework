@@ -173,18 +173,9 @@
               ":BLANK_LINE:",
               ":NODE:",
               ":BLANK_LINE:",
-              [
-                ":PACKAGE:",
-                "!{env,paths,actions,api,assets,autorun,client,comp,compSystem,const,declarations,externalScripts,formConfigs,hooks,lib,models,modularActions,modularStores,pages,routes,server,serverSentry,serverUtils,stores,styles,templates,utils,validators}",
-                "!{env,paths,actions,api,assets,autorun,client,comp,compSystem,const,declarations,externalScripts,formConfigs,hooks,lib,models,modularActions,modularStores,pages,routes,server,serverSentry,serverUtils,stores,styles,templates,utils,validators}/**"
-              ],
+              ":PACKAGE:",
               ":BLANK_LINE:",
               ":PACKAGE_WITH_PROTOCOL:",
-              ":BLANK_LINE:",
-              [
-                "{env,paths,actions,api,assets,autorun,client,comp,compSystem,const,declarations,externalScripts,formConfigs,hooks,lib,models,modularActions,modularStores,pages,routes,server,serverSentry,serverUtils,stores,styles,templates,utils,validators}",
-                "{env,paths,actions,api,assets,autorun,client,comp,compSystem,const,declarations,externalScripts,formConfigs,hooks,lib,models,modularActions,modularStores,pages,routes,server,serverSentry,serverUtils,stores,styles,templates,utils,validators}/**"
-              ],
               ":BLANK_LINE:",
               ":PATH:"
             ]
