@@ -3,7 +3,7 @@
   "author": "Dmitry Kazakov",
   "license": "MIT",
   "type": "module",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "description": "Compare .env files",
   "repository": {
     "type": "git",
