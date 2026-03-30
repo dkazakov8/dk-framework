@@ -1,3 +1,5 @@
+# This library is outdated and will be removed soon. Migrate to [https://github.com/dkazakov8/reactive-route](https://github.com/dkazakov8/reactive-route)
+
 ## Config-based routing for React + MobX applications
 
 ![coverage](https://github.com/dkazakov8/dk-framework/blob/master/packages/react-mobx-router/cover.svg)
